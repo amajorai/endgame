@@ -1,0 +1,11 @@
+{
+  "cldr": "electric plug",
+  "fromVersion": "0.6",
+  "glyph": "🔌",
+  "glyphAsUtfInEmoticons": ["1f50c_electricplug"],
+  "group": "Objects",
+  "keywords": ["electric", "electricity", "plug"],
+  "mappedToEmoticons": ["1f50c_electricplug"],
+  "tts": "electric plug",
+  "unicode": "1f50c"
+}

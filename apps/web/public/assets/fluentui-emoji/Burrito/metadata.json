@@ -1,0 +1,11 @@
+{
+  "cldr": "burrito",
+  "fromVersion": "1.0",
+  "glyph": "🌯",
+  "glyphAsUtfInEmoticons": ["1f32f_burrito"],
+  "group": "Food & Drink",
+  "keywords": ["burrito", "mexican", "wrap"],
+  "mappedToEmoticons": ["1f32f_burrito"],
+  "tts": "burrito",
+  "unicode": "1f32f"
+}

@@ -1,0 +1,11 @@
+{
+  "cldr": "giraffe",
+  "fromVersion": "5.0",
+  "glyph": "🦒",
+  "glyphAsUtfInEmoticons": ["1f992_giraffe", "1f992_giraffeface"],
+  "group": "Animals & Nature",
+  "keywords": ["giraffe", "spots"],
+  "mappedToEmoticons": ["1f992_giraffeface"],
+  "tts": "giraffe",
+  "unicode": "1f992"
+}

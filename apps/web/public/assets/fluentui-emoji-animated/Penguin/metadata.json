@@ -1,0 +1,9 @@
+{
+  "cldr": "penguin",
+  "fromVersion": "0.6",
+  "glyph": "🐧",
+  "group": "Animals & Nature",
+  "keywords": ["bird", "penguin"],
+  "tts": "penguin",
+  "unicode": "1f427"
+}

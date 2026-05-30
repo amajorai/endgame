@@ -1,0 +1,16 @@
+{
+  "cldr": "goblin",
+  "fromVersion": "0.6",
+  "glyph": "👺",
+  "group": "Smileys & Emotion",
+  "keywords": [
+    "creature",
+    "face",
+    "fairy tale",
+    "fantasy",
+    "goblin",
+    "monster"
+  ],
+  "tts": "goblin",
+  "unicode": "1f47a"
+}

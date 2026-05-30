@@ -1,0 +1,11 @@
+{
+  "cldr": "bison",
+  "fromVersion": "13.0",
+  "glyph": "🦬",
+  "glyphAsUtfInEmoticons": ["bison"],
+  "group": "Animals & Nature",
+  "keywords": ["bison", "buffalo", "herd", "wisent"],
+  "mappedToEmoticons": ["bison"],
+  "tts": "bison",
+  "unicode": "1f9ac"
+}

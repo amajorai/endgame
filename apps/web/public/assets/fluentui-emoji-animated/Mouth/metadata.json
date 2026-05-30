@@ -1,0 +1,9 @@
+{
+  "cldr": "mouth",
+  "fromVersion": "0.6",
+  "glyph": "👄",
+  "group": "People & Body",
+  "keywords": ["lips", "mouth"],
+  "tts": "mouth",
+  "unicode": "1f444"
+}

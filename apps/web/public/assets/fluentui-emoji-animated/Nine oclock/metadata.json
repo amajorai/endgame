@@ -1,0 +1,9 @@
+{
+  "cldr": "nine o’clock",
+  "fromVersion": "0.6",
+  "glyph": "🕘",
+  "group": "Travel & Places",
+  "keywords": ["00", "9", "9:00", "clock", "nine", "o’clock"],
+  "tts": "nine o’clock",
+  "unicode": "1f558"
+}

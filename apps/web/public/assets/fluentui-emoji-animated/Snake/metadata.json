@@ -1,0 +1,9 @@
+{
+  "cldr": "snake",
+  "fromVersion": "0.6",
+  "glyph": "🐍",
+  "group": "Animals & Nature",
+  "keywords": ["bearer", "Ophiuchus", "serpent", "snake", "zodiac"],
+  "tts": "snake",
+  "unicode": "1f40d"
+}

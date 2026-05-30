@@ -1,0 +1,11 @@
+{
+  "cldr": "bat",
+  "fromVersion": "3.0",
+  "glyph": "🦇",
+  "glyphAsUtfInEmoticons": ["batsmile"],
+  "group": "Animals & Nature",
+  "keywords": ["bat", "vampire"],
+  "mappedToEmoticons": ["batsmile"],
+  "tts": "bat",
+  "unicode": "1f987"
+}

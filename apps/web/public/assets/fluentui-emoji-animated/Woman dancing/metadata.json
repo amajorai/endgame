@@ -1,0 +1,17 @@
+{
+  "cldr": "woman dancing",
+  "fromVersion": "0.6",
+  "glyph": "💃",
+  "group": "People & Body",
+  "keywords": ["dance", "dancing", "woman"],
+  "tts": "woman dancing",
+  "unicode": "1f483",
+  "unicodeSkintones": [
+    "1f483",
+    "1f483 1f3fb",
+    "1f483 1f3fc",
+    "1f483 1f3fd",
+    "1f483 1f3fe",
+    "1f483 1f3ff"
+  ]
+}

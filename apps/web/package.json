@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev --port 3001",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "check-types": "tsc --noEmit"
   },
   "dependencies": {
     "@ai-sdk/react": "catalog:",
@@ -18,14 +19,18 @@
     "better-auth": "catalog:",
     "dotenv": "catalog:",
     "evlog": "catalog:",
+    "h3-js": "^4.4.0",
     "lucide-react": "catalog:",
+    "maplibre-gl": "^5.24.0",
     "next": "^16.2.0",
     "next-themes": "catalog:",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "sonner": "catalog:",
     "streamdown": "^1.6.10",
-    "zod": "catalog:"
+    "three": "^0.184.0",
+    "zod": "catalog:",
+    "zustand": "^5.0.13"
   },
   "devDependencies": {
     "@endgame/config": "workspace:*",
@@ -33,6 +38,8 @@
     "@types/node": "^20",
     "@types/react": "^19.2.15",
     "@types/react-dom": "catalog:",
+    "@types/three": "^0.184.1",
+    "playwright": "^1.60.0",
     "tailwindcss": "^4.1.18",
     "typescript": "catalog:"
   }

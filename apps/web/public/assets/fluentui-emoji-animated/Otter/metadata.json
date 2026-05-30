@@ -1,0 +1,9 @@
+{
+  "cldr": "otter",
+  "fromVersion": "12.0",
+  "glyph": "🦦",
+  "group": "Animals & Nature",
+  "keywords": ["fishing", "otter", "playful"],
+  "tts": "otter",
+  "unicode": "1f9a6"
+}

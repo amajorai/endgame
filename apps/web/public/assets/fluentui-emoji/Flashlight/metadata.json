@@ -1,0 +1,11 @@
+{
+  "cldr": "flashlight",
+  "fromVersion": "0.6",
+  "glyph": "🔦",
+  "glyphAsUtfInEmoticons": ["1f526_electrictorch"],
+  "group": "Objects",
+  "keywords": ["electric", "flashlight", "light", "tool", "torch"],
+  "mappedToEmoticons": ["1f526_electrictorch"],
+  "tts": "flashlight",
+  "unicode": "1f526"
+}

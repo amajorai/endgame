@@ -1,0 +1,11 @@
+{
+  "cldr": "green book",
+  "fromVersion": "0.6",
+  "glyph": "📗",
+  "glyphAsUtfInEmoticons": ["1f4d7_greenbook"],
+  "group": "Objects",
+  "keywords": ["book", "green"],
+  "mappedToEmoticons": ["1f4d7_greenbook"],
+  "tts": "green book",
+  "unicode": "1f4d7"
+}

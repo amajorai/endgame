@@ -1,0 +1,9 @@
+{
+  "cldr": "giraffe",
+  "fromVersion": "5.0",
+  "glyph": "🦒",
+  "group": "Animals & Nature",
+  "keywords": ["giraffe", "spots"],
+  "tts": "giraffe",
+  "unicode": "1f992"
+}

@@ -1,0 +1,11 @@
+{
+  "cldr": "salt",
+  "fromVersion": "11.0",
+  "glyph": "🧂",
+  "glyphAsUtfInEmoticons": ["1f9c2_salt"],
+  "group": "Food & Drink",
+  "keywords": ["condiment", "salt", "shaker"],
+  "mappedToEmoticons": ["1f9c2_salt"],
+  "tts": "salt",
+  "unicode": "1f9c2"
+}

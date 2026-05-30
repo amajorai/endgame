@@ -1,0 +1,11 @@
+{
+  "cldr": "thread",
+  "fromVersion": "11.0",
+  "glyph": "🧵",
+  "glyphAsUtfInEmoticons": ["1f9f5_thread"],
+  "group": "Activities",
+  "keywords": ["needle", "sewing", "spool", "string", "thread"],
+  "mappedToEmoticons": ["1f9f5_thread"],
+  "tts": "thread",
+  "unicode": "1f9f5"
+}

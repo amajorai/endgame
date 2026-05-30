@@ -1,0 +1,9 @@
+{
+  "cldr": "comet",
+  "fromVersion": "1.0",
+  "glyph": "☄️",
+  "group": "Travel & Places",
+  "keywords": ["comet", "space"],
+  "tts": "comet",
+  "unicode": "2604 fe0f"
+}

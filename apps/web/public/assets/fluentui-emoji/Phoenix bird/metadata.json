@@ -1,0 +1,10 @@
+{
+  "cldr": "phoenix",
+  "fromVersion": "15.1",
+  "glyph": "🐦‍🔥",
+  "group": "Animals & Nature",
+  "keywords": ["fantasy", "firebird", "phoenix", "rebirth", "reincarnation"],
+  "mappedToEmoticons": [],
+  "tts": "",
+  "unicode": "1f426 200d 1f525"
+}

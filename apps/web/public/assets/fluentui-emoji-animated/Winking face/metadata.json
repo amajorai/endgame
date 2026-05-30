@@ -1,0 +1,9 @@
+{
+  "cldr": "winking face",
+  "fromVersion": "0.6",
+  "glyph": "😉",
+  "group": "Smileys & Emotion",
+  "keywords": ["face", "wink", "winking face"],
+  "tts": "winking face",
+  "unicode": "1f609"
+}

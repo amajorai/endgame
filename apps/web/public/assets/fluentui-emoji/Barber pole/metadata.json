@@ -1,0 +1,11 @@
+{
+  "cldr": "barber pole",
+  "fromVersion": "0.6",
+  "glyph": "💈",
+  "glyphAsUtfInEmoticons": ["1f488_barberpole"],
+  "group": "Travel & Places",
+  "keywords": ["barber", "haircut", "pole"],
+  "mappedToEmoticons": ["1f488_barberpole"],
+  "tts": "barber pole",
+  "unicode": "1f488"
+}

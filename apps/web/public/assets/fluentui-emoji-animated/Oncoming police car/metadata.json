@@ -1,0 +1,9 @@
+{
+  "cldr": "oncoming police car",
+  "fromVersion": "0.7",
+  "glyph": "🚔",
+  "group": "Travel & Places",
+  "keywords": ["car", "oncoming", "police"],
+  "tts": "oncoming police car",
+  "unicode": "1f694"
+}

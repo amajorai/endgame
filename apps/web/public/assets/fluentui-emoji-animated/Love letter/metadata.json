@@ -1,0 +1,9 @@
+{
+  "cldr": "love letter",
+  "fromVersion": "0.6",
+  "glyph": "💌",
+  "group": "Smileys & Emotion",
+  "keywords": ["heart", "letter", "love", "mail"],
+  "tts": "love letter",
+  "unicode": "1f48c"
+}

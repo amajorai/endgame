@@ -1,0 +1,11 @@
+{
+  "cldr": "face with tongue",
+  "fromVersion": "1.0",
+  "glyph": "😛",
+  "glyphAsUtfInEmoticons": ["1f61b_facewithtongue"],
+  "group": "Smileys & Emotion",
+  "keywords": ["face", "face with tongue", "tongue"],
+  "mappedToEmoticons": ["1f61b_facewithtongue"],
+  "tts": "face with tongue",
+  "unicode": "1f61b"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "footprints",
+  "fromVersion": "0.6",
+  "glyph": "👣",
+  "group": "People & Body",
+  "keywords": ["clothing", "footprint", "footprints", "print"],
+  "tts": "footprints",
+  "unicode": "1f463"
+}

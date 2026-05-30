@@ -1,0 +1,9 @@
+{
+  "cldr": "microbe",
+  "fromVersion": "11.0",
+  "glyph": "🦠",
+  "group": "Animals & Nature",
+  "keywords": ["amoeba", "bacteria", "microbe", "virus"],
+  "tts": "microbe",
+  "unicode": "1f9a0"
+}

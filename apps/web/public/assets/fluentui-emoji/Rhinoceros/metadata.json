@@ -1,0 +1,11 @@
+{
+  "cldr": "rhinoceros",
+  "fromVersion": "3.0",
+  "glyph": "🦏",
+  "glyphAsUtfInEmoticons": ["1f98f_rhinoceros"],
+  "group": "Animals & Nature",
+  "keywords": ["rhinoceros"],
+  "mappedToEmoticons": ["1f98f_rhinoceros"],
+  "tts": "rhinoceros",
+  "unicode": "1f98f"
+}

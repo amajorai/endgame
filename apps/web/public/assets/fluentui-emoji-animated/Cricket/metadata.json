@@ -1,0 +1,9 @@
+{
+  "cldr": "cricket",
+  "fromVersion": "5.0",
+  "glyph": "🦗",
+  "group": "Animals & Nature",
+  "keywords": ["cricket", "grasshopper"],
+  "tts": "cricket",
+  "unicode": "1f997"
+}

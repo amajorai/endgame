@@ -1,0 +1,9 @@
+{
+  "cldr": "elephant",
+  "fromVersion": "0.6",
+  "glyph": "🐘",
+  "group": "Animals & Nature",
+  "keywords": ["elephant"],
+  "tts": "elephant",
+  "unicode": "1f418"
+}

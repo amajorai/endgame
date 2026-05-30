@@ -1,0 +1,11 @@
+{
+  "cldr": "thinking face",
+  "fromVersion": "1.0",
+  "glyph": "🤔",
+  "glyphAsUtfInEmoticons": ["think"],
+  "group": "Smileys & Emotion",
+  "keywords": ["face", "thinking"],
+  "mappedToEmoticons": ["think"],
+  "tts": "thinking face",
+  "unicode": "1f914"
+}

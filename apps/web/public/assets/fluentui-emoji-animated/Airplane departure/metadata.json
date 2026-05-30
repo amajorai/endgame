@@ -1,0 +1,9 @@
+{
+  "cldr": "airplane departure",
+  "fromVersion": "1.0",
+  "glyph": "🛫",
+  "group": "Travel & Places",
+  "keywords": ["aeroplane", "airplane", "check-in", "departure", "departures"],
+  "tts": "airplane departure",
+  "unicode": "1f6eb"
+}

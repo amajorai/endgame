@@ -1,0 +1,18 @@
+{
+  "cldr": "goblin",
+  "fromVersion": "0.6",
+  "glyph": "👺",
+  "glyphAsUtfInEmoticons": ["1f47a_japanesegoblin"],
+  "group": "Smileys & Emotion",
+  "keywords": [
+    "creature",
+    "face",
+    "fairy tale",
+    "fantasy",
+    "goblin",
+    "monster"
+  ],
+  "mappedToEmoticons": ["1f47a_japanesegoblin"],
+  "tts": "goblin",
+  "unicode": "1f47a"
+}

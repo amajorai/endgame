@@ -1,0 +1,9 @@
+{
+  "cldr": "locomotive",
+  "fromVersion": "1.0",
+  "glyph": "🚂",
+  "group": "Travel & Places",
+  "keywords": ["engine", "locomotive", "railway", "steam", "train"],
+  "tts": "locomotive",
+  "unicode": "1f682"
+}

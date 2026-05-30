@@ -1,0 +1,11 @@
+{
+  "cldr": "face with tears of joy",
+  "fromVersion": "0.6",
+  "glyph": "😂",
+  "glyphAsUtfInEmoticons": ["cwl"],
+  "group": "Smileys & Emotion",
+  "keywords": ["face", "face with tears of joy", "joy", "laugh", "tear"],
+  "mappedToEmoticons": ["cwl"],
+  "tts": "face with tears of joy",
+  "unicode": "1f602"
+}

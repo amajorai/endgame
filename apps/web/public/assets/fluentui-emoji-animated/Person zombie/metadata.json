@@ -1,0 +1,9 @@
+{
+  "cldr": "zombie",
+  "fromVersion": "5.0",
+  "glyph": "🧟",
+  "group": "People & Body",
+  "keywords": ["undead", "walking dead", "zombie"],
+  "tts": "zombie",
+  "unicode": "1f9df"
+}

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "e2e": {
+      "source": "amajorai/skills",
+      "sourceType": "github",
+      "skillPath": "skills/e2e/SKILL.md",
+      "computedHash": "aa1fb168dec8c8d323091256ecdedbcdf221bbeb6a1f7643a08cf50021f72717"
+    },
+    "edge-cases": {
+      "source": "amajorai/skills",
+      "sourceType": "github",
+      "skillPath": "skills/edge-cases/SKILL.md",
+      "computedHash": "629aee6b11e2503c6440166e905eae7c87660425467284d1724a165a8faf2d34"
+    }
+  }
+}

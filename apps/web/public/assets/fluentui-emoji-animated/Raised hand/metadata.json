@@ -1,0 +1,17 @@
+{
+  "cldr": "raised hand",
+  "fromVersion": "0.6",
+  "glyph": "✋",
+  "group": "People & Body",
+  "keywords": ["hand", "high 5", "high five", "raised hand"],
+  "tts": "raised hand",
+  "unicode": "270b",
+  "unicodeSkintones": [
+    "270b",
+    "270b 1f3fb",
+    "270b 1f3fc",
+    "270b 1f3fd",
+    "270b 1f3fe",
+    "270b 1f3ff"
+  ]
+}

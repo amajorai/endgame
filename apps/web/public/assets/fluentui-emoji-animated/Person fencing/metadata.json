@@ -1,0 +1,9 @@
+{
+  "cldr": "person fencing",
+  "fromVersion": "3.0",
+  "glyph": "🤺",
+  "group": "People & Body",
+  "keywords": ["fencer", "fencing", "person fencing", "sword"],
+  "tts": "person fencing",
+  "unicode": "1f93a"
+}

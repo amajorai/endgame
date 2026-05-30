@@ -1,0 +1,11 @@
+{
+  "cldr": "metro",
+  "fromVersion": "0.6",
+  "glyph": "🚇",
+  "glyphAsUtfInEmoticons": ["1f687_metro"],
+  "group": "Travel & Places",
+  "keywords": ["metro", "subway"],
+  "mappedToEmoticons": ["1f687_metro"],
+  "tts": "metro",
+  "unicode": "1f687"
+}

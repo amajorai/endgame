@@ -1,0 +1,11 @@
+{
+  "cldr": "violin",
+  "fromVersion": "0.6",
+  "glyph": "🎻",
+  "glyphAsUtfInEmoticons": ["1f3bb_violin"],
+  "group": "Objects",
+  "keywords": ["instrument", "music", "violin"],
+  "mappedToEmoticons": ["1f3bb_violin"],
+  "tts": "violin",
+  "unicode": "1f3bb"
+}

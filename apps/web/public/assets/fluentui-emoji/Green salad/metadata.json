@@ -1,0 +1,11 @@
+{
+  "cldr": "green salad",
+  "fromVersion": "3.0",
+  "glyph": "🥗",
+  "glyphAsUtfInEmoticons": ["1f957_greensalad"],
+  "group": "Food & Drink",
+  "keywords": ["food", "green", "salad"],
+  "mappedToEmoticons": ["1f957_greensalad"],
+  "tts": "green salad",
+  "unicode": "1f957"
+}

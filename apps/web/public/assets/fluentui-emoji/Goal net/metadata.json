@@ -1,0 +1,11 @@
+{
+  "cldr": "goal net",
+  "fromVersion": "3.0",
+  "glyph": "🥅",
+  "glyphAsUtfInEmoticons": ["1f945_goalnet"],
+  "group": "Activities",
+  "keywords": ["goal", "net"],
+  "mappedToEmoticons": ["1f945_goalnet"],
+  "tts": "goal net",
+  "unicode": "1f945"
+}

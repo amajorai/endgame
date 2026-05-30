@@ -1,0 +1,11 @@
+{
+  "cldr": "waffle",
+  "fromVersion": "12.0",
+  "glyph": "🧇",
+  "glyphAsUtfInEmoticons": ["1f9c7_waffle"],
+  "group": "Food & Drink",
+  "keywords": ["breakfast", "indecisive", "iron", "waffle"],
+  "mappedToEmoticons": ["1f9c7_waffle"],
+  "tts": "waffle",
+  "unicode": "1f9c7"
+}

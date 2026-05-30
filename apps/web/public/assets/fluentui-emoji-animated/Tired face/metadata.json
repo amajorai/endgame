@@ -1,0 +1,9 @@
+{
+  "cldr": "tired face",
+  "fromVersion": "0.6",
+  "glyph": "😫",
+  "group": "Smileys & Emotion",
+  "keywords": ["face", "tired"],
+  "tts": "tired face",
+  "unicode": "1f62b"
+}

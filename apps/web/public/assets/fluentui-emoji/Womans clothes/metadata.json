@@ -1,0 +1,11 @@
+{
+  "cldr": "woman’s clothes",
+  "fromVersion": "0.6",
+  "glyph": "👚",
+  "glyphAsUtfInEmoticons": ["1f45a_womansclothes"],
+  "group": "Objects",
+  "keywords": ["clothing", "woman", "woman’s clothes"],
+  "mappedToEmoticons": ["1f45a_womansclothes"],
+  "tts": "woman’s clothes",
+  "unicode": "1f45a"
+}

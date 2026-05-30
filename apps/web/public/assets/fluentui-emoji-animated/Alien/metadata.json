@@ -1,0 +1,16 @@
+{
+  "cldr": "alien",
+  "fromVersion": "0.6",
+  "glyph": "👽",
+  "group": "Smileys & Emotion",
+  "keywords": [
+    "alien",
+    "creature",
+    "extraterrestrial",
+    "face",
+    "fantasy",
+    "ufo"
+  ],
+  "tts": "alien",
+  "unicode": "1f47d"
+}

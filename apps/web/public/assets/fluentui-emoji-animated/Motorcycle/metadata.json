@@ -1,0 +1,9 @@
+{
+  "cldr": "motorcycle",
+  "fromVersion": "0.7",
+  "glyph": "🏍️",
+  "group": "Travel & Places",
+  "keywords": ["motorcycle", "racing"],
+  "tts": "motorcycle",
+  "unicode": "1f3cd fe0f"
+}

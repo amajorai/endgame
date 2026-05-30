@@ -1,0 +1,9 @@
+{
+  "cldr": "dog",
+  "fromVersion": "0.7",
+  "glyph": "🐕",
+  "group": "Animals & Nature",
+  "keywords": ["dog", "pet"],
+  "tts": "dog",
+  "unicode": "1f415"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "gorilla",
+  "fromVersion": "3.0",
+  "glyph": "🦍",
+  "group": "Animals & Nature",
+  "keywords": ["gorilla"],
+  "tts": "gorilla",
+  "unicode": "1f98d"
+}

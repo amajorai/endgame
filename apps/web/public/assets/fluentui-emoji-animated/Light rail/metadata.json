@@ -1,0 +1,9 @@
+{
+  "cldr": "light rail",
+  "fromVersion": "1.0",
+  "glyph": "🚈",
+  "group": "Travel & Places",
+  "keywords": ["light rail", "railway"],
+  "tts": "light rail",
+  "unicode": "1f688"
+}

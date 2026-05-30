@@ -1,0 +1,16 @@
+{
+  "cldr": "hugging face",
+  "fromVersion": "1.0",
+  "glyph": "🤗",
+  "group": "Smileys & Emotion",
+  "keywords": [
+    "face",
+    "hug",
+    "hugging",
+    "open hands",
+    "smiling face",
+    "smiling face with open hands"
+  ],
+  "tts": "smiling face with open hands",
+  "unicode": "1f917"
+}

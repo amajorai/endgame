@@ -1,0 +1,11 @@
+{
+  "cldr": "woman’s boot",
+  "fromVersion": "0.6",
+  "glyph": "👢",
+  "glyphAsUtfInEmoticons": ["1f462_womansboots"],
+  "group": "Objects",
+  "keywords": ["boot", "clothing", "shoe", "woman", "woman’s boot"],
+  "mappedToEmoticons": ["1f462_womansboots"],
+  "tts": "woman’s boot",
+  "unicode": "1f462"
+}

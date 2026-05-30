@@ -1,0 +1,11 @@
+{
+  "cldr": "cupcake",
+  "fromVersion": "11.0",
+  "glyph": "🧁",
+  "glyphAsUtfInEmoticons": ["cupcake"],
+  "group": "Food & Drink",
+  "keywords": ["bakery", "cupcake", "sweet"],
+  "mappedToEmoticons": ["cupcake"],
+  "tts": "cupcake",
+  "unicode": "1f9c1"
+}

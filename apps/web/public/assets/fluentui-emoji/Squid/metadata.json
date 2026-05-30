@@ -1,0 +1,11 @@
+{
+  "cldr": "squid",
+  "fromVersion": "3.0",
+  "glyph": "🦑",
+  "glyphAsUtfInEmoticons": ["1f991_squid"],
+  "group": "Food & Drink",
+  "keywords": ["food", "molusc", "squid"],
+  "mappedToEmoticons": ["1f991_squid"],
+  "tts": "squid",
+  "unicode": "1f991"
+}

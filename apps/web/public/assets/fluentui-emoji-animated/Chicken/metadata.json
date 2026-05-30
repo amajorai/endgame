@@ -1,0 +1,9 @@
+{
+  "cldr": "chicken",
+  "fromVersion": "0.6",
+  "glyph": "🐔",
+  "group": "Animals & Nature",
+  "keywords": ["bird", "chicken"],
+  "tts": "chicken",
+  "unicode": "1f414"
+}

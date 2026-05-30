@@ -1,0 +1,11 @@
+{
+  "cldr": "crocodile",
+  "fromVersion": "1.0",
+  "glyph": "🐊",
+  "glyphAsUtfInEmoticons": ["1f40a_crocodile"],
+  "group": "Animals & Nature",
+  "keywords": ["crocodile"],
+  "mappedToEmoticons": ["1f40a_crocodile"],
+  "tts": "crocodile",
+  "unicode": "1f40a"
+}

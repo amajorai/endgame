@@ -1,0 +1,11 @@
+{
+  "cldr": "llama",
+  "fromVersion": "11.0",
+  "glyph": "🦙",
+  "glyphAsUtfInEmoticons": ["1f999_llama"],
+  "group": "Animals & Nature",
+  "keywords": ["alpaca", "guanaco", "llama", "vicuña", "wool"],
+  "mappedToEmoticons": ["1f999_llama"],
+  "tts": "llama",
+  "unicode": "1f999"
+}

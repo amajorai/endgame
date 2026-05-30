@@ -1,0 +1,11 @@
+{
+  "cldr": "bookmark",
+  "fromVersion": "0.6",
+  "glyph": "🔖",
+  "glyphAsUtfInEmoticons": ["1f516_bookmark"],
+  "group": "Objects",
+  "keywords": ["bookmark", "mark"],
+  "mappedToEmoticons": ["1f516_bookmark"],
+  "tts": "bookmark",
+  "unicode": "1f516"
+}

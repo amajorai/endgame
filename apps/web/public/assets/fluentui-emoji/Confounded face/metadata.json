@@ -1,0 +1,11 @@
+{
+  "cldr": "confounded face",
+  "fromVersion": "0.6",
+  "glyph": "😖",
+  "glyphAsUtfInEmoticons": ["veryconfused"],
+  "group": "Smileys & Emotion",
+  "keywords": ["confounded", "face"],
+  "mappedToEmoticons": ["veryconfused"],
+  "tts": "confounded face",
+  "unicode": "1f616"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "honeybee",
+  "fromVersion": "0.6",
+  "glyph": "🐝",
+  "group": "Animals & Nature",
+  "keywords": ["bee", "honeybee", "insect"],
+  "tts": "honeybee",
+  "unicode": "1f41d"
+}

@@ -1,0 +1,11 @@
+{
+  "cldr": "ladder",
+  "fromVersion": "13.0",
+  "glyph": "🪜",
+  "glyphAsUtfInEmoticons": ["ladder"],
+  "group": "Objects",
+  "keywords": ["climb", "ladder", "rung", "step"],
+  "mappedToEmoticons": ["ladder"],
+  "tts": "ladder",
+  "unicode": "1fa9c"
+}

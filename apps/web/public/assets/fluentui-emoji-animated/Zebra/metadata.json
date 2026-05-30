@@ -1,0 +1,9 @@
+{
+  "cldr": "zebra",
+  "fromVersion": "5.0",
+  "glyph": "🦓",
+  "group": "Animals & Nature",
+  "keywords": ["stripe", "zebra"],
+  "tts": "zebra",
+  "unicode": "1f993"
+}

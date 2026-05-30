@@ -1,0 +1,9 @@
+{
+  "cldr": "trolleybus",
+  "fromVersion": "1.0",
+  "glyph": "🚎",
+  "group": "Travel & Places",
+  "keywords": ["bus", "tram", "trolley", "trolleybus"],
+  "tts": "trolleybus",
+  "unicode": "1f68e"
+}

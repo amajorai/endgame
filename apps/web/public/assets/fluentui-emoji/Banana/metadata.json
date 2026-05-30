@@ -1,0 +1,11 @@
+{
+  "cldr": "banana",
+  "fromVersion": "0.6",
+  "glyph": "🍌",
+  "glyphAsUtfInEmoticons": ["banana"],
+  "group": "Food & Drink",
+  "keywords": ["banana", "fruit"],
+  "mappedToEmoticons": ["banana"],
+  "tts": "banana",
+  "unicode": "1f34c"
+}

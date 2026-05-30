@@ -1,0 +1,11 @@
+{
+  "cldr": "baggage claim",
+  "fromVersion": "1.0",
+  "glyph": "🛄",
+  "glyphAsUtfInEmoticons": ["1f6c4_baggageclaim"],
+  "group": "Symbols",
+  "keywords": ["baggage", "claim"],
+  "mappedToEmoticons": ["1f6c4_baggageclaim"],
+  "tts": "baggage claim",
+  "unicode": "1f6c4"
+}

@@ -1,0 +1,11 @@
+{
+  "cldr": "megaphone",
+  "fromVersion": "0.6",
+  "glyph": "📣",
+  "glyphAsUtfInEmoticons": ["1f4e3_cheeringmegaphone"],
+  "group": "Objects",
+  "keywords": ["cheering", "megaphone"],
+  "mappedToEmoticons": ["1f4e3_cheeringmegaphone"],
+  "tts": "megaphone",
+  "unicode": "1f4e3"
+}

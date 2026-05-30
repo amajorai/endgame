@@ -1,0 +1,9 @@
+{
+  "cldr": "skier",
+  "fromVersion": "0.7",
+  "glyph": "⛷️",
+  "group": "People & Body",
+  "keywords": ["ski", "skier", "snow"],
+  "tts": "skier",
+  "unicode": "26f7 fe0f"
+}

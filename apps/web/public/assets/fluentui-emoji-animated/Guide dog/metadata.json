@@ -1,0 +1,9 @@
+{
+  "cldr": "guide dog",
+  "fromVersion": "12.0",
+  "glyph": "🦮",
+  "group": "Animals & Nature",
+  "keywords": ["accessibility", "blind", "guide", "guide dog"],
+  "tts": "guide dog",
+  "unicode": "1f9ae"
+}

@@ -1,0 +1,15 @@
+{
+  "cldr": "beaming face with smiling eyes",
+  "fromVersion": "0.6",
+  "glyph": "😁",
+  "group": "Smileys & Emotion",
+  "keywords": [
+    "beaming face with smiling eyes",
+    "eye",
+    "face",
+    "grin",
+    "smile"
+  ],
+  "tts": "beaming face with smiling eyes",
+  "unicode": "1f601"
+}

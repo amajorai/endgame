@@ -1,0 +1,9 @@
+{
+  "cldr": "goat",
+  "fromVersion": "1.0",
+  "glyph": "🐐",
+  "group": "Animals & Nature",
+  "keywords": ["Capricorn", "goat", "zodiac"],
+  "tts": "goat",
+  "unicode": "1f410"
+}

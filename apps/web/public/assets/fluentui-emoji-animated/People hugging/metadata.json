@@ -1,0 +1,9 @@
+{
+  "cldr": "people hugging",
+  "fromVersion": "13.0",
+  "glyph": "🫂",
+  "group": "People & Body",
+  "keywords": ["goodbye", "hello", "hug", "people hugging", "thanks"],
+  "tts": "people hugging",
+  "unicode": "1fac2"
+}

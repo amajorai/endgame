@@ -1,0 +1,10 @@
+{
+  "cldr": "toilet",
+  "fromVersion": "0.6",
+  "glyph": "🚽",
+  "group": "Objects",
+  "keywords": ["toilet"],
+  "mappedToEmoticons": ["toilet"],
+  "tts": "toilet",
+  "unicode": "1f6bd"
+}

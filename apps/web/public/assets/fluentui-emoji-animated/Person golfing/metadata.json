@@ -1,0 +1,17 @@
+{
+  "cldr": "person golfing",
+  "fromVersion": "0.7",
+  "glyph": "🏌️",
+  "group": "People & Body",
+  "keywords": ["ball", "golf", "person golfing"],
+  "tts": "person golfing",
+  "unicode": "1f3cc fe0f",
+  "unicodeSkintones": [
+    "1f3cc fe0f",
+    "1f3cc 1f3fb",
+    "1f3cc 1f3fc",
+    "1f3cc 1f3fd",
+    "1f3cc 1f3fe",
+    "1f3cc 1f3ff"
+  ]
+}

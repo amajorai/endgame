@@ -1,0 +1,11 @@
+{
+  "cldr": "kangaroo",
+  "fromVersion": "11.0",
+  "glyph": "🦘",
+  "glyphAsUtfInEmoticons": ["1f998_kangaroo"],
+  "group": "Animals & Nature",
+  "keywords": ["Australia", "joey", "jump", "kangaroo", "marsupial"],
+  "mappedToEmoticons": ["1f998_kangaroo"],
+  "tts": "kangaroo",
+  "unicode": "1f998"
+}

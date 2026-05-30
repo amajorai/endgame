@@ -1,0 +1,9 @@
+{
+  "cldr": "mountain cableway",
+  "fromVersion": "1.0",
+  "glyph": "🚠",
+  "group": "Travel & Places",
+  "keywords": ["cable", "gondola", "mountain", "mountain cableway"],
+  "tts": "mountain cableway",
+  "unicode": "1f6a0"
+}

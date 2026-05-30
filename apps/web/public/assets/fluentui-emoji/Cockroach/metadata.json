@@ -1,0 +1,11 @@
+{
+  "cldr": "cockroach",
+  "fromVersion": "13.0",
+  "glyph": "🪳",
+  "glyphAsUtfInEmoticons": ["cockroach"],
+  "group": "Animals & Nature",
+  "keywords": ["cockroach", "insect", "pest", "roach"],
+  "mappedToEmoticons": ["cockroach"],
+  "tts": "cockroach",
+  "unicode": "1fab3"
+}

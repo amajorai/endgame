@@ -1,0 +1,23 @@
+{
+  "cldr": "person getting haircut",
+  "fromVersion": "0.6",
+  "glyph": "💇",
+  "group": "People & Body",
+  "keywords": [
+    "barber",
+    "beauty",
+    "haircut",
+    "parlor",
+    "person getting haircut"
+  ],
+  "tts": "person getting haircut",
+  "unicode": "1f487",
+  "unicodeSkintones": [
+    "1f487",
+    "1f487 1f3fb",
+    "1f487 1f3fc",
+    "1f487 1f3fd",
+    "1f487 1f3fe",
+    "1f487 1f3ff"
+  ]
+}

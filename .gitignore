@@ -49,3 +49,7 @@ coverage
 .cache
 tmp
 temp
+
+# Local scratch / debug artifacts
+_fix_repro.mjs
+_render_out.*

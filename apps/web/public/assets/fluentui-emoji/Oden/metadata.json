@@ -1,0 +1,11 @@
+{
+  "cldr": "oden",
+  "fromVersion": "0.6",
+  "glyph": "🍢",
+  "glyphAsUtfInEmoticons": ["1f362_oden", "tandoorichicken"],
+  "group": "Food & Drink",
+  "keywords": ["kebab", "oden", "seafood", "skewer", "stick"],
+  "mappedToEmoticons": ["1f362_oden"],
+  "tts": "oden",
+  "unicode": "1f362"
+}

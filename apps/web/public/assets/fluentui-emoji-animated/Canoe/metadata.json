@@ -1,0 +1,9 @@
+{
+  "cldr": "canoe",
+  "fromVersion": "3.0",
+  "glyph": "🛶",
+  "group": "Travel & Places",
+  "keywords": ["boat", "canoe"],
+  "tts": "canoe",
+  "unicode": "1f6f6"
+}

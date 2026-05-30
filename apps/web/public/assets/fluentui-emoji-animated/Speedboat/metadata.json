@@ -1,0 +1,9 @@
+{
+  "cldr": "speedboat",
+  "fromVersion": "0.6",
+  "glyph": "🚤",
+  "group": "Travel & Places",
+  "keywords": ["boat", "speedboat"],
+  "tts": "speedboat",
+  "unicode": "1f6a4"
+}

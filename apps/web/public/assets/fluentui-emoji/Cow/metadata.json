@@ -1,0 +1,11 @@
+{
+  "cldr": "cow",
+  "fromVersion": "1.0",
+  "glyph": "🐄",
+  "glyphAsUtfInEmoticons": ["1f404_cow"],
+  "group": "Animals & Nature",
+  "keywords": ["cow"],
+  "mappedToEmoticons": ["1f404_cow"],
+  "tts": "cow",
+  "unicode": "1f404"
+}

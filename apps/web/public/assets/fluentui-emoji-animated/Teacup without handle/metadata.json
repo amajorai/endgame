@@ -1,0 +1,16 @@
+{
+  "cldr": "teacup without handle",
+  "fromVersion": "0.6",
+  "glyph": "🍵",
+  "group": "Food & Drink",
+  "keywords": [
+    "beverage",
+    "cup",
+    "drink",
+    "tea",
+    "teacup",
+    "teacup without handle"
+  ],
+  "tts": "teacup without handle",
+  "unicode": "1f375"
+}

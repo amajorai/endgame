@@ -1,0 +1,11 @@
+{
+  "cldr": "clapper board",
+  "fromVersion": "0.6",
+  "glyph": "🎬",
+  "glyphAsUtfInEmoticons": ["movie"],
+  "group": "Objects",
+  "keywords": ["clapper", "clapper board", "movie"],
+  "mappedToEmoticons": ["movie"],
+  "tts": "clapper board",
+  "unicode": "1f3ac"
+}

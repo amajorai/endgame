@@ -1,0 +1,9 @@
+{
+  "cldr": "aerial tramway",
+  "fromVersion": "1.0",
+  "glyph": "🚡",
+  "group": "Travel & Places",
+  "keywords": ["aerial", "cable", "car", "gondola", "tramway"],
+  "tts": "aerial tramway",
+  "unicode": "1f6a1"
+}

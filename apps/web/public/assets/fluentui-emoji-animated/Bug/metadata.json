@@ -1,0 +1,9 @@
+{
+  "cldr": "bug",
+  "fromVersion": "0.6",
+  "glyph": "🐛",
+  "group": "Animals & Nature",
+  "keywords": ["bug", "insect"],
+  "tts": "bug",
+  "unicode": "1f41b"
+}

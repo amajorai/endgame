@@ -1,0 +1,9 @@
+{
+  "cldr": "hourglass done",
+  "fromVersion": "0.6",
+  "glyph": "⌛",
+  "group": "Travel & Places",
+  "keywords": ["hourglass done", "sand", "timer"],
+  "tts": "hourglass done",
+  "unicode": "231b"
+}

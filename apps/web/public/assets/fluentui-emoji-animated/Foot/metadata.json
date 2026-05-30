@@ -1,0 +1,17 @@
+{
+  "cldr": "foot",
+  "fromVersion": "11.0",
+  "glyph": "🦶",
+  "group": "People & Body",
+  "keywords": ["foot", "kick", "stomp"],
+  "tts": "foot",
+  "unicode": "1f9b6",
+  "unicodeSkintones": [
+    "1f9b6",
+    "1f9b6 1f3fb",
+    "1f9b6 1f3fc",
+    "1f9b6 1f3fd",
+    "1f9b6 1f3fe",
+    "1f9b6 1f3ff"
+  ]
+}

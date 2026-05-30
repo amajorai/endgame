@@ -1,0 +1,10 @@
+{
+  "cldr": "trackball",
+  "fromVersion": "0.7",
+  "glyph": "🖲️",
+  "group": "Objects",
+  "keywords": ["computer", "trackball"],
+  "mappedToEmoticons": ["1f5b2_trackball"],
+  "tts": "trackball",
+  "unicode": "1f5b2 fe0f"
+}

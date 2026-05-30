@@ -1,0 +1,17 @@
+{
+  "cldr": "palms up together",
+  "fromVersion": "5.0",
+  "glyph": "🤲",
+  "group": "People & Body",
+  "keywords": ["palms up together", "prayer"],
+  "tts": "palms up together",
+  "unicode": "1f932",
+  "unicodeSkintones": [
+    "1f932",
+    "1f932 1f3fb",
+    "1f932 1f3fc",
+    "1f932 1f3fd",
+    "1f932 1f3fe",
+    "1f932 1f3ff"
+  ]
+}

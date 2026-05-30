@@ -1,0 +1,17 @@
+{
+  "cldr": "Japanese “vacancy” button",
+  "fromVersion": "0.6",
+  "glyph": "🈳",
+  "glyphAsUtfInEmoticons": ["1f233_vacancy"],
+  "group": "Symbols",
+  "keywords": [
+    "“vacancy”",
+    "ideograph",
+    "Japanese",
+    "Japanese “vacancy” button",
+    "空"
+  ],
+  "mappedToEmoticons": ["1f233_vacancy"],
+  "tts": "Japanese “vacancy” button",
+  "unicode": "1f233"
+}

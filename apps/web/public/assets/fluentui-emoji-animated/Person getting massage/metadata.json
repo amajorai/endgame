@@ -1,0 +1,17 @@
+{
+  "cldr": "person getting massage",
+  "fromVersion": "0.6",
+  "glyph": "💆",
+  "group": "People & Body",
+  "keywords": ["face", "massage", "person getting massage", "salon"],
+  "tts": "person getting massage",
+  "unicode": "1f486",
+  "unicodeSkintones": [
+    "1f486",
+    "1f486 1f3fb",
+    "1f486 1f3fc",
+    "1f486 1f3fd",
+    "1f486 1f3fe",
+    "1f486 1f3ff"
+  ]
+}

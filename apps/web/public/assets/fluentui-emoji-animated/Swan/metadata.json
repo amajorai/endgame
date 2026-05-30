@@ -1,0 +1,9 @@
+{
+  "cldr": "swan",
+  "fromVersion": "11.0",
+  "glyph": "🦢",
+  "group": "Animals & Nature",
+  "keywords": ["bird", "cygnet", "swan", "ugly duckling"],
+  "tts": "swan",
+  "unicode": "1f9a2"
+}

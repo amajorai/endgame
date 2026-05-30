@@ -1,0 +1,11 @@
+{
+  "cldr": "tear-off calendar",
+  "fromVersion": "0.6",
+  "glyph": "📆",
+  "glyphAsUtfInEmoticons": ["1f4c6_tearoffcalendar"],
+  "group": "Objects",
+  "keywords": ["calendar", "tear-off calendar"],
+  "mappedToEmoticons": ["spiralcalendar"],
+  "tts": "tear-off calendar",
+  "unicode": "1f4c6"
+}

@@ -1,0 +1,11 @@
+{
+  "cldr": "mechanical leg",
+  "fromVersion": "12.0",
+  "glyph": "🦿",
+  "glyphAsUtfInEmoticons": ["1f9bf_mechanicalleg"],
+  "group": "People & Body",
+  "keywords": ["accessibility", "mechanical leg", "prosthetic"],
+  "mappedToEmoticons": ["1f9bf_mechanicalleg"],
+  "tts": "mechanical leg",
+  "unicode": "1f9bf"
+}

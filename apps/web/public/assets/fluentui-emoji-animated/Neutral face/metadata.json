@@ -1,0 +1,9 @@
+{
+  "cldr": "neutral face",
+  "fromVersion": "0.7",
+  "glyph": "😐",
+  "group": "Smileys & Emotion",
+  "keywords": ["deadpan", "face", "meh", "neutral"],
+  "tts": "neutral face",
+  "unicode": "1f610"
+}

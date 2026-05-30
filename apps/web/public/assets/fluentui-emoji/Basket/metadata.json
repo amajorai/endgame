@@ -1,0 +1,11 @@
+{
+  "cldr": "basket",
+  "fromVersion": "11.0",
+  "glyph": "🧺",
+  "glyphAsUtfInEmoticons": ["1f9fa_basket"],
+  "group": "Objects",
+  "keywords": ["basket", "farming", "laundry", "picnic"],
+  "mappedToEmoticons": ["1f9fa_basket"],
+  "tts": "basket",
+  "unicode": "1f9fa"
+}

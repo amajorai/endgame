@@ -1,0 +1,9 @@
+{
+  "cldr": "droplet",
+  "fromVersion": "0.6",
+  "glyph": "💧",
+  "group": "Travel & Places",
+  "keywords": ["cold", "comic", "drop", "droplet", "sweat"],
+  "tts": "droplet",
+  "unicode": "1f4a7"
+}

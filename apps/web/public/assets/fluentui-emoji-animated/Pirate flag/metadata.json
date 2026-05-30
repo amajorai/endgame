@@ -1,0 +1,9 @@
+{
+  "cldr": "pirate flag",
+  "fromVersion": "11.0",
+  "glyph": "🏴‍☠️",
+  "group": "Flags",
+  "keywords": ["Jolly Roger", "pirate", "pirate flag", "plunder", "treasure"],
+  "tts": "pirate flag",
+  "unicode": "1f3f4 200d 2620 fe0f"
+}

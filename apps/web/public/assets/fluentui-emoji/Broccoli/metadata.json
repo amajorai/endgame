@@ -1,0 +1,11 @@
+{
+  "cldr": "broccoli",
+  "fromVersion": "5.0",
+  "glyph": "🥦",
+  "glyphAsUtfInEmoticons": ["1f966_broccoli"],
+  "group": "Food & Drink",
+  "keywords": ["broccoli", "wild cabbage"],
+  "mappedToEmoticons": ["1f966_broccoli"],
+  "tts": "broccoli",
+  "unicode": "1f966"
+}

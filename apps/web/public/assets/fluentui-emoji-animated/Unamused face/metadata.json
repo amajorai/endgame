@@ -1,0 +1,9 @@
+{
+  "cldr": "unamused face",
+  "fromVersion": "0.6",
+  "glyph": "😒",
+  "group": "Smileys & Emotion",
+  "keywords": ["face", "unamused", "unhappy"],
+  "tts": "unamused face",
+  "unicode": "1f612"
+}

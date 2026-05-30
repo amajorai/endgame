@@ -1,0 +1,11 @@
+{
+  "cldr": "ON! arrow",
+  "fromVersion": "0.6",
+  "glyph": "🔛",
+  "glyphAsUtfInEmoticons": ["1f51b_on"],
+  "group": "Symbols",
+  "keywords": ["arrow", "mark", "on", "ON! arrow"],
+  "mappedToEmoticons": ["1f51b_on"],
+  "tts": "ON! arrow",
+  "unicode": "1f51b"
+}

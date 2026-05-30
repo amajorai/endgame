@@ -1,0 +1,11 @@
+{
+  "cldr": "headstone",
+  "fromVersion": "13.0",
+  "glyph": "🪦",
+  "glyphAsUtfInEmoticons": ["headstone"],
+  "group": "Objects",
+  "keywords": ["cemetery", "grave", "graveyard", "headstone", "tombstone"],
+  "mappedToEmoticons": ["headstone"],
+  "tts": "headstone",
+  "unicode": "1faa6"
+}

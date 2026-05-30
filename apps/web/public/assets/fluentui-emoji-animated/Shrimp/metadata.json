@@ -1,0 +1,9 @@
+{
+  "cldr": "shrimp",
+  "fromVersion": "3.0",
+  "glyph": "🦐",
+  "group": "Food & Drink",
+  "keywords": ["food", "shellfish", "shrimp", "small"],
+  "tts": "shrimp",
+  "unicode": "1f990"
+}

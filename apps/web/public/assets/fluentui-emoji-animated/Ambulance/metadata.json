@@ -1,0 +1,9 @@
+{
+  "cldr": "ambulance",
+  "fromVersion": "0.6",
+  "glyph": "🚑",
+  "group": "Travel & Places",
+  "keywords": ["ambulance", "vehicle"],
+  "tts": "ambulance",
+  "unicode": "1f691"
+}

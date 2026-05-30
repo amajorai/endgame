@@ -1,0 +1,17 @@
+{
+  "cldr": "Japanese “no vacancy” button",
+  "fromVersion": "0.6",
+  "glyph": "🈵",
+  "glyphAsUtfInEmoticons": ["1f235_novacancy"],
+  "group": "Symbols",
+  "keywords": [
+    "“no vacancy”",
+    "ideograph",
+    "Japanese",
+    "Japanese “no vacancy” button",
+    "満"
+  ],
+  "mappedToEmoticons": ["1f235_novacancy"],
+  "tts": "Japanese “no vacancy” button",
+  "unicode": "1f235"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "baby chick",
+  "fromVersion": "0.6",
+  "glyph": "🐤",
+  "group": "Animals & Nature",
+  "keywords": ["baby", "bird", "chick"],
+  "tts": "baby chick",
+  "unicode": "1f424"
+}

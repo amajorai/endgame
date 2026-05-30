@@ -1,0 +1,11 @@
+{
+  "cldr": "watch",
+  "fromVersion": "0.6",
+  "glyph": "⌚",
+  "glyphAsUtfInEmoticons": ["231a_watch"],
+  "group": "Travel & Places",
+  "keywords": ["clock", "watch"],
+  "mappedToEmoticons": ["231a_watch"],
+  "tts": "watch",
+  "unicode": "231a"
+}

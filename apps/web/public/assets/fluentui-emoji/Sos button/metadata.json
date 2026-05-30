@@ -1,0 +1,11 @@
+{
+  "cldr": "SOS button",
+  "fromVersion": "0.6",
+  "glyph": "🆘",
+  "glyphAsUtfInEmoticons": ["1f198_squaredsos"],
+  "group": "Symbols",
+  "keywords": ["help", "sos", "SOS button"],
+  "mappedToEmoticons": ["1f198_squaredsos"],
+  "tts": "SOS button",
+  "unicode": "1f198"
+}

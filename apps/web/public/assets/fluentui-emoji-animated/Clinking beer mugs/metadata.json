@@ -1,0 +1,9 @@
+{
+  "cldr": "clinking beer mugs",
+  "fromVersion": "0.6",
+  "glyph": "🍻",
+  "group": "Food & Drink",
+  "keywords": ["bar", "beer", "clink", "clinking beer mugs", "drink", "mug"],
+  "tts": "clinking beer mugs",
+  "unicode": "1f37b"
+}

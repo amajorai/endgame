@@ -1,0 +1,11 @@
+{
+  "cldr": "CL button",
+  "fromVersion": "0.6",
+  "glyph": "🆑",
+  "glyphAsUtfInEmoticons": ["1f191_squaredcl"],
+  "group": "Symbols",
+  "keywords": ["cl", "CL button"],
+  "mappedToEmoticons": ["1f191_squaredcl"],
+  "tts": "CL button",
+  "unicode": "1f191"
+}

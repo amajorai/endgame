@@ -1,0 +1,15 @@
+{
+  "cldr": "face in clouds",
+  "fromVersion": "13.1",
+  "glyph": "😶‍🌫️",
+  "group": "Smileys & Emotion",
+  "keywords": [
+    "absentminded",
+    "face in clouds",
+    "face in the fog",
+    "head in clouds"
+  ],
+  "mappedToEmoticons": ["faceinclouds"],
+  "tts": "face in clouds",
+  "unicode": "1f636 200d 1f32b fe0f"
+}

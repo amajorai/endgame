@@ -1,0 +1,9 @@
+{
+  "cldr": "motor boat",
+  "fromVersion": "0.7",
+  "glyph": "🛥️",
+  "group": "Travel & Places",
+  "keywords": ["boat", "motor boat", "motorboat"],
+  "tts": "motor boat",
+  "unicode": "1f6e5 fe0f"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "seat",
+  "fromVersion": "0.6",
+  "glyph": "💺",
+  "group": "Travel & Places",
+  "keywords": ["chair", "seat"],
+  "tts": "seat",
+  "unicode": "1f4ba"
+}

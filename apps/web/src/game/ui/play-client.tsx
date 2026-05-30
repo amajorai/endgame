@@ -1,0 +1,189 @@
+"use client";
+
+import dynamic from "next/dynamic";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useGameReady, useGameState } from "@/game/store/store";
+import { useGameClock } from "@/game/store/use-game-clock";
+import BeaconsLootPanel from "@/game/ui/beacons-loot-panel";
+import CharacterPanel from "@/game/ui/character-panel";
+import ContentPanel from "@/game/ui/content-panel";
+import DebugAdminPanel from "@/game/ui/debug-admin-panel";
+import EstatesPanel from "@/game/ui/estates-panel";
+import FarmingPanel from "@/game/ui/farming-panel";
+import FieldBossPanel from "@/game/ui/field-boss-panel";
+import GateCombatPanel from "@/game/ui/gate-combat-panel";
+import GhostModePanel from "@/game/ui/ghost-mode-panel";
+import { Hud } from "@/game/ui/hud";
+import InventoryPanel from "@/game/ui/inventory-panel";
+import Onboarding from "@/game/ui/onboarding";
+import QuestsPanel from "@/game/ui/quests-panel";
+import ShadowsPanel from "@/game/ui/shadows-panel";
+import WeatherPanel from "@/game/ui/weather-panel";
+
+// GameMap touches maplibre (window/document) and must never render on the server.
+const GameMap = dynamic(() => import("@/game/ui/game-map"), { ssr: false });
+
+type PanelKey =
+	| "explore"
+	| "gates"
+	| "character"
+	| "beacons"
+	| "farm"
+	| "estates"
+	| "shadows"
+	| "quests"
+	| "ghost"
+	| "inventory"
+	| "weather"
+	| "debug";
+
+interface NavItem {
+	icon: string;
+	key: PanelKey;
+	label: string;
+	Panel: () => React.JSX.Element;
+}
+
+const NAV_ITEMS: NavItem[] = [
+	{ key: "explore", icon: "🧭", label: "Explore", Panel: ContentPanel },
+	{ key: "gates", icon: "🌀", label: "Gates", Panel: GateCombatPanel },
+	{ key: "character", icon: "🎖️", label: "Hunter", Panel: CharacterPanel },
+	{ key: "beacons", icon: "⛩️", label: "Beacons", Panel: BeaconsLootPanel },
+	{ key: "farm", icon: "🌾", label: "Farm", Panel: FarmingPanel },
+	{ key: "estates", icon: "🏰", label: "Estates", Panel: EstatesPanel },
+	{ key: "shadows", icon: "🌑", label: "Shadows", Panel: ShadowsPanel },
+	{ key: "quests", icon: "📜", label: "Quests", Panel: QuestsPanel },
+	{ key: "ghost", icon: "👻", label: "Ghost", Panel: GhostModePanel },
+	{ key: "inventory", icon: "🎒", label: "Bag", Panel: InventoryPanel },
+	{ key: "weather", icon: "🌤️", label: "Skies", Panel: WeatherPanel },
+];
+
+const DEBUG_ITEM: NavItem = {
+	key: "debug",
+	icon: "🛠️",
+	label: "Debug",
+	Panel: DebugAdminPanel,
+};
+
+export function PlayClient(): React.JSX.Element {
+	useGameClock();
+	const state = useGameState();
+	const dispatch = useDispatch();
+	const ready = useGameReady();
+	const [activePanel, setActivePanel] = useState<PanelKey | null>(null);
+	const bootstrappedRef = useRef(false);
+
+	// One-shot content bootstrap. Gated on `ready` so it fires AFTER async
+	// hydrate() replaces the store state, otherwise the generated content is
+	// wiped by the wholesale rehydrate.
+	useEffect(() => {
+		if (ready && !bootstrappedRef.current) {
+			bootstrappedRef.current = true;
+			dispatch({ type: "CONTENT_GENERATE" });
+		}
+	}, [ready, dispatch]);
+
+	const navItems = state.debug.enabled ? [...NAV_ITEMS, DEBUG_ITEM] : NAV_ITEMS;
+
+	const handleEnableDebug = (): void => {
+		dispatch({ type: "DEBUG_TOGGLE" });
+	};
+
+	// Active gate run takes over the whole screen.
+	if (state.activeGate) {
+		return (
+			<div className="relative h-full w-full overflow-hidden bg-slate-950">
+				<div className="absolute inset-0 z-30 overflow-y-auto bg-slate-950">
+					<GateCombatPanel />
+				</div>
+			</div>
+		);
+	}
+
+	// Field bosses now fight on the map in 3D: the boss model chases the player
+	// (BossController), and the combat HUD overlays the map rather than taking it
+	// over. The FieldBossPanel renders as an overlay when a boss is active.
+	const ActivePanel = activePanel
+		? (navItems.find((item) => item.key === activePanel)?.Panel ?? null)
+		: null;
+
+	return (
+		<div className="relative h-full w-full overflow-hidden bg-slate-950">
+			<GameMap />
+			<Hud />
+
+			{/* Engaged field boss: combat controls overlay the map (the boss model
+			    fights in 3D on the map itself, no full-screen takeover). */}
+			{state.activeBoss && state.activeBoss.status === "engaged" && (
+				<div className="pointer-events-none absolute inset-x-0 bottom-16 z-30 flex justify-center px-3">
+					<div className="pointer-events-auto w-full max-w-md overflow-hidden rounded-2xl border border-rose-500/30 bg-slate-950/85 shadow-2xl backdrop-blur-md">
+						<FieldBossPanel />
+					</div>
+				</div>
+			)}
+
+			{!state.meta.onboarded && <Onboarding />}
+
+			{/* Tiny debug-enable gear (only when debug is off). */}
+			{!state.debug.enabled && (
+				<button
+					aria-label="Enable debug mode"
+					className="pointer-events-auto absolute top-3 right-3 z-20 translate-y-16 rounded-full border border-slate-700/50 bg-slate-950/60 px-2 py-1 text-slate-500 text-xs backdrop-blur transition-colors hover:text-cyan-300"
+					onClick={handleEnableDebug}
+					type="button"
+				>
+					⚙️
+				</button>
+			)}
+
+			{/* Slide-up panel sheet. */}
+			{ActivePanel && (
+				<div className="absolute inset-x-0 bottom-14 z-30 mx-auto flex max-h-[70vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-2xl border border-cyan-400/30 border-b-0 bg-slate-950/90 shadow-2xl backdrop-blur-md">
+					<div className="flex shrink-0 items-center justify-between border-cyan-400/20 border-b px-4 py-2">
+						<span className="font-medium text-cyan-200 text-sm">
+							{navItems.find((item) => item.key === activePanel)?.icon}{" "}
+							{navItems.find((item) => item.key === activePanel)?.label}
+						</span>
+						<button
+							aria-label="Close panel"
+							className="rounded-full px-2 text-slate-400 transition-colors hover:text-cyan-300"
+							onClick={() => setActivePanel(null)}
+							type="button"
+						>
+							✕
+						</button>
+					</div>
+					<div className="min-h-0 flex-1 overflow-y-auto">
+						<ActivePanel />
+					</div>
+				</div>
+			)}
+
+			{/* Bottom navigation bar. */}
+			<nav className="absolute inset-x-0 bottom-0 z-40 flex items-stretch overflow-x-auto border-cyan-400/30 border-t bg-slate-950/85 backdrop-blur-md">
+				{navItems.map((item) => {
+					const selected = activePanel === item.key;
+					return (
+						<button
+							className={`flex min-w-14 flex-1 flex-col items-center gap-0.5 py-1.5 transition-colors ${
+								selected
+									? "bg-cyan-500/15 text-cyan-200"
+									: "text-slate-400 hover:text-cyan-300"
+							}`}
+							key={item.key}
+							onClick={() =>
+								setActivePanel((prev) => (prev === item.key ? null : item.key))
+							}
+							type="button"
+						>
+							<span aria-hidden="true" className="text-lg leading-none">
+								{item.icon}
+							</span>
+							<span className="text-[10px] leading-none">{item.label}</span>
+						</button>
+					);
+				})}
+			</nav>
+		</div>
+	);
+}

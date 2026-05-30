@@ -1,0 +1,9 @@
+{
+  "cldr": "ten-thirty",
+  "fromVersion": "0.7",
+  "glyph": "🕥",
+  "group": "Travel & Places",
+  "keywords": ["10", "10:30", "clock", "ten", "ten-thirty", "thirty"],
+  "tts": "ten-thirty",
+  "unicode": "1f565"
+}

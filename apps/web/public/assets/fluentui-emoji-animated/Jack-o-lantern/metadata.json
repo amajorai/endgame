@@ -1,0 +1,9 @@
+{
+  "cldr": "jack-o-lantern",
+  "fromVersion": "0.6",
+  "glyph": "🎃",
+  "group": "Activities",
+  "keywords": ["celebration", "halloween", "jack", "jack-o-lantern", "lantern"],
+  "tts": "jack-o-lantern",
+  "unicode": "1f383"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "hedgehog",
+  "fromVersion": "5.0",
+  "glyph": "🦔",
+  "group": "Animals & Nature",
+  "keywords": ["hedgehog", "spiny"],
+  "tts": "hedgehog",
+  "unicode": "1f994"
+}

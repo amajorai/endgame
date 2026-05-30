@@ -1,0 +1,9 @@
+{
+  "cldr": "weary cat",
+  "fromVersion": "0.6",
+  "glyph": "🙀",
+  "group": "Smileys & Emotion",
+  "keywords": ["cat", "face", "oh", "surprised", "weary"],
+  "tts": "weary cat",
+  "unicode": "1f640"
+}

@@ -1,0 +1,17 @@
+{
+  "cldr": "person gesturing OK",
+  "fromVersion": "0.6",
+  "glyph": "🙆",
+  "group": "People & Body",
+  "keywords": ["gesture", "hand", "OK", "person gesturing OK"],
+  "tts": "person gesturing OK",
+  "unicode": "1f646",
+  "unicodeSkintones": [
+    "1f646",
+    "1f646 1f3fb",
+    "1f646 1f3fc",
+    "1f646 1f3fd",
+    "1f646 1f3fe",
+    "1f646 1f3ff"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "lion",
+  "fromVersion": "1.0",
+  "glyph": "🦁",
+  "group": "Animals & Nature",
+  "keywords": ["face", "Leo", "lion", "zodiac"],
+  "tts": "lion",
+  "unicode": "1f981"
+}

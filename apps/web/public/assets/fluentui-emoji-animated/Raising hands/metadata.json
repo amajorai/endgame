@@ -1,0 +1,24 @@
+{
+  "cldr": "raising hands",
+  "fromVersion": "0.6",
+  "glyph": "🙌",
+  "group": "People & Body",
+  "keywords": [
+    "celebration",
+    "gesture",
+    "hand",
+    "hooray",
+    "raised",
+    "raising hands"
+  ],
+  "tts": "raising hands",
+  "unicode": "1f64c",
+  "unicodeSkintones": [
+    "1f64c",
+    "1f64c 1f3fb",
+    "1f64c 1f3fc",
+    "1f64c 1f3fd",
+    "1f64c 1f3fe",
+    "1f64c 1f3ff"
+  ]
+}

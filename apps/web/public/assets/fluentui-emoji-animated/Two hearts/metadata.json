@@ -1,0 +1,9 @@
+{
+  "cldr": "two hearts",
+  "fromVersion": "0.6",
+  "glyph": "💕",
+  "group": "Smileys & Emotion",
+  "keywords": ["love", "two hearts"],
+  "tts": "two hearts",
+  "unicode": "1f495"
+}

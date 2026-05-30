@@ -1,0 +1,10 @@
+{
+  "cldr": "stadium",
+  "fromVersion": "0.7",
+  "glyph": "🏟️",
+  "group": "Travel & Places",
+  "keywords": ["stadium"],
+  "mappedToEmoticons": ["1f3df_stadium"],
+  "tts": "stadium",
+  "unicode": "1f3df fe0f"
+}

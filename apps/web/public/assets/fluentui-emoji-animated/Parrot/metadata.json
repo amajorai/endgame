@@ -1,0 +1,9 @@
+{
+  "cldr": "parrot",
+  "fromVersion": "11.0",
+  "glyph": "🦜",
+  "group": "Animals & Nature",
+  "keywords": ["bird", "parrot", "pirate", "talk"],
+  "tts": "parrot",
+  "unicode": "1f99c"
+}

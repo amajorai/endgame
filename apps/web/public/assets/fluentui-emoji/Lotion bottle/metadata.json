@@ -1,0 +1,17 @@
+{
+  "cldr": "lotion bottle",
+  "fromVersion": "11.0",
+  "glyph": "🧴",
+  "glyphAsUtfInEmoticons": ["1f9f4_lotionbottle"],
+  "group": "Objects",
+  "keywords": [
+    "lotion",
+    "lotion bottle",
+    "moisturizer",
+    "shampoo",
+    "sunscreen"
+  ],
+  "mappedToEmoticons": ["1f9f4_lotionbottle"],
+  "tts": "lotion bottle",
+  "unicode": "1f9f4"
+}

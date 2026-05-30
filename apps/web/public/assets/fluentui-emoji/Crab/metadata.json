@@ -1,0 +1,11 @@
+{
+  "cldr": "crab",
+  "fromVersion": "1.0",
+  "glyph": "🦀",
+  "glyphAsUtfInEmoticons": ["1f980_crab", "movinghome"],
+  "group": "Food & Drink",
+  "keywords": ["Cancer", "crab", "zodiac"],
+  "mappedToEmoticons": ["1f980_crab"],
+  "tts": "crab",
+  "unicode": "1f980"
+}

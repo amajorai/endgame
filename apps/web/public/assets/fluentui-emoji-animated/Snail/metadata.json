@@ -1,0 +1,9 @@
+{
+  "cldr": "snail",
+  "fromVersion": "0.6",
+  "glyph": "🐌",
+  "group": "Animals & Nature",
+  "keywords": ["snail"],
+  "tts": "snail",
+  "unicode": "1f40c"
+}

@@ -1,0 +1,11 @@
+{
+  "cldr": "slightly smiling face",
+  "fromVersion": "1.0",
+  "glyph": "🙂",
+  "glyphAsUtfInEmoticons": ["smile"],
+  "group": "Smileys & Emotion",
+  "keywords": ["face", "slightly smiling face", "smile"],
+  "mappedToEmoticons": ["smile"],
+  "tts": "slightly smiling face",
+  "unicode": "1f642"
+}

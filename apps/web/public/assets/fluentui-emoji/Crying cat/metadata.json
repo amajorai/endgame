@@ -1,0 +1,10 @@
+{
+  "cldr": "crying cat",
+  "fromVersion": "0.6",
+  "glyph": "😿",
+  "group": "Smileys & Emotion",
+  "keywords": ["cat", "cry", "crying cat", "face", "sad", "tear"],
+  "mappedToEmoticons": ["sadcat"],
+  "tts": "crying cat",
+  "unicode": "1f63f"
+}

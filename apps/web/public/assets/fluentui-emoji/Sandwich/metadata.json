@@ -1,0 +1,11 @@
+{
+  "cldr": "sandwich",
+  "fromVersion": "5.0",
+  "glyph": "🥪",
+  "glyphAsUtfInEmoticons": ["1f96a_sandwich"],
+  "group": "Food & Drink",
+  "keywords": ["bread", "sandwich"],
+  "mappedToEmoticons": ["1f96a_sandwich"],
+  "tts": "sandwich",
+  "unicode": "1f96a"
+}

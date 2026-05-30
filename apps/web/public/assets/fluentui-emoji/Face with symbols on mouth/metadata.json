@@ -1,0 +1,10 @@
+{
+  "cldr": "face with symbols on mouth",
+  "fromVersion": "5.0",
+  "glyph": "🤬",
+  "group": "Smileys & Emotion",
+  "keywords": ["face with symbols on mouth", "swearing"],
+  "mappedToEmoticons": ["swear"],
+  "tts": "face with symbols on mouth",
+  "unicode": "1f92c"
+}

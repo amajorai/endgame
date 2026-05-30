@@ -1,0 +1,17 @@
+{
+  "cldr": "horse racing",
+  "fromVersion": "1.0",
+  "glyph": "🏇",
+  "group": "People & Body",
+  "keywords": ["horse", "jockey", "racehorse", "racing"],
+  "tts": "horse racing",
+  "unicode": "1f3c7",
+  "unicodeSkintones": [
+    "1f3c7",
+    "1f3c7 1f3fb",
+    "1f3c7 1f3fc",
+    "1f3c7 1f3fd",
+    "1f3c7 1f3fe",
+    "1f3c7 1f3ff"
+  ]
+}

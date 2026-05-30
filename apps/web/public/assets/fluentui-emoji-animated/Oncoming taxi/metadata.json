@@ -1,0 +1,9 @@
+{
+  "cldr": "oncoming taxi",
+  "fromVersion": "1.0",
+  "glyph": "🚖",
+  "group": "Travel & Places",
+  "keywords": ["oncoming", "taxi"],
+  "tts": "oncoming taxi",
+  "unicode": "1f696"
+}

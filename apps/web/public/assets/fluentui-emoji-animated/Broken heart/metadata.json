@@ -1,0 +1,9 @@
+{
+  "cldr": "broken heart",
+  "fromVersion": "0.6",
+  "glyph": "💔",
+  "group": "Smileys & Emotion",
+  "keywords": ["break", "broken", "broken heart"],
+  "tts": "broken heart",
+  "unicode": "1f494"
+}

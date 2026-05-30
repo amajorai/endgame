@@ -1,0 +1,11 @@
+{
+  "cldr": "wedding",
+  "fromVersion": "0.6",
+  "glyph": "💒",
+  "glyphAsUtfInEmoticons": ["1f492_wedding"],
+  "group": "Travel & Places",
+  "keywords": ["chapel", "romance", "wedding"],
+  "mappedToEmoticons": ["1f492_wedding"],
+  "tts": "wedding",
+  "unicode": "1f492"
+}

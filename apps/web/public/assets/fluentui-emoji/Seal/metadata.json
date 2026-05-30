@@ -1,0 +1,10 @@
+{
+  "cldr": "seal",
+  "fromVersion": "13.0",
+  "glyph": "🦭",
+  "group": "Animals & Nature",
+  "keywords": ["sea lion", "seal"],
+  "mappedToEmoticons": ["seal"],
+  "tts": "seal",
+  "unicode": "1f9ad"
+}

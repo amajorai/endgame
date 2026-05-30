@@ -1,0 +1,11 @@
+{
+  "cldr": "flushed face",
+  "fromVersion": "0.6",
+  "glyph": "😳",
+  "glyphAsUtfInEmoticons": ["flushed"],
+  "group": "Smileys & Emotion",
+  "keywords": ["dazed", "face", "flushed"],
+  "mappedToEmoticons": ["flushed"],
+  "tts": "flushed face",
+  "unicode": "1f633"
+}

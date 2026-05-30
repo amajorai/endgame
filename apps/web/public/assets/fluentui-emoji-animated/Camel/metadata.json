@@ -1,0 +1,9 @@
+{
+  "cldr": "camel",
+  "fromVersion": "1.0",
+  "glyph": "🐪",
+  "group": "Animals & Nature",
+  "keywords": ["camel", "dromedary", "hump"],
+  "tts": "camel",
+  "unicode": "1f42a"
+}

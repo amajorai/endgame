@@ -1,0 +1,11 @@
+{
+  "cldr": "passport control",
+  "fromVersion": "1.0",
+  "glyph": "🛂",
+  "glyphAsUtfInEmoticons": ["1f6c2_passportcontrol"],
+  "group": "Symbols",
+  "keywords": ["control", "passport"],
+  "mappedToEmoticons": ["1f6c2_passportcontrol"],
+  "tts": "passport control",
+  "unicode": "1f6c2"
+}

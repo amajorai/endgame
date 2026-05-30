@@ -1,0 +1,9 @@
+{
+  "cldr": "spiral calendar",
+  "fromVersion": "0.7",
+  "glyph": "🗓️",
+  "group": "Objects",
+  "keywords": ["calendar", "pad", "spiral"],
+  "tts": "spiral calendar",
+  "unicode": "1f5d3 fe0f"
+}

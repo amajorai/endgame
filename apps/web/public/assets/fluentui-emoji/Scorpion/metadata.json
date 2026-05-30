@@ -1,0 +1,11 @@
+{
+  "cldr": "scorpion",
+  "fromVersion": "1.0",
+  "glyph": "🦂",
+  "glyphAsUtfInEmoticons": ["1f982_scorpion"],
+  "group": "Animals & Nature",
+  "keywords": ["scorpio", "Scorpio", "scorpion", "zodiac"],
+  "mappedToEmoticons": ["1f982_scorpion"],
+  "tts": "scorpion",
+  "unicode": "1f982"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "squid",
+  "fromVersion": "3.0",
+  "glyph": "🦑",
+  "group": "Food & Drink",
+  "keywords": ["food", "molusc", "squid"],
+  "tts": "squid",
+  "unicode": "1f991"
+}

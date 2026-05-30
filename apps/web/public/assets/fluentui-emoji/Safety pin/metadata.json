@@ -1,0 +1,10 @@
+{
+  "cldr": "safety pin",
+  "fromVersion": "11.0",
+  "glyph": "🧷",
+  "glyphAsUtfInEmoticons": ["1f9f7_safetypin"],
+  "group": "Objects",
+  "keywords": ["diaper", "punk rock", "safety pin"],
+  "tts": "safety pin",
+  "unicode": "1f9f7"
+}

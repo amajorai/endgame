@@ -1,0 +1,9 @@
+{
+  "cldr": "owl",
+  "fromVersion": "3.0",
+  "glyph": "🦉",
+  "group": "Animals & Nature",
+  "keywords": ["bird", "owl", "wise"],
+  "tts": "owl",
+  "unicode": "1f989"
+}

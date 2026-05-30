@@ -1,0 +1,9 @@
+{
+  "cldr": "tropical drink",
+  "fromVersion": "0.6",
+  "glyph": "🍹",
+  "group": "Food & Drink",
+  "keywords": ["bar", "drink", "tropical"],
+  "tts": "tropical drink",
+  "unicode": "1f379"
+}

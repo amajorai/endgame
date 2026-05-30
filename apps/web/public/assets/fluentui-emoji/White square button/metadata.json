@@ -1,0 +1,17 @@
+{
+  "cldr": "white square button",
+  "fromVersion": "0.6",
+  "glyph": "🔳",
+  "glyphAsUtfInEmoticons": ["1f533_whitesquarebutton"],
+  "group": "Symbols",
+  "keywords": [
+    "button",
+    "geometric",
+    "outlined",
+    "square",
+    "white square button"
+  ],
+  "mappedToEmoticons": ["1f533_whitesquarebutton"],
+  "tts": "white square button",
+  "unicode": "1f533"
+}

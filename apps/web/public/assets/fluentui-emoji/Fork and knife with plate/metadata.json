@@ -1,0 +1,16 @@
+{
+  "cldr": "fork and knife with plate",
+  "fromVersion": "0.7",
+  "glyph": "🍽️",
+  "group": "Food & Drink",
+  "keywords": [
+    "cooking",
+    "fork",
+    "fork and knife with plate",
+    "knife",
+    "plate"
+  ],
+  "mappedToEmoticons": ["1f37d_forkandknifewithplate"],
+  "tts": "fork and knife with plate",
+  "unicode": "1f37d fe0f"
+}

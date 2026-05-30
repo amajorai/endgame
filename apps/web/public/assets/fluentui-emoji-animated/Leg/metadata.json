@@ -1,0 +1,17 @@
+{
+  "cldr": "leg",
+  "fromVersion": "11.0",
+  "glyph": "🦵",
+  "group": "People & Body",
+  "keywords": ["kick", "leg", "limb"],
+  "tts": "leg",
+  "unicode": "1f9b5",
+  "unicodeSkintones": [
+    "1f9b5",
+    "1f9b5 1f3fb",
+    "1f9b5 1f3fc",
+    "1f9b5 1f3fd",
+    "1f9b5 1f3fe",
+    "1f9b5 1f3ff"
+  ]
+}

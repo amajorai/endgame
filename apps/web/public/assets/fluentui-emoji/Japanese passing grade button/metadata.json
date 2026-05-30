@@ -1,0 +1,17 @@
+{
+  "cldr": "Japanese “passing grade” button",
+  "fromVersion": "0.6",
+  "glyph": "🈴",
+  "glyphAsUtfInEmoticons": ["1f234_agreement"],
+  "group": "Symbols",
+  "keywords": [
+    "“passing grade”",
+    "ideograph",
+    "Japanese",
+    "Japanese “passing grade” button",
+    "合"
+  ],
+  "mappedToEmoticons": ["1f234_agreement"],
+  "tts": "Japanese “passing grade” button",
+  "unicode": "1f234"
+}

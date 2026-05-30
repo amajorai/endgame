@@ -1,0 +1,11 @@
+{
+  "cldr": "two hearts",
+  "fromVersion": "0.6",
+  "glyph": "💕",
+  "glyphAsUtfInEmoticons": ["twohearts"],
+  "group": "Smileys & Emotion",
+  "keywords": ["love", "two hearts"],
+  "mappedToEmoticons": ["twohearts"],
+  "tts": "two hearts",
+  "unicode": "1f495"
+}

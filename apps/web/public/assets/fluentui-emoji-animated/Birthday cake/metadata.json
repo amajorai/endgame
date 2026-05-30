@@ -1,0 +1,9 @@
+{
+  "cldr": "birthday cake",
+  "fromVersion": "0.6",
+  "glyph": "🎂",
+  "group": "Food & Drink",
+  "keywords": ["birthday", "cake", "celebration", "dessert", "pastry", "sweet"],
+  "tts": "birthday cake",
+  "unicode": "1f382"
+}

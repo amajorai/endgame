@@ -1,0 +1,9 @@
+{
+  "cldr": "crystal ball",
+  "fromVersion": "0.6",
+  "glyph": "🔮",
+  "group": "Activities",
+  "keywords": ["ball", "crystal", "fairy tale", "fantasy", "fortune", "tool"],
+  "tts": "crystal ball",
+  "unicode": "1f52e"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "rabbit face",
+  "fromVersion": "0.6",
+  "glyph": "🐰",
+  "group": "Animals & Nature",
+  "keywords": ["bunny", "face", "pet", "rabbit"],
+  "tts": "rabbit face",
+  "unicode": "1f430"
+}

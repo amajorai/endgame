@@ -1,0 +1,11 @@
+{
+  "cldr": "piñata",
+  "fromVersion": "13.0",
+  "glyph": "🪅",
+  "glyphAsUtfInEmoticons": ["pinata"],
+  "group": "Activities",
+  "keywords": ["celebration", "party", "piñata"],
+  "mappedToEmoticons": ["pinata"],
+  "tts": "piñata",
+  "unicode": "1fa85"
+}

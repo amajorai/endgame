@@ -1,0 +1,11 @@
+{
+  "cldr": "roasted sweet potato",
+  "fromVersion": "0.6",
+  "glyph": "🍠",
+  "glyphAsUtfInEmoticons": ["1f360_roastedsweetpotato"],
+  "group": "Food & Drink",
+  "keywords": ["potato", "roasted", "sweet"],
+  "mappedToEmoticons": ["1f360_roastedsweetpotato"],
+  "tts": "roasted sweet potato",
+  "unicode": "1f360"
+}

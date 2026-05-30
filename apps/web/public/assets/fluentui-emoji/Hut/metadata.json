@@ -1,0 +1,11 @@
+{
+  "cldr": "hut",
+  "fromVersion": "13.0",
+  "glyph": "🛖",
+  "glyphAsUtfInEmoticons": ["hut"],
+  "group": "Travel & Places",
+  "keywords": ["house", "hut", "roundhouse", "yurt"],
+  "mappedToEmoticons": ["hut"],
+  "tts": "hut",
+  "unicode": "1f6d6"
+}

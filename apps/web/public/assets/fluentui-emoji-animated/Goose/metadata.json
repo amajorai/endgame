@@ -1,0 +1,9 @@
+{
+  "cldr": "goose",
+  "fromVersion": "15.0",
+  "glyph": "🪿",
+  "group": "Animals & Nature",
+  "keywords": ["bird", "fowl", "goose", "honk", "silly"],
+  "tts": "goose",
+  "unicode": "1fabf"
+}

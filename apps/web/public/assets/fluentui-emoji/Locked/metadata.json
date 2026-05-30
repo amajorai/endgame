@@ -1,0 +1,11 @@
+{
+  "cldr": "locked",
+  "fromVersion": "0.6",
+  "glyph": "🔒",
+  "glyphAsUtfInEmoticons": ["1f512_locked"],
+  "group": "Objects",
+  "keywords": ["closed", "locked"],
+  "mappedToEmoticons": ["1f512_locked"],
+  "tts": "locked",
+  "unicode": "1f512"
+}

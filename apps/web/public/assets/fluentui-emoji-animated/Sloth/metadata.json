@@ -1,0 +1,9 @@
+{
+  "cldr": "sloth",
+  "fromVersion": "12.0",
+  "glyph": "🦥",
+  "group": "Animals & Nature",
+  "keywords": ["lazy", "sloth", "slow"],
+  "tts": "sloth",
+  "unicode": "1f9a5"
+}

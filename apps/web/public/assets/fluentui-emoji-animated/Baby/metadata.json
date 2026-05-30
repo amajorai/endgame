@@ -1,0 +1,17 @@
+{
+  "cldr": "baby",
+  "fromVersion": "0.6",
+  "glyph": "👶",
+  "group": "People & Body",
+  "keywords": ["baby", "young"],
+  "tts": "baby",
+  "unicode": "1f476",
+  "unicodeSkintones": [
+    "1f476",
+    "1f476 1f3fb",
+    "1f476 1f3fc",
+    "1f476 1f3fd",
+    "1f476 1f3fe",
+    "1f476 1f3ff"
+  ]
+}

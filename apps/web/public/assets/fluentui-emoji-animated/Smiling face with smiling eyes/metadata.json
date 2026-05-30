@@ -1,0 +1,15 @@
+{
+  "cldr": "smiling face with smiling eyes",
+  "fromVersion": "0.6",
+  "glyph": "😊",
+  "group": "Smileys & Emotion",
+  "keywords": [
+    "blush",
+    "eye",
+    "face",
+    "smile",
+    "smiling face with smiling eyes"
+  ],
+  "tts": "smiling face with smiling eyes",
+  "unicode": "1f60a"
+}

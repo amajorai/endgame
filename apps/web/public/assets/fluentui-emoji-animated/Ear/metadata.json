@@ -1,0 +1,17 @@
+{
+  "cldr": "ear",
+  "fromVersion": "0.6",
+  "glyph": "👂",
+  "group": "People & Body",
+  "keywords": ["body", "ear"],
+  "tts": "ear",
+  "unicode": "1f442",
+  "unicodeSkintones": [
+    "1f442",
+    "1f442 1f3fb",
+    "1f442 1f3fc",
+    "1f442 1f3fd",
+    "1f442 1f3fe",
+    "1f442 1f3ff"
+  ]
+}

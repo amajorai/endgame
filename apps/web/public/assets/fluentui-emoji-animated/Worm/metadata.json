@@ -1,0 +1,9 @@
+{
+  "cldr": "worm",
+  "fromVersion": "13.0",
+  "glyph": "🪱",
+  "group": "Animals & Nature",
+  "keywords": ["annelid", "earthworm", "parasite", "worm"],
+  "tts": "worm",
+  "unicode": "1fab1"
+}

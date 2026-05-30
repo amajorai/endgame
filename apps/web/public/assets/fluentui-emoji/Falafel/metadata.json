@@ -1,0 +1,11 @@
+{
+  "cldr": "falafel",
+  "fromVersion": "12.0",
+  "glyph": "🧆",
+  "glyphAsUtfInEmoticons": ["1f9c6_falafel"],
+  "group": "Food & Drink",
+  "keywords": ["chickpea", "falafel", "meatball"],
+  "mappedToEmoticons": ["1f9c6_falafel"],
+  "tts": "falafel",
+  "unicode": "1f9c6"
+}

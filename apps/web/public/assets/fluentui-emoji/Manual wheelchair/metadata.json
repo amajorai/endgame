@@ -1,0 +1,11 @@
+{
+  "cldr": "manual wheelchair",
+  "fromVersion": "12.0",
+  "glyph": "🦽",
+  "glyphAsUtfInEmoticons": ["1f9bd_manualwheelchair"],
+  "group": "Travel & Places",
+  "keywords": ["accessibility", "manual wheelchair"],
+  "mappedToEmoticons": ["1f9bd_manualwheelchair"],
+  "tts": "manual wheelchair",
+  "unicode": "1f9bd"
+}

@@ -1,0 +1,10 @@
+{
+  "cldr": "hourglass not done",
+  "fromVersion": "0.6",
+  "glyph": "⏳",
+  "group": "Travel & Places",
+  "keywords": ["hourglass", "hourglass not done", "sand", "timer"],
+  "mappedToEmoticons": ["231b_hourglassdone"],
+  "tts": "hourglass not done",
+  "unicode": "23f3"
+}

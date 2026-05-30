@@ -1,0 +1,11 @@
+{
+  "cldr": "cucumber",
+  "fromVersion": "3.0",
+  "glyph": "🥒",
+  "glyphAsUtfInEmoticons": ["1f952_cucumber"],
+  "group": "Food & Drink",
+  "keywords": ["cucumber", "food", "pickle", "vegetable"],
+  "mappedToEmoticons": ["1f952_cucumber"],
+  "tts": "cucumber",
+  "unicode": "1f952"
+}

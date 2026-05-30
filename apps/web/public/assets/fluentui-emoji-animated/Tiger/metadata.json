@@ -1,0 +1,9 @@
+{
+  "cldr": "tiger",
+  "fromVersion": "1.0",
+  "glyph": "🐅",
+  "group": "Animals & Nature",
+  "keywords": ["tiger"],
+  "tts": "tiger",
+  "unicode": "1f405"
+}

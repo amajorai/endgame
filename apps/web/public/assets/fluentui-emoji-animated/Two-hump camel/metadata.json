@@ -1,0 +1,9 @@
+{
+  "cldr": "two-hump camel",
+  "fromVersion": "0.6",
+  "glyph": "🐫",
+  "group": "Animals & Nature",
+  "keywords": ["bactrian", "camel", "hump", "two-hump camel"],
+  "tts": "two-hump camel",
+  "unicode": "1f42b"
+}

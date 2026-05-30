@@ -1,0 +1,30 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dx45owd8775ys"]
+
+[ext_resource type="Shader" uid="uid://2c0efi678hda" path="res://assets/BinbunVFX_Vol2/FrostedGlass/shader/frosted_glass.gdshader" id="1_i417q"]
+
+[sub_resource type="Gradient" id="Gradient_i417q"]
+colors = PackedColorArray(0.6378432, 0.6378432, 0.63784313, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_c60bb"]
+seed = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5p035"]
+noise = SubResource("FastNoiseLite_c60bb")
+color_ramp = SubResource("Gradient_i417q")
+seamless = true
+seamless_blend_skirt = 0.4
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_i417q")
+shader_parameter/color = Color(0.88659006, 0.120720424, 9.62615e-08, 1)
+shader_parameter/color_coat = 0.0
+shader_parameter/oilyness = 0.0999999977648
+shader_parameter/rim_amount = 0.51999998837696
+shader_parameter/rim_shape = 2.3399999514216403
+shader_parameter/rim_color = Color(1, 0.470926, 0.38909897, 1)
+shader_parameter/refraction_strength = -0.20000001788160005
+shader_parameter/blur_amount = 4.00000018674012
+shader_parameter/roughness_affect = 0.999999977648
+shader_parameter/roughness = 0.87999998033024
+shader_parameter/roughness_texture = SubResource("NoiseTexture2D_5p035")

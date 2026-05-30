@@ -1,0 +1,11 @@
+{
+  "cldr": "melting face",
+  "fromVersion": "14.0",
+  "glyph": "🫠",
+  "glyphAsUtfInEmoticons": ["meltingface"],
+  "group": "Smileys & Emotion",
+  "keywords": ["disappear", "dissolve", "liquid", "melt", "melting face"],
+  "mappedToEmoticons": ["meltingface"],
+  "tts": "melting face",
+  "unicode": "1fae0"
+}

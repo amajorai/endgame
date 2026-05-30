@@ -1,0 +1,9 @@
+{
+  "cldr": "ringed planet",
+  "fromVersion": "12.0",
+  "glyph": "🪐",
+  "group": "Travel & Places",
+  "keywords": ["ringed planet", "saturn", "saturnine"],
+  "tts": "ringed planet",
+  "unicode": "1fa90"
+}

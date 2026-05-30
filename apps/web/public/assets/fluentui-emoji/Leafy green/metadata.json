@@ -1,0 +1,11 @@
+{
+  "cldr": "leafy green",
+  "fromVersion": "11.0",
+  "glyph": "🥬",
+  "glyphAsUtfInEmoticons": ["1f96c_leafygreen"],
+  "group": "Food & Drink",
+  "keywords": ["bok choy", "cabbage", "kale", "leafy green", "lettuce"],
+  "mappedToEmoticons": ["1f96c_leafygreen"],
+  "tts": "leafy green",
+  "unicode": "1f96c"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "hut",
+  "fromVersion": "13.0",
+  "glyph": "🛖",
+  "group": "Travel & Places",
+  "keywords": ["house", "hut", "roundhouse", "yurt"],
+  "tts": "hut",
+  "unicode": "1f6d6"
+}

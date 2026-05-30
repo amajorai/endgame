@@ -1,0 +1,11 @@
+{
+  "cldr": "face with hand over mouth",
+  "fromVersion": "5.0",
+  "glyph": "🤭",
+  "glyphAsUtfInEmoticons": ["giggle"],
+  "group": "Smileys & Emotion",
+  "keywords": ["face with hand over mouth", "whoops"],
+  "mappedToEmoticons": ["giggle"],
+  "tts": "face with hand over mouth",
+  "unicode": "1f92d"
+}

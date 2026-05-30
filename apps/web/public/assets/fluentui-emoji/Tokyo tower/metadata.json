@@ -1,0 +1,11 @@
+{
+  "cldr": "Tokyo tower",
+  "fromVersion": "0.6",
+  "glyph": "🗼",
+  "glyphAsUtfInEmoticons": ["1f5fc_tokyotower", "parislove"],
+  "group": "Travel & Places",
+  "keywords": ["Tokyo", "tower"],
+  "mappedToEmoticons": ["1f5fc_tokyotower"],
+  "tts": "Tokyo tower",
+  "unicode": "1f5fc"
+}

@@ -1,0 +1,11 @@
+{
+  "cldr": "blossom",
+  "fromVersion": "0.6",
+  "glyph": "🌼",
+  "glyphAsUtfInEmoticons": ["flower"],
+  "group": "Animals & Nature",
+  "keywords": ["blossom", "flower"],
+  "mappedToEmoticons": ["flower"],
+  "tts": "blossom",
+  "unicode": "1f33c"
+}

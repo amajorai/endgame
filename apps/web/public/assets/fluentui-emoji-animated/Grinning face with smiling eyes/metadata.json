@@ -1,0 +1,16 @@
+{
+  "cldr": "grinning face with smiling eyes",
+  "fromVersion": "0.6",
+  "glyph": "😄",
+  "group": "Smileys & Emotion",
+  "keywords": [
+    "eye",
+    "face",
+    "grinning face with smiling eyes",
+    "mouth",
+    "open",
+    "smile"
+  ],
+  "tts": "grinning face with smiling eyes",
+  "unicode": "1f604"
+}

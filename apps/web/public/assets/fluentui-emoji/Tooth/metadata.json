@@ -1,0 +1,11 @@
+{
+  "cldr": "tooth",
+  "fromVersion": "11.0",
+  "glyph": "🦷",
+  "glyphAsUtfInEmoticons": ["1f9b7_tooth"],
+  "group": "People & Body",
+  "keywords": ["dentist", "tooth"],
+  "mappedToEmoticons": ["1f9b7_tooth"],
+  "tts": "tooth",
+  "unicode": "1f9b7"
+}

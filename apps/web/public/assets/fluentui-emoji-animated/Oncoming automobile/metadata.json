@@ -1,0 +1,9 @@
+{
+  "cldr": "oncoming automobile",
+  "fromVersion": "0.7",
+  "glyph": "🚘",
+  "group": "Travel & Places",
+  "keywords": ["automobile", "car", "oncoming"],
+  "tts": "oncoming automobile",
+  "unicode": "1f698"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "ant",
+  "fromVersion": "0.6",
+  "glyph": "🐜",
+  "group": "Animals & Nature",
+  "keywords": ["ant", "insect"],
+  "tts": "ant",
+  "unicode": "1f41c"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "eye",
+  "fromVersion": "0.7",
+  "glyph": "👁️",
+  "group": "People & Body",
+  "keywords": ["body", "eye"],
+  "tts": "eye",
+  "unicode": "1f441 fe0f"
+}

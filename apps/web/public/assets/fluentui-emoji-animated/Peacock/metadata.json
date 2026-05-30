@@ -1,0 +1,9 @@
+{
+  "cldr": "peacock",
+  "fromVersion": "11.0",
+  "glyph": "🦚",
+  "group": "Animals & Nature",
+  "keywords": ["bird", "ostentatious", "peacock", "peahen", "proud"],
+  "tts": "peacock",
+  "unicode": "1f99a"
+}

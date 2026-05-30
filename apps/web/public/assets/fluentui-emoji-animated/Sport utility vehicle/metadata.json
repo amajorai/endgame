@@ -1,0 +1,9 @@
+{
+  "cldr": "sport utility vehicle",
+  "fromVersion": "0.6",
+  "glyph": "🚙",
+  "group": "Travel & Places",
+  "keywords": ["recreational", "sport utility", "sport utility vehicle"],
+  "tts": "sport utility vehicle",
+  "unicode": "1f699"
+}

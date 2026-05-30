@@ -1,0 +1,9 @@
+{
+  "cldr": "brain",
+  "fromVersion": "5.0",
+  "glyph": "🧠",
+  "group": "People & Body",
+  "keywords": ["brain", "intelligent"],
+  "tts": "brain",
+  "unicode": "1f9e0"
+}

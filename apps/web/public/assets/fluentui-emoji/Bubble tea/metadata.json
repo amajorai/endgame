@@ -1,0 +1,11 @@
+{
+  "cldr": "bubble tea",
+  "fromVersion": "13.0",
+  "glyph": "🧋",
+  "glyphAsUtfInEmoticons": ["bubbletea"],
+  "group": "Food & Drink",
+  "keywords": ["bubble", "milk", "pearl", "tea"],
+  "mappedToEmoticons": ["bubbletea"],
+  "tts": "bubble tea",
+  "unicode": "1f9cb"
+}

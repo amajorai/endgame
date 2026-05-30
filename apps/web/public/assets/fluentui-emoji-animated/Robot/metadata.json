@@ -1,0 +1,9 @@
+{
+  "cldr": "robot",
+  "fromVersion": "1.0",
+  "glyph": "🤖",
+  "group": "Smileys & Emotion",
+  "keywords": ["face", "monster", "robot"],
+  "tts": "robot",
+  "unicode": "1f916"
+}

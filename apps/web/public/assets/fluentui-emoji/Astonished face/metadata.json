@@ -1,0 +1,11 @@
+{
+  "cldr": "astonished face",
+  "fromVersion": "0.6",
+  "glyph": "😲",
+  "glyphAsUtfInEmoticons": ["1f632_astonishedface", "surprised"],
+  "group": "Smileys & Emotion",
+  "keywords": ["astonished", "face", "shocked", "totally"],
+  "mappedToEmoticons": ["1f632_astonishedface"],
+  "tts": "astonished face",
+  "unicode": "1f632"
+}

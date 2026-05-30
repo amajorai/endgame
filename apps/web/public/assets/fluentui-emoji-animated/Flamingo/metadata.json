@@ -1,0 +1,9 @@
+{
+  "cldr": "flamingo",
+  "fromVersion": "12.0",
+  "glyph": "🦩",
+  "group": "Animals & Nature",
+  "keywords": ["flamboyant", "flamingo", "tropical"],
+  "tts": "flamingo",
+  "unicode": "1f9a9"
+}

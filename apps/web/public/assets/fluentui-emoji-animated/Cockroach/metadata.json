@@ -1,0 +1,9 @@
+{
+  "cldr": "cockroach",
+  "fromVersion": "13.0",
+  "glyph": "🪳",
+  "group": "Animals & Nature",
+  "keywords": ["cockroach", "insect", "pest", "roach"],
+  "tts": "cockroach",
+  "unicode": "1fab3"
+}

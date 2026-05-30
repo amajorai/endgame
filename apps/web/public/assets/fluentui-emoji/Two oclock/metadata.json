@@ -1,0 +1,11 @@
+{
+  "cldr": "two o’clock",
+  "fromVersion": "0.6",
+  "glyph": "🕑",
+  "glyphAsUtfInEmoticons": ["1f551_twooclock"],
+  "group": "Travel & Places",
+  "keywords": ["00", "2", "2:00", "clock", "o’clock", "two"],
+  "mappedToEmoticons": ["1f551_twooclock"],
+  "tts": "two o’clock",
+  "unicode": "1f551"
+}

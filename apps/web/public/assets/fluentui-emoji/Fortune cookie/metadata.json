@@ -1,0 +1,11 @@
+{
+  "cldr": "fortune cookie",
+  "fromVersion": "5.0",
+  "glyph": "🥠",
+  "glyphAsUtfInEmoticons": ["1f960_fortunecookie"],
+  "group": "Food & Drink",
+  "keywords": ["fortune cookie", "prophecy"],
+  "mappedToEmoticons": ["1f960_fortunecookie"],
+  "tts": "fortune cookie",
+  "unicode": "1f960"
+}

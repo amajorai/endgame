@@ -1,0 +1,9 @@
+{
+  "cldr": "ogre",
+  "fromVersion": "0.6",
+  "glyph": "👹",
+  "group": "Smileys & Emotion",
+  "keywords": ["creature", "face", "fairy tale", "fantasy", "monster", "ogre"],
+  "tts": "ogre",
+  "unicode": "1f479"
+}

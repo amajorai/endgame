@@ -1,0 +1,9 @@
+{
+  "cldr": "beaver",
+  "fromVersion": "13.0",
+  "glyph": "🦫",
+  "group": "Animals & Nature",
+  "keywords": ["beaver", "dam"],
+  "tts": "beaver",
+  "unicode": "1f9ab"
+}

@@ -1,0 +1,11 @@
+{
+  "cldr": "eleven o’clock",
+  "fromVersion": "0.6",
+  "glyph": "🕚",
+  "glyphAsUtfInEmoticons": ["1f55a_elevenoclock"],
+  "group": "Travel & Places",
+  "keywords": ["00", "11", "11:00", "clock", "eleven", "o’clock"],
+  "mappedToEmoticons": ["1f55a_elevenoclock"],
+  "tts": "eleven o’clock",
+  "unicode": "1f55a"
+}

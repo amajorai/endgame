@@ -1,0 +1,11 @@
+{
+  "cldr": "rice cracker",
+  "fromVersion": "0.6",
+  "glyph": "🍘",
+  "glyphAsUtfInEmoticons": ["1f358_ricecracker"],
+  "group": "Food & Drink",
+  "keywords": ["cracker", "rice"],
+  "mappedToEmoticons": ["1f358_ricecracker"],
+  "tts": "rice cracker",
+  "unicode": "1f358"
+}

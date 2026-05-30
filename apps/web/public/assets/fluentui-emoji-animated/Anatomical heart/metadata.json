@@ -1,0 +1,9 @@
+{
+  "cldr": "anatomical heart",
+  "fromVersion": "13.0",
+  "glyph": "🫀",
+  "group": "People & Body",
+  "keywords": ["anatomical", "cardiology", "heart", "organ", "pulse"],
+  "tts": "anatomical heart",
+  "unicode": "1fac0"
+}

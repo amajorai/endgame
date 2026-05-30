@@ -1,0 +1,11 @@
+{
+  "cldr": "fondue",
+  "fromVersion": "13.0",
+  "glyph": "🫕",
+  "glyphAsUtfInEmoticons": ["fondue"],
+  "group": "Food & Drink",
+  "keywords": ["cheese", "chocolate", "fondue", "melted", "pot", "Swiss"],
+  "mappedToEmoticons": ["fondue"],
+  "tts": "fondue",
+  "unicode": "1fad5"
+}

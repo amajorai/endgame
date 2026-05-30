@@ -1,0 +1,9 @@
+{
+  "cldr": "tiger face",
+  "fromVersion": "0.6",
+  "glyph": "🐯",
+  "group": "Animals & Nature",
+  "keywords": ["face", "tiger"],
+  "tts": "tiger face",
+  "unicode": "1f42f"
+}

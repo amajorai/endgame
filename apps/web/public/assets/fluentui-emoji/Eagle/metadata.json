@@ -1,0 +1,11 @@
+{
+  "cldr": "eagle",
+  "fromVersion": "3.0",
+  "glyph": "🦅",
+  "glyphAsUtfInEmoticons": ["1f985_eagle"],
+  "group": "Animals & Nature",
+  "keywords": ["bird", "eagle"],
+  "mappedToEmoticons": ["1f985_eagle"],
+  "tts": "eagle",
+  "unicode": "1f985"
+}

@@ -1,0 +1,11 @@
+{
+  "cldr": "carpentry saw",
+  "fromVersion": "13.0",
+  "glyph": "🪚",
+  "glyphAsUtfInEmoticons": ["carpentrysaw"],
+  "group": "Objects",
+  "keywords": ["carpenter", "carpentry saw", "lumber", "saw", "tool"],
+  "mappedToEmoticons": ["carpentrysaw"],
+  "tts": "carpentry saw",
+  "unicode": "1fa9a"
+}

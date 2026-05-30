@@ -1,0 +1,9 @@
+{
+  "cldr": "tractor",
+  "fromVersion": "1.0",
+  "glyph": "🚜",
+  "group": "Travel & Places",
+  "keywords": ["tractor", "vehicle"],
+  "tts": "tractor",
+  "unicode": "1f69c"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "tooth",
+  "fromVersion": "11.0",
+  "glyph": "🦷",
+  "group": "People & Body",
+  "keywords": ["dentist", "tooth"],
+  "tts": "tooth",
+  "unicode": "1f9b7"
+}

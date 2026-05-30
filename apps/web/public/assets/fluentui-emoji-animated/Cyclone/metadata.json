@@ -1,0 +1,9 @@
+{
+  "cldr": "cyclone",
+  "fromVersion": "0.6",
+  "glyph": "🌀",
+  "group": "Travel & Places",
+  "keywords": ["cyclone", "dizzy", "hurricane", "twister", "typhoon"],
+  "tts": "cyclone",
+  "unicode": "1f300"
+}

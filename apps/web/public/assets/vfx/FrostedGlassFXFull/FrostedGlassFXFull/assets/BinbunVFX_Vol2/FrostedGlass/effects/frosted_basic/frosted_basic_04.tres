@@ -1,0 +1,17 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://c3ciejpi1wx0l"]
+
+[ext_resource type="Shader" uid="uid://2c0efi678hda" path="res://assets/BinbunVFX_Vol2/FrostedGlass/shader/frosted_glass.gdshader" id="1_eqx48"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_eqx48")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/color_coat = 0.0
+shader_parameter/oilyness = 0.1999999955296
+shader_parameter/rim_amount = 0.0999999977648
+shader_parameter/rim_shape = 2.99999993666932
+shader_parameter/rim_color = Color(0.96979934, 0.92201483, 0.99999994, 1)
+shader_parameter/refraction_strength = -0.3000000156464
+shader_parameter/blur_amount = 3.0000001392401203
+shader_parameter/roughness_affect = 0.0
+shader_parameter/roughness = 0.1999999955296

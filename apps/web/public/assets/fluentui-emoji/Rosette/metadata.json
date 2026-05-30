@@ -1,0 +1,10 @@
+{
+  "cldr": "rosette",
+  "fromVersion": "0.7",
+  "glyph": "🏵️",
+  "group": "Animals & Nature",
+  "keywords": ["plant", "rosette"],
+  "mappedToEmoticons": ["1f3f5_rosette"],
+  "tts": "rosette",
+  "unicode": "1f3f5 fe0f"
+}

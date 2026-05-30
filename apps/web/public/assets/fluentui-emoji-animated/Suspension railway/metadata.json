@@ -1,0 +1,9 @@
+{
+  "cldr": "suspension railway",
+  "fromVersion": "1.0",
+  "glyph": "🚟",
+  "group": "Travel & Places",
+  "keywords": ["railway", "suspension"],
+  "tts": "suspension railway",
+  "unicode": "1f69f"
+}

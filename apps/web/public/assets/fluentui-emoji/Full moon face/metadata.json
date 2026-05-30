@@ -1,0 +1,11 @@
+{
+  "cldr": "full moon face",
+  "fromVersion": "1.0",
+  "glyph": "🌝",
+  "glyphAsUtfInEmoticons": ["1f31d_fullmoonwithface"],
+  "group": "Travel & Places",
+  "keywords": ["bright", "face", "full", "moon"],
+  "mappedToEmoticons": ["1f31d_fullmoonwithface"],
+  "tts": "full moon face",
+  "unicode": "1f31d"
+}

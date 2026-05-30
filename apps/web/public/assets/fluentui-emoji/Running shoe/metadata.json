@@ -1,0 +1,11 @@
+{
+  "cldr": "running shoe",
+  "fromVersion": "0.6",
+  "glyph": "👟",
+  "glyphAsUtfInEmoticons": ["1f45f_athleticshoe"],
+  "group": "Objects",
+  "keywords": ["athletic", "clothing", "running shoe", "shoe", "sneaker"],
+  "mappedToEmoticons": ["1f45f_athleticshoe"],
+  "tts": "running shoe",
+  "unicode": "1f45f"
+}

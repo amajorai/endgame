@@ -1,0 +1,9 @@
+{
+  "cldr": "four o’clock",
+  "fromVersion": "0.6",
+  "glyph": "🕓",
+  "group": "Travel & Places",
+  "keywords": ["00", "4", "4:00", "clock", "four", "o’clock"],
+  "tts": "four o’clock",
+  "unicode": "1f553"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "lobster",
+  "fromVersion": "11.0",
+  "glyph": "🦞",
+  "group": "Food & Drink",
+  "keywords": ["bisque", "claws", "lobster", "seafood"],
+  "tts": "lobster",
+  "unicode": "1f99e"
+}

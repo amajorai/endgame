@@ -1,0 +1,10 @@
+{
+  "cldr": "raccoon",
+  "fromVersion": "11.0",
+  "glyph": "🦝",
+  "group": "Animals & Nature",
+  "keywords": ["curious", "raccoon", "sly"],
+  "mappedToEmoticons": ["racoon"],
+  "tts": "raccoon",
+  "unicode": "1f99d"
+}

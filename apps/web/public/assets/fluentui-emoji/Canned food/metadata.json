@@ -1,0 +1,11 @@
+{
+  "cldr": "canned food",
+  "fromVersion": "5.0",
+  "glyph": "🥫",
+  "glyphAsUtfInEmoticons": ["1f96b_cannedfood"],
+  "group": "Food & Drink",
+  "keywords": ["can", "canned food"],
+  "mappedToEmoticons": ["1f96b_cannedfood"],
+  "tts": "canned food",
+  "unicode": "1f96b"
+}

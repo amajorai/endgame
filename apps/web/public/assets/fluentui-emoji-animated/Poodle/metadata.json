@@ -1,0 +1,9 @@
+{
+  "cldr": "poodle",
+  "fromVersion": "0.6",
+  "glyph": "🐩",
+  "group": "Animals & Nature",
+  "keywords": ["dog", "poodle"],
+  "tts": "poodle",
+  "unicode": "1f429"
+}

@@ -1,0 +1,11 @@
+{
+  "cldr": "tropical fish",
+  "fromVersion": "0.6",
+  "glyph": "🐠",
+  "glyphAsUtfInEmoticons": ["tropicalfish"],
+  "group": "Animals & Nature",
+  "keywords": ["fish", "tropical"],
+  "mappedToEmoticons": ["tropicalfish"],
+  "tts": "tropical fish",
+  "unicode": "1f420"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "sun behind cloud",
+  "fromVersion": "0.6",
+  "glyph": "⛅",
+  "group": "Travel & Places",
+  "keywords": ["cloud", "sun", "sun behind cloud"],
+  "tts": "sun behind cloud",
+  "unicode": "26c5"
+}

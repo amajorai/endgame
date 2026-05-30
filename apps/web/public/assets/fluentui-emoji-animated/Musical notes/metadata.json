@@ -1,0 +1,9 @@
+{
+  "cldr": "musical notes",
+  "fromVersion": "0.6",
+  "glyph": "🎶",
+  "group": "Objects",
+  "keywords": ["music", "musical notes", "note", "notes"],
+  "tts": "musical notes",
+  "unicode": "1f3b6"
+}

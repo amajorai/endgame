@@ -1,0 +1,10 @@
+{
+  "cldr": "lipstick",
+  "fromVersion": "0.6",
+  "glyph": "💄",
+  "group": "Objects",
+  "keywords": ["cosmetics", "lipstick", "makeup"],
+  "mappedToEmoticons": ["lipstick"],
+  "tts": "lipstick",
+  "unicode": "1f484"
+}

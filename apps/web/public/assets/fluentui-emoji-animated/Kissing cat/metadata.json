@@ -1,0 +1,9 @@
+{
+  "cldr": "kissing cat",
+  "fromVersion": "0.6",
+  "glyph": "😽",
+  "group": "Smileys & Emotion",
+  "keywords": ["cat", "eye", "face", "kiss", "kissing cat"],
+  "tts": "kissing cat",
+  "unicode": "1f63d"
+}

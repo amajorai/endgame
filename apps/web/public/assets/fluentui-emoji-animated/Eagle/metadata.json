@@ -1,0 +1,9 @@
+{
+  "cldr": "eagle",
+  "fromVersion": "3.0",
+  "glyph": "🦅",
+  "group": "Animals & Nature",
+  "keywords": ["bird", "eagle"],
+  "tts": "eagle",
+  "unicode": "1f985"
+}

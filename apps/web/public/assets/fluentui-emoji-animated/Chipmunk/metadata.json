@@ -1,0 +1,9 @@
+{
+  "cldr": "chipmunk",
+  "fromVersion": "0.7",
+  "glyph": "🐿️",
+  "group": "Animals & Nature",
+  "keywords": ["chipmunk", "squirrel"],
+  "tts": "chipmunk",
+  "unicode": "1f43f fe0f"
+}

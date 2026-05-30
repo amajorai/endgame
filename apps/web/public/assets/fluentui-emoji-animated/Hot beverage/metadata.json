@@ -1,0 +1,9 @@
+{
+  "cldr": "hot beverage",
+  "fromVersion": "0.6",
+  "glyph": "☕",
+  "group": "Food & Drink",
+  "keywords": ["beverage", "coffee", "drink", "hot", "steaming", "tea"],
+  "tts": "hot beverage",
+  "unicode": "2615"
+}

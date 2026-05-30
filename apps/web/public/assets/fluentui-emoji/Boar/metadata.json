@@ -1,0 +1,11 @@
+{
+  "cldr": "boar",
+  "fromVersion": "0.6",
+  "glyph": "🐗",
+  "glyphAsUtfInEmoticons": ["1f417_boar"],
+  "group": "Animals & Nature",
+  "keywords": ["boar", "pig"],
+  "mappedToEmoticons": ["1f417_boar"],
+  "tts": "boar",
+  "unicode": "1f417"
+}

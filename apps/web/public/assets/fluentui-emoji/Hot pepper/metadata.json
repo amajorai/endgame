@@ -1,0 +1,10 @@
+{
+  "cldr": "hot pepper",
+  "fromVersion": "0.7",
+  "glyph": "🌶️",
+  "group": "Food & Drink",
+  "keywords": ["hot", "pepper"],
+  "mappedToEmoticons": ["1f336_hotpepper"],
+  "tts": "hot pepper",
+  "unicode": "1f336 fe0f"
+}

@@ -1,0 +1,11 @@
+{
+  "cldr": "flying disc",
+  "fromVersion": "11.0",
+  "glyph": "🥏",
+  "glyphAsUtfInEmoticons": ["1f94f_flyingdisc"],
+  "group": "Activities",
+  "keywords": ["flying disc", "ultimate"],
+  "mappedToEmoticons": ["1f94f_flyingdisc"],
+  "tts": "flying disc",
+  "unicode": "1f94f"
+}

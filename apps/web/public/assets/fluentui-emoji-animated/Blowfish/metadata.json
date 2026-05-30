@@ -1,0 +1,9 @@
+{
+  "cldr": "blowfish",
+  "fromVersion": "0.6",
+  "glyph": "🐡",
+  "group": "Animals & Nature",
+  "keywords": ["blowfish", "fish"],
+  "tts": "blowfish",
+  "unicode": "1f421"
+}

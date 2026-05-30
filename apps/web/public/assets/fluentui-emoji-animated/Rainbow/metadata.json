@@ -1,0 +1,9 @@
+{
+  "cldr": "rainbow",
+  "fromVersion": "0.6",
+  "glyph": "🌈",
+  "group": "Travel & Places",
+  "keywords": ["rain", "rainbow"],
+  "tts": "rainbow",
+  "unicode": "1f308"
+}

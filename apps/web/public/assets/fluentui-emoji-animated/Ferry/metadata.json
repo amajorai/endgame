@@ -1,0 +1,9 @@
+{
+  "cldr": "ferry",
+  "fromVersion": "0.7",
+  "glyph": "⛴️",
+  "group": "Travel & Places",
+  "keywords": ["boat", "ferry", "passenger"],
+  "tts": "ferry",
+  "unicode": "26f4 fe0f"
+}

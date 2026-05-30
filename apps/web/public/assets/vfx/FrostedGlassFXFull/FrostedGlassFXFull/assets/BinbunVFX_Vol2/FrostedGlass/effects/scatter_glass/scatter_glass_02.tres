@@ -1,0 +1,18 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://kvwfhmspjnpt"]
+
+[ext_resource type="Shader" uid="uid://k02i58pk5keo" path="res://assets/BinbunVFX_Vol2/FrostedGlass/shader/scatter_glass.gdshader" id="1_dsjwi"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_dsjwi")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/color_coat = 0.0
+shader_parameter/oilyness = 0.1
+shader_parameter/rim_amount = 0.36999999172976
+shader_parameter/rim_shape = 4.0
+shader_parameter/rim_color = Color(1, 1, 1, 1)
+shader_parameter/roughness = 0.2
+shader_parameter/specular = 0.999999977648
+shader_parameter/refraction_strength = -0.10000002011679998
+shader_parameter/scatter_strength = 0.5
+shader_parameter/tile_size = Vector2(32, 32)

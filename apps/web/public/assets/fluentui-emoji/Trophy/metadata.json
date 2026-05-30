@@ -1,0 +1,11 @@
+{
+  "cldr": "trophy",
+  "fromVersion": "0.6",
+  "glyph": "🏆",
+  "glyphAsUtfInEmoticons": ["trophy"],
+  "group": "Activities",
+  "keywords": ["prize", "trophy"],
+  "mappedToEmoticons": ["trophy"],
+  "tts": "trophy",
+  "unicode": "1f3c6"
+}

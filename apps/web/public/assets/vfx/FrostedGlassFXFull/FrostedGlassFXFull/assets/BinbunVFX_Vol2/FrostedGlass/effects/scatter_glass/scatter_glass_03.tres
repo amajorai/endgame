@@ -1,0 +1,28 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://b8gig6bjblm21"]
+
+[ext_resource type="Shader" uid="uid://k02i58pk5keo" path="res://assets/BinbunVFX_Vol2/FrostedGlass/shader/scatter_glass.gdshader" id="1_xt41m"]
+
+[sub_resource type="Gradient" id="Gradient_xt41m"]
+colors = PackedColorArray(0.446777, 0.44677705, 0.44677705, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_frtrj"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1y70p"]
+noise = SubResource("FastNoiseLite_frtrj")
+color_ramp = SubResource("Gradient_xt41m")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_xt41m")
+shader_parameter/color = Color(1, 0.68, 0.68, 1)
+shader_parameter/color_coat = 0.0
+shader_parameter/oilyness = 0.1
+shader_parameter/rim_amount = 0.36999999172976
+shader_parameter/rim_shape = 4.0
+shader_parameter/rim_color = Color(1, 0.51, 0.51, 1)
+shader_parameter/roughness = 0.2
+shader_parameter/specular = 0.999999977648
+shader_parameter/roughness_texture = SubResource("NoiseTexture2D_1y70p")
+shader_parameter/refraction_strength = -0.10000002011679998
+shader_parameter/scatter_strength = 0.5
+shader_parameter/tile_size = Vector2(16, 32)

@@ -1,0 +1,11 @@
+{
+  "cldr": "gorilla",
+  "fromVersion": "3.0",
+  "glyph": "🦍",
+  "glyphAsUtfInEmoticons": ["1f98d_gorilla"],
+  "group": "Animals & Nature",
+  "keywords": ["gorilla"],
+  "mappedToEmoticons": ["1f98d_gorilla"],
+  "tts": "gorilla",
+  "unicode": "1f98d"
+}

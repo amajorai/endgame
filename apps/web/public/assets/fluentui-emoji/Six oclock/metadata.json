@@ -1,0 +1,11 @@
+{
+  "cldr": "six o’clock",
+  "fromVersion": "0.6",
+  "glyph": "🕕",
+  "glyphAsUtfInEmoticons": ["1f555_sixoclock"],
+  "group": "Travel & Places",
+  "keywords": ["00", "6", "6:00", "clock", "o’clock", "six"],
+  "mappedToEmoticons": ["1f555_sixoclock"],
+  "tts": "six o’clock",
+  "unicode": "1f555"
+}

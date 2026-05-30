@@ -1,0 +1,17 @@
+{
+  "cldr": "pinching hand",
+  "fromVersion": "12.0",
+  "glyph": "🤏",
+  "group": "People & Body",
+  "keywords": ["pinching hand", "small amount"],
+  "tts": "pinching hand",
+  "unicode": "1f90f",
+  "unicodeSkintones": [
+    "1f90f",
+    "1f90f 1f3fb",
+    "1f90f 1f3fc",
+    "1f90f 1f3fd",
+    "1f90f 1f3fe",
+    "1f90f 1f3ff"
+  ]
+}

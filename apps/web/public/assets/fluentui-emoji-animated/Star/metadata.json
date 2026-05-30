@@ -1,0 +1,9 @@
+{
+  "cldr": "star",
+  "fromVersion": "0.6",
+  "glyph": "⭐",
+  "group": "Travel & Places",
+  "keywords": ["star"],
+  "tts": "star",
+  "unicode": "2b50"
+}

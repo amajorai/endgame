@@ -1,0 +1,11 @@
+{
+  "cldr": "radio",
+  "fromVersion": "0.6",
+  "glyph": "📻",
+  "glyphAsUtfInEmoticons": ["1f4fb_radio"],
+  "group": "Objects",
+  "keywords": ["radio", "video"],
+  "mappedToEmoticons": ["1f4fb_radio"],
+  "tts": "radio",
+  "unicode": "1f4fb"
+}

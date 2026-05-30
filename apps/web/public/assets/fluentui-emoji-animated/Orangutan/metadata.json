@@ -1,0 +1,9 @@
+{
+  "cldr": "orangutan",
+  "fromVersion": "12.0",
+  "glyph": "🦧",
+  "group": "Animals & Nature",
+  "keywords": ["ape", "orangutan"],
+  "tts": "orangutan",
+  "unicode": "1f9a7"
+}

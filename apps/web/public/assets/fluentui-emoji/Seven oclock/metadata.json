@@ -1,0 +1,11 @@
+{
+  "cldr": "seven o’clock",
+  "fromVersion": "0.6",
+  "glyph": "🕖",
+  "glyphAsUtfInEmoticons": ["1f556_sevenoclock"],
+  "group": "Travel & Places",
+  "keywords": ["00", "7", "7:00", "clock", "o’clock", "seven"],
+  "mappedToEmoticons": ["1f556_sevenoclock"],
+  "tts": "seven o’clock",
+  "unicode": "1f556"
+}

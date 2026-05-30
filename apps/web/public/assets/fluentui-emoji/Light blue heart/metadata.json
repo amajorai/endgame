@@ -1,0 +1,11 @@
+{
+  "cldr": "light blue heart",
+  "fromVersion": "15.0",
+  "glyph": "🩵",
+  "glyphAsUtfInEmoticons": ["heartlightblue"],
+  "group": "Smileys & Emotion",
+  "keywords": ["cyan", "heart", "light blue", "light blue heart", "teal"],
+  "mappedToEmoticons": ["heartlightblue"],
+  "tts": "light blue heart",
+  "unicode": "1fa75"
+}

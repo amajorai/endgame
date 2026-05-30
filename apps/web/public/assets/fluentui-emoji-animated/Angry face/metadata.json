@@ -1,0 +1,9 @@
+{
+  "cldr": "angry face",
+  "fromVersion": "0.6",
+  "glyph": "😠",
+  "group": "Smileys & Emotion",
+  "keywords": ["anger", "angry", "face", "mad"],
+  "tts": "angry face",
+  "unicode": "1f620"
+}

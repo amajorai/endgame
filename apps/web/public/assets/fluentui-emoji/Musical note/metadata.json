@@ -1,0 +1,11 @@
+{
+  "cldr": "musical note",
+  "fromVersion": "0.6",
+  "glyph": "🎵",
+  "glyphAsUtfInEmoticons": ["music"],
+  "group": "Objects",
+  "keywords": ["music", "musical note", "note"],
+  "mappedToEmoticons": ["music"],
+  "tts": "musical note",
+  "unicode": "1f3b5"
+}

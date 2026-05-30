@@ -1,0 +1,9 @@
+{
+  "cldr": "ferris wheel",
+  "fromVersion": "0.6",
+  "glyph": "🎡",
+  "group": "Travel & Places",
+  "keywords": ["amusement park", "ferris", "wheel"],
+  "tts": "ferris wheel",
+  "unicode": "1f3a1"
+}

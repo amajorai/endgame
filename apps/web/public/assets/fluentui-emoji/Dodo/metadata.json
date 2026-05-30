@@ -1,0 +1,11 @@
+{
+  "cldr": "dodo",
+  "fromVersion": "13.0",
+  "glyph": "🦤",
+  "glyphAsUtfInEmoticons": ["dodo"],
+  "group": "Animals & Nature",
+  "keywords": ["dodo", "extinction", "large", "Mauritius"],
+  "mappedToEmoticons": ["dodo"],
+  "tts": "dodo",
+  "unicode": "1f9a4"
+}

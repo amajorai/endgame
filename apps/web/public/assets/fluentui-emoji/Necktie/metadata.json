@@ -1,0 +1,11 @@
+{
+  "cldr": "necktie",
+  "fromVersion": "0.6",
+  "glyph": "👔",
+  "glyphAsUtfInEmoticons": ["1f454_necktie"],
+  "group": "Objects",
+  "keywords": ["clothing", "necktie", "tie"],
+  "mappedToEmoticons": ["1f454_necktie"],
+  "tts": "necktie",
+  "unicode": "1f454"
+}

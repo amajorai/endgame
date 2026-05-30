@@ -1,0 +1,9 @@
+{
+  "cldr": "dolphin",
+  "fromVersion": "0.6",
+  "glyph": "🐬",
+  "group": "Animals & Nature",
+  "keywords": ["dolphin", "flipper"],
+  "tts": "dolphin",
+  "unicode": "1f42c"
+}

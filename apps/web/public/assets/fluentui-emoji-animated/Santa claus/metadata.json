@@ -1,0 +1,24 @@
+{
+  "cldr": "Santa Claus",
+  "fromVersion": "0.6",
+  "glyph": "🎅",
+  "group": "People & Body",
+  "keywords": [
+    "celebration",
+    "Christmas",
+    "claus",
+    "father",
+    "santa",
+    "Santa Claus"
+  ],
+  "tts": "Santa Claus",
+  "unicode": "1f385",
+  "unicodeSkintones": [
+    "1f385",
+    "1f385 1f3fb",
+    "1f385 1f3fc",
+    "1f385 1f3fd",
+    "1f385 1f3fe",
+    "1f385 1f3ff"
+  ]
+}

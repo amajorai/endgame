@@ -1,0 +1,11 @@
+{
+  "cldr": "abacus",
+  "fromVersion": "11.0",
+  "glyph": "🧮",
+  "glyphAsUtfInEmoticons": ["1f9ee_abacus"],
+  "group": "Objects",
+  "keywords": ["abacus", "calculation"],
+  "mappedToEmoticons": ["1f9ee_abacus"],
+  "tts": "abacus",
+  "unicode": "1f9ee"
+}

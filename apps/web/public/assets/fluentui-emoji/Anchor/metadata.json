@@ -1,0 +1,11 @@
+{
+  "cldr": "anchor",
+  "fromVersion": "0.6",
+  "glyph": "⚓",
+  "glyphAsUtfInEmoticons": ["2693_anchor"],
+  "group": "Travel & Places",
+  "keywords": ["anchor", "ship", "tool"],
+  "mappedToEmoticons": ["2693_anchor"],
+  "tts": "anchor",
+  "unicode": "2693"
+}

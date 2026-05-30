@@ -1,0 +1,9 @@
+{
+  "cldr": "bison",
+  "fromVersion": "13.0",
+  "glyph": "🦬",
+  "group": "Animals & Nature",
+  "keywords": ["bison", "buffalo", "herd", "wisent"],
+  "tts": "bison",
+  "unicode": "1f9ac"
+}

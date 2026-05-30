@@ -1,0 +1,11 @@
+{
+  "cldr": "tram car",
+  "fromVersion": "1.0",
+  "glyph": "🚋",
+  "glyphAsUtfInEmoticons": ["1f68b_tramcar"],
+  "group": "Travel & Places",
+  "keywords": ["car", "tram", "trolleybus"],
+  "mappedToEmoticons": ["1f68b_tramcar"],
+  "tts": "tram car",
+  "unicode": "1f68b"
+}

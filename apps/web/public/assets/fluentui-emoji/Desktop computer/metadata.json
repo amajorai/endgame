@@ -1,0 +1,10 @@
+{
+  "cldr": "desktop computer",
+  "fromVersion": "0.7",
+  "glyph": "🖥️",
+  "group": "Objects",
+  "keywords": ["computer", "desktop"],
+  "mappedToEmoticons": ["1f5a5_desktopcomputer"],
+  "tts": "desktop computer",
+  "unicode": "1f5a5 fe0f"
+}

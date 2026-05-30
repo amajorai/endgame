@@ -1,0 +1,9 @@
+{
+  "cldr": "shark",
+  "fromVersion": "3.0",
+  "glyph": "🦈",
+  "group": "Animals & Nature",
+  "keywords": ["fish", "shark"],
+  "tts": "shark",
+  "unicode": "1f988"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "automobile",
+  "fromVersion": "0.6",
+  "glyph": "🚗",
+  "group": "Travel & Places",
+  "keywords": ["automobile", "car"],
+  "tts": "automobile",
+  "unicode": "1f697"
+}

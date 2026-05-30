@@ -1,0 +1,17 @@
+{
+  "cldr": "hand with fingers splayed",
+  "fromVersion": "0.7",
+  "glyph": "🖐️",
+  "group": "People & Body",
+  "keywords": ["finger", "hand", "hand with fingers splayed", "splayed"],
+  "tts": "hand with fingers splayed",
+  "unicode": "1f590 fe0f",
+  "unicodeSkintones": [
+    "1f590 fe0f",
+    "1f590 1f3fb",
+    "1f590 1f3fc",
+    "1f590 1f3fd",
+    "1f590 1f3fe",
+    "1f590 1f3ff"
+  ]
+}

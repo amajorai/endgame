@@ -1,0 +1,10 @@
+{
+  "cldr": "wind face",
+  "fromVersion": "0.7",
+  "glyph": "🌬️",
+  "group": "Travel & Places",
+  "keywords": ["blow", "cloud", "face", "wind"],
+  "mappedToEmoticons": ["1f32c_windblowingface"],
+  "tts": "wind face",
+  "unicode": "1f32c fe0f"
+}

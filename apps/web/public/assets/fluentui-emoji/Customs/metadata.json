@@ -1,0 +1,11 @@
+{
+  "cldr": "customs",
+  "fromVersion": "1.0",
+  "glyph": "🛃",
+  "glyphAsUtfInEmoticons": ["1f6c3_customs"],
+  "group": "Symbols",
+  "keywords": ["customs"],
+  "mappedToEmoticons": ["1f6c3_customs"],
+  "tts": "customs",
+  "unicode": "1f6c3"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "beetle",
+  "fromVersion": "13.0",
+  "glyph": "🪲",
+  "group": "Animals & Nature",
+  "keywords": ["beetle", "bug", "insect"],
+  "tts": "beetle",
+  "unicode": "1fab2"
+}

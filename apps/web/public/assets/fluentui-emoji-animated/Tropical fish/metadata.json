@@ -1,0 +1,9 @@
+{
+  "cldr": "tropical fish",
+  "fromVersion": "0.6",
+  "glyph": "🐠",
+  "group": "Animals & Nature",
+  "keywords": ["fish", "tropical"],
+  "tts": "tropical fish",
+  "unicode": "1f420"
+}

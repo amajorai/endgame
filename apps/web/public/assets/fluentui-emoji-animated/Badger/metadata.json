@@ -1,0 +1,9 @@
+{
+  "cldr": "badger",
+  "fromVersion": "11.0",
+  "glyph": "🦡",
+  "group": "Animals & Nature",
+  "keywords": ["badger", "honey badger", "pester"],
+  "tts": "badger",
+  "unicode": "1f9a1"
+}

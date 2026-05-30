@@ -1,0 +1,11 @@
+{
+  "cldr": "dragon",
+  "fromVersion": "1.0",
+  "glyph": "🐉",
+  "glyphAsUtfInEmoticons": ["1f409_dragon"],
+  "group": "Animals & Nature",
+  "keywords": ["dragon", "fairy tale"],
+  "mappedToEmoticons": ["1f409_dragon"],
+  "tts": "dragon",
+  "unicode": "1f409"
+}

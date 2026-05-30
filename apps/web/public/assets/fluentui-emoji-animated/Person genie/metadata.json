@@ -1,0 +1,9 @@
+{
+  "cldr": "genie",
+  "fromVersion": "5.0",
+  "glyph": "🧞",
+  "group": "People & Body",
+  "keywords": ["djinn", "genie"],
+  "tts": "genie",
+  "unicode": "1f9de"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "ox",
+  "fromVersion": "1.0",
+  "glyph": "🐂",
+  "group": "Animals & Nature",
+  "keywords": ["bull", "ox", "Taurus", "zodiac"],
+  "tts": "ox",
+  "unicode": "1f402"
+}

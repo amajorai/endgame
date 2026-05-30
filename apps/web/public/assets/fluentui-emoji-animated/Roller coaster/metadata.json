@@ -1,0 +1,9 @@
+{
+  "cldr": "roller coaster",
+  "fromVersion": "0.6",
+  "glyph": "🎢",
+  "group": "Travel & Places",
+  "keywords": ["amusement park", "coaster", "roller"],
+  "tts": "roller coaster",
+  "unicode": "1f3a2"
+}

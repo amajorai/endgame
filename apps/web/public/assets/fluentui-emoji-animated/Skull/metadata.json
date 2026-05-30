@@ -1,0 +1,9 @@
+{
+  "cldr": "skull",
+  "fromVersion": "0.6",
+  "glyph": "💀",
+  "group": "Smileys & Emotion",
+  "keywords": ["death", "face", "fairy tale", "monster", "skull"],
+  "tts": "skull",
+  "unicode": "1f480"
+}

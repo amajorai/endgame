@@ -1,0 +1,9 @@
+{
+  "cldr": "camera with flash",
+  "fromVersion": "1.0",
+  "glyph": "📸",
+  "group": "Objects",
+  "keywords": ["camera", "camera with flash", "flash", "video"],
+  "tts": "camera with flash",
+  "unicode": "1f4f8"
+}

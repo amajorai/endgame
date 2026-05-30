@@ -1,0 +1,9 @@
+{
+  "cldr": "fly",
+  "fromVersion": "13.0",
+  "glyph": "🪰",
+  "group": "Animals & Nature",
+  "keywords": ["disease", "fly", "maggot", "pest", "rotting"],
+  "tts": "fly",
+  "unicode": "1fab0"
+}

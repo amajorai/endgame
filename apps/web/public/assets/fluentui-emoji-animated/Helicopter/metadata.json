@@ -1,0 +1,9 @@
+{
+  "cldr": "helicopter",
+  "fromVersion": "1.0",
+  "glyph": "🚁",
+  "group": "Travel & Places",
+  "keywords": ["helicopter", "vehicle"],
+  "tts": "helicopter",
+  "unicode": "1f681"
+}

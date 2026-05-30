@@ -1,0 +1,16 @@
+{
+  "cldr": "skull and crossbones",
+  "fromVersion": "1.0",
+  "glyph": "☠️",
+  "group": "Smileys & Emotion",
+  "keywords": [
+    "crossbones",
+    "death",
+    "face",
+    "monster",
+    "skull",
+    "skull and crossbones"
+  ],
+  "tts": "skull and crossbones",
+  "unicode": "2620 fe0f"
+}

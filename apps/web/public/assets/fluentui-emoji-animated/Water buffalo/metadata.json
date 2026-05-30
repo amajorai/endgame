@@ -1,0 +1,9 @@
+{
+  "cldr": "water buffalo",
+  "fromVersion": "1.0",
+  "glyph": "🐃",
+  "group": "Animals & Nature",
+  "keywords": ["buffalo", "water"],
+  "tts": "water buffalo",
+  "unicode": "1f403"
+}

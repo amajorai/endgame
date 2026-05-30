@@ -1,0 +1,16 @@
+{
+  "cldr": "airplane arrival",
+  "fromVersion": "1.0",
+  "glyph": "🛬",
+  "group": "Travel & Places",
+  "keywords": [
+    "aeroplane",
+    "airplane",
+    "airplane arrival",
+    "arrivals",
+    "arriving",
+    "landing"
+  ],
+  "tts": "airplane arrival",
+  "unicode": "1f6ec"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "kangaroo",
+  "fromVersion": "11.0",
+  "glyph": "🦘",
+  "group": "Animals & Nature",
+  "keywords": ["Australia", "joey", "jump", "kangaroo", "marsupial"],
+  "tts": "kangaroo",
+  "unicode": "1f998"
+}

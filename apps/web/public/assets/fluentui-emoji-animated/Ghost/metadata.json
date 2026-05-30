@@ -1,0 +1,9 @@
+{
+  "cldr": "ghost",
+  "fromVersion": "0.6",
+  "glyph": "👻",
+  "group": "Smileys & Emotion",
+  "keywords": ["creature", "face", "fairy tale", "fantasy", "ghost", "monster"],
+  "tts": "ghost",
+  "unicode": "1f47b"
+}

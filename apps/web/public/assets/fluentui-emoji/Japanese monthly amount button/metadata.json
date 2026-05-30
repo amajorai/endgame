@@ -1,0 +1,16 @@
+{
+  "cldr": "Japanese “monthly amount” button",
+  "fromVersion": "0.6",
+  "glyph": "🈷️",
+  "group": "Symbols",
+  "keywords": [
+    "“monthly amount”",
+    "ideograph",
+    "Japanese",
+    "Japanese “monthly amount” button",
+    "月"
+  ],
+  "mappedToEmoticons": ["1f237_monthlyamount"],
+  "tts": "Japanese “monthly amount” button",
+  "unicode": "1f237 fe0f"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "party popper",
+  "fromVersion": "0.6",
+  "glyph": "🎉",
+  "group": "Activities",
+  "keywords": ["celebration", "party", "popper", "tada"],
+  "tts": "party popper",
+  "unicode": "1f389"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "small airplane",
+  "fromVersion": "0.7",
+  "glyph": "🛩️",
+  "group": "Travel & Places",
+  "keywords": ["aeroplane", "airplane", "small airplane"],
+  "tts": "small airplane",
+  "unicode": "1f6e9 fe0f"
+}

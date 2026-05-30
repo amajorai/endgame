@@ -1,0 +1,11 @@
+{
+  "cldr": "teapot",
+  "fromVersion": "13.0",
+  "glyph": "🫖",
+  "glyphAsUtfInEmoticons": ["teapot"],
+  "group": "Food & Drink",
+  "keywords": ["drink", "pot", "tea", "teapot"],
+  "mappedToEmoticons": ["teapot"],
+  "tts": "teapot",
+  "unicode": "1fad6"
+}

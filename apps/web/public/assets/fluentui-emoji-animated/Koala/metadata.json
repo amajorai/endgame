@@ -1,0 +1,9 @@
+{
+  "cldr": "koala",
+  "fromVersion": "0.6",
+  "glyph": "🐨",
+  "group": "Animals & Nature",
+  "keywords": ["koala", "face", "marsupial"],
+  "tts": "koala",
+  "unicode": "1f428"
+}

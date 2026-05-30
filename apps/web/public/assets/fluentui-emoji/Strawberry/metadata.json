@@ -1,0 +1,11 @@
+{
+  "cldr": "strawberry",
+  "fromVersion": "0.6",
+  "glyph": "🍓",
+  "glyphAsUtfInEmoticons": ["strawberry"],
+  "group": "Food & Drink",
+  "keywords": ["berry", "fruit", "strawberry"],
+  "mappedToEmoticons": ["strawberry"],
+  "tts": "strawberry",
+  "unicode": "1f353"
+}

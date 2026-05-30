@@ -1,0 +1,9 @@
+{
+  "cldr": "moose",
+  "fromVersion": "15.0",
+  "glyph": "🫎",
+  "group": "Animals & Nature",
+  "keywords": ["animal", "antlers", "elk", "mammal", "moose"],
+  "tts": "moose",
+  "unicode": "1face"
+}

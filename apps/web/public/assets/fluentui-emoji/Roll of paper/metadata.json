@@ -1,0 +1,11 @@
+{
+  "cldr": "roll of paper",
+  "fromVersion": "11.0",
+  "glyph": "🧻",
+  "glyphAsUtfInEmoticons": ["1f9fb_toiletpaper"],
+  "group": "Objects",
+  "keywords": ["paper towels", "roll of paper", "toilet paper"],
+  "mappedToEmoticons": ["1f9fb_toiletpaper"],
+  "tts": "roll of paper",
+  "unicode": "1f9fb"
+}

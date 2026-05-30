@@ -1,0 +1,11 @@
+{
+  "cldr": "muted speaker",
+  "fromVersion": "1.0",
+  "glyph": "🔇",
+  "glyphAsUtfInEmoticons": ["1f507_mutedspeaker"],
+  "group": "Objects",
+  "keywords": ["mute", "muted speaker", "quiet", "silent", "speaker"],
+  "mappedToEmoticons": ["1f507_mutedspeaker"],
+  "tts": "muted speaker",
+  "unicode": "1f507"
+}

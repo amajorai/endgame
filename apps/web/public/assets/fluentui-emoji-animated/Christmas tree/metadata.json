@@ -1,0 +1,9 @@
+{
+  "cldr": "Christmas tree",
+  "fromVersion": "0.6",
+  "glyph": "🎄",
+  "group": "Activities",
+  "keywords": ["celebration", "Christmas", "tree"],
+  "tts": "Christmas tree",
+  "unicode": "1f384"
+}

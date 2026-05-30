@@ -1,0 +1,11 @@
+{
+  "cldr": "baby bottle",
+  "fromVersion": "1.0",
+  "glyph": "🍼",
+  "glyphAsUtfInEmoticons": ["1f37c_babybottle", "manbottlefeeding"],
+  "group": "Food & Drink",
+  "keywords": ["baby", "bottle", "drink", "milk"],
+  "mappedToEmoticons": ["1f37c_babybottle"],
+  "tts": "baby bottle",
+  "unicode": "1f37c"
+}

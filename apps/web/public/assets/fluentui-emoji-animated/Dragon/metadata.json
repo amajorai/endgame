@@ -1,0 +1,9 @@
+{
+  "cldr": "dragon",
+  "fromVersion": "1.0",
+  "glyph": "🐉",
+  "group": "Animals & Nature",
+  "keywords": ["dragon", "fairy tale"],
+  "tts": "dragon",
+  "unicode": "1f409"
+}

@@ -1,0 +1,11 @@
+{
+  "cldr": "man’s shoe",
+  "fromVersion": "0.6",
+  "glyph": "👞",
+  "glyphAsUtfInEmoticons": ["1f45e_mansshoe"],
+  "group": "Objects",
+  "keywords": ["clothing", "man", "man’s shoe", "shoe"],
+  "mappedToEmoticons": ["1f45e_mansshoe"],
+  "tts": "man’s shoe",
+  "unicode": "1f45e"
+}

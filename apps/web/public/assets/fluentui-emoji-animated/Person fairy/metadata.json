@@ -1,0 +1,17 @@
+{
+  "cldr": "fairy",
+  "fromVersion": "5.0",
+  "glyph": "🧚",
+  "group": "People & Body",
+  "keywords": ["fairy", "Oberon", "Puck", "Titania"],
+  "tts": "fairy",
+  "unicode": "1f9da",
+  "unicodeSkintones": [
+    "1f9da",
+    "1f9da 1f3fb",
+    "1f9da 1f3fc",
+    "1f9da 1f3fd",
+    "1f9da 1f3fe",
+    "1f9da 1f3ff"
+  ]
+}

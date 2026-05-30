@@ -1,0 +1,10 @@
+{
+  "cldr": "crayon",
+  "fromVersion": "0.7",
+  "glyph": "🖍️",
+  "group": "Objects",
+  "keywords": ["crayon"],
+  "mappedToEmoticons": ["1f58d_lowerleftcrayon"],
+  "tts": "crayon",
+  "unicode": "1f58d fe0f"
+}

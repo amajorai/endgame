@@ -1,0 +1,11 @@
+{
+  "cldr": "spoon",
+  "fromVersion": "3.0",
+  "glyph": "🥄",
+  "glyphAsUtfInEmoticons": ["1f944_spoon"],
+  "group": "Food & Drink",
+  "keywords": ["spoon", "tableware"],
+  "mappedToEmoticons": ["1f944_spoon"],
+  "tts": "spoon",
+  "unicode": "1f944"
+}

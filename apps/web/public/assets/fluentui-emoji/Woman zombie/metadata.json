@@ -1,0 +1,10 @@
+{
+  "cldr": "woman zombie",
+  "fromVersion": "5.0",
+  "glyph": "🧟‍♀️",
+  "group": "People & Body",
+  "keywords": ["undead", "walking dead", "woman zombie"],
+  "mappedToEmoticons": ["zombie"],
+  "tts": "woman zombie",
+  "unicode": "1f9df 200d 2640 fe0f"
+}

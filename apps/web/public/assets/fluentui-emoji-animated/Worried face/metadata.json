@@ -1,0 +1,9 @@
+{
+  "cldr": "worried face",
+  "fromVersion": "1.0",
+  "glyph": "😟",
+  "group": "Smileys & Emotion",
+  "keywords": ["face", "worried"],
+  "tts": "worried face",
+  "unicode": "1f61f"
+}

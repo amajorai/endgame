@@ -1,0 +1,9 @@
+{
+  "cldr": "monorail",
+  "fromVersion": "1.0",
+  "glyph": "🚝",
+  "group": "Travel & Places",
+  "keywords": ["monorail", "vehicle"],
+  "tts": "monorail",
+  "unicode": "1f69d"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "crying face",
+  "fromVersion": "0.6",
+  "glyph": "😢",
+  "group": "Smileys & Emotion",
+  "keywords": ["cry", "crying face", "face", "sad", "tear"],
+  "tts": "crying face",
+  "unicode": "1f622"
+}

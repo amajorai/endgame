@@ -1,0 +1,9 @@
+{
+  "cldr": "mosquito",
+  "fromVersion": "11.0",
+  "glyph": "🦟",
+  "group": "Animals & Nature",
+  "keywords": ["disease", "fever", "malaria", "mosquito", "pest", "virus"],
+  "tts": "mosquito",
+  "unicode": "1f99f"
+}

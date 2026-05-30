@@ -1,0 +1,9 @@
+{
+  "cldr": "turkey",
+  "fromVersion": "1.0",
+  "glyph": "🦃",
+  "group": "Animals & Nature",
+  "keywords": ["bird", "turkey"],
+  "tts": "turkey",
+  "unicode": "1f983"
+}

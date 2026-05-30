@@ -1,0 +1,11 @@
+{
+  "cldr": "bomb",
+  "fromVersion": "0.6",
+  "glyph": "💣",
+  "glyphAsUtfInEmoticons": ["bomb"],
+  "group": "Smileys & Emotion",
+  "keywords": ["bomb", "comic"],
+  "mappedToEmoticons": ["bomb"],
+  "tts": "bomb",
+  "unicode": "1f4a3"
+}

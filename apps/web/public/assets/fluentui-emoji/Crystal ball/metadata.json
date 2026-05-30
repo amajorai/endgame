@@ -1,0 +1,11 @@
+{
+  "cldr": "crystal ball",
+  "fromVersion": "0.6",
+  "glyph": "🔮",
+  "glyphAsUtfInEmoticons": ["1f52e_crystalball"],
+  "group": "Activities",
+  "keywords": ["ball", "crystal", "fairy tale", "fantasy", "fortune", "tool"],
+  "mappedToEmoticons": ["1f52e_crystalball"],
+  "tts": "crystal ball",
+  "unicode": "1f52e"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "wolf",
+  "fromVersion": "0.6",
+  "glyph": "🐺",
+  "group": "Animals & Nature",
+  "keywords": ["face", "wolf"],
+  "tts": "wolf",
+  "unicode": "1f43a"
+}

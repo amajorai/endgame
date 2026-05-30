@@ -1,0 +1,9 @@
+{
+  "cldr": "fearful face",
+  "fromVersion": "0.6",
+  "glyph": "😨",
+  "group": "Smileys & Emotion",
+  "keywords": ["face", "fear", "fearful", "scared"],
+  "tts": "fearful face",
+  "unicode": "1f628"
+}

@@ -1,0 +1,9 @@
+{
+  "cldr": "umbrella",
+  "fromVersion": "0.7",
+  "glyph": "☂️",
+  "group": "Travel & Places",
+  "keywords": ["clothing", "rain", "umbrella"],
+  "tts": "umbrella",
+  "unicode": "2602 fe0f"
+}

@@ -1,0 +1,11 @@
+{
+  "cldr": "woman’s sandal",
+  "fromVersion": "0.6",
+  "glyph": "👡",
+  "glyphAsUtfInEmoticons": ["1f461_womanssandal"],
+  "group": "Objects",
+  "keywords": ["clothing", "sandal", "shoe", "woman", "woman’s sandal"],
+  "mappedToEmoticons": ["1f461_womanssandal"],
+  "tts": "woman’s sandal",
+  "unicode": "1f461"
+}

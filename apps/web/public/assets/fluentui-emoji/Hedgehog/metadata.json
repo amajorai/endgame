@@ -1,0 +1,11 @@
+{
+  "cldr": "hedgehog",
+  "fromVersion": "5.0",
+  "glyph": "🦔",
+  "glyphAsUtfInEmoticons": ["hedgehog"],
+  "group": "Animals & Nature",
+  "keywords": ["hedgehog", "spiny"],
+  "mappedToEmoticons": ["hedgehoghug"],
+  "tts": "hedgehog",
+  "unicode": "1f994"
+}

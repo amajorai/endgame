@@ -1,0 +1,9 @@
+{
+  "cldr": "cat with wry smile",
+  "fromVersion": "0.6",
+  "glyph": "😼",
+  "group": "Smileys & Emotion",
+  "keywords": ["cat", "cat with wry smile", "face", "ironic", "smile", "wry"],
+  "tts": "cat with wry smile",
+  "unicode": "1f63c"
+}
