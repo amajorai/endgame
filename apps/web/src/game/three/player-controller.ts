@@ -343,6 +343,9 @@ export class PlayerController {
 	// Start a jump if grounded. Ignores key-repeat (held Space) and Space aimed at
 	// an interactive control, so the focused button/input keeps the key. Only the
 	// jump path calls preventDefault, to stop Space scrolling the page.
+	// Edge case not handled: Space with nothing focused while a modal overlay is
+	// open still jumps behind it. Risk: LOW. Deferred because the jump is purely
+	// transient (no persisted state) and hidden under the overlay - harmless.
 	private tryJump(event: KeyboardEvent): void {
 		if (
 			!this.enabled ||
