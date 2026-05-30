@@ -168,6 +168,9 @@ export function PlayClient(): React.JSX.Element {
 		? navItems.find((item) => item.key === activePanel)
 		: null;
 	const ActivePanel = activeItem?.Panel ?? null;
+	// During an engaged boss fight the combat overlay owns the bottom-center of
+	// the screen, so the radial FAB stands down to avoid covering its controls.
+	const bossEngaged = state.activeBoss?.status === "engaged";
 
 	return (
 		<div className="relative h-full w-full overflow-hidden bg-slate-950">
@@ -220,8 +223,9 @@ export function PlayClient(): React.JSX.Element {
 				</div>
 			)}
 
-			{/* Game-style radial menu (hidden while a panel sheet is open). */}
-			{!ActivePanel && (
+			{/* Game-style radial menu (hidden while a panel sheet is open or a
+			    boss fight owns the bottom of the screen). */}
+			{!(ActivePanel || bossEngaged) && (
 				<RadialMenu
 					categories={categories}
 					onSelect={(key) => setActivePanel(key as PanelKey)}
