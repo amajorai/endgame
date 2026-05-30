@@ -309,28 +309,34 @@ export default function GameMap(): React.JSX.Element {
 			liveController = controller;
 			liveMap = map;
 
-			// TEMP (ship verification, removed before completion): expose jump +
-			// position state so Playwright/devtools can assert the gravity arc and
-			// mid-air movement without rendering the MapLibre canvas (headless
-			// cannot rasterise it).
-			(
-				window as unknown as {
-					__jump?: () => {
-						airborne: boolean;
-						altitude: number;
-						lat: number;
-						lng: number;
+			// E2E test seam. The jump is intentionally view-only (no store state)
+			// and the MapLibre canvas cannot be rasterised headlessly, so committed
+			// e2e tests read jump + position state through this getter. It stays
+			// dormant unless the page is opened with ?__e2e (or in development), so
+			// production users never receive it.
+			const e2eEnabled =
+				process.env.NODE_ENV !== "production" ||
+				new URLSearchParams(window.location.search).has("__e2e");
+			if (e2eEnabled) {
+				(
+					window as unknown as {
+						__jump?: () => {
+							airborne: boolean;
+							altitude: number;
+							lat: number;
+							lng: number;
+						};
+					}
+				).__jump = () => {
+					const pos = controller?.getPosition() ?? { lat: 0, lng: 0 };
+					return {
+						airborne: controller?.airborne ?? false,
+						altitude: controller?.altitude ?? 0,
+						lat: pos.lat,
+						lng: pos.lng,
 					};
-				}
-			).__jump = () => {
-				const pos = controller?.getPosition() ?? { lat: 0, lng: 0 };
-				return {
-					airborne: controller?.airborne ?? false,
-					altitude: controller?.altitude ?? 0,
-					lat: pos.lat,
-					lng: pos.lng,
 				};
-			};
+			}
 
 			loadPlayerCharacter()
 				.then((character) => {
