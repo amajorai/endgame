@@ -1,48 +1,56 @@
 import type maplibregl from "maplibre-gl";
-import { Box3, type Object3D, Vector3 } from "three";
-import { HEX_VIEW_RING, METERS_PER_DEGREE_LAT } from "@/game/constants";
-import { hexDistance } from "@/game/lib/hex";
+import {
+	Box3,
+	type Color,
+	type Material,
+	type Mesh,
+	type MeshStandardMaterial,
+	type Object3D,
+	Vector3,
+} from "three";
+import { METERS_PER_DEGREE_LAT } from "@/game/constants";
 import { loadModelInstance } from "@/game/three/asset-loader";
 import { createPortal, type Portal } from "@/game/three/vfx/portal";
+// Side-effect import: registering the core gate/beacon/drop/boss provider on the
+// registry the moment the renderer module loads. The renderer is constructed by
+// SceneLayer, so this guarantees the core content is registered before the first
+// sync(). Per-system providers register themselves the same way from their own
+// modules (added by later agents).
+import "@/game/three/specs/core-specs";
+import { collectAll, type WorldEntitySpec } from "@/game/three/world-entities";
 import type { GameEvent, GameState } from "@/game/types";
 
-// Renders world entities (gates, beacons, supply drops, field boss) as 3D models
-// in the scene, positioned in metres relative to the moving scene origin. Click
-// dispatch is handled by projecting each entity's lng/lat to screen space via
-// MapLibre (independent of the custom three.js camera) and picking the nearest.
+// Renders world entities (gates, beacons, supply drops, field boss, and any
+// system-registered props) as 3D models in the scene, positioned in metres
+// relative to the moving scene origin. The set of entities comes from the
+// spec-provider registry (collectAll), not hard-coded lists. Click dispatch is
+// handled by projecting each entity's lng/lat to screen space via MapLibre
+// (independent of the custom three.js camera) and picking the nearest.
 
 const DEG = Math.PI / 180;
 const PICK_RADIUS_PX = 32;
 
-// Target on-map footprint per entity kind, in metres. Models are normalised to
-// this so wildly different source scales read consistently.
-const TARGET_SIZE_M: Record<EntityKind, number> = {
+// Fallback target footprint (metres) when a spec omits scaleM, keyed by kind.
+// Core specs always set scaleM explicitly; this is belt-and-suspenders for
+// system providers that don't, and matches today's gate/beacon/drop/boss sizes.
+const DEFAULT_SIZE_M: Record<string, number> = {
 	gate: 12,
 	beacon: 6,
 	drop: 4,
 	boss: 14,
 };
-
-type EntityKind = "gate" | "beacon" | "drop" | "boss";
-
-// Model URLs per kind. Beacons vary their prop by tier.
-const GATE_MODEL =
-	"/assets/kenney/fantasy-town-kit/Models/GLB format/wall-arch.glb";
-const BOSS_MODEL =
-	"/assets/kaykit/skeletons/characters/gltf/Skeleton_Warrior.glb";
-const DROP_MODEL = "/assets/kaykit/dungeon/assets/gltf/chest_gold.gltf";
-const BEACON_MODEL_BY_TIER: Record<string, string> = {
-	shrine: "/assets/kaykit/dungeon/assets/gltf/pillar_decorated.gltf",
-	cache: "/assets/kaykit/dungeon/assets/gltf/chest.gltf",
-	raid: "/assets/kaykit/dungeon/assets/gltf/pillar.gltf",
-	vault: "/assets/kaykit/dungeon/assets/gltf/barrel_large_decorated.gltf",
-};
+// Last-resort footprint for an unknown kind with no scaleM.
+const GENERIC_SIZE_M = 6;
+// Ground tiles read as flat plots a few metres across.
+const GROUND_TILE_SIZE_M = 8;
 
 interface EntityRecord {
-	event: GameEvent;
+	event?: GameEvent;
+	// Optional flat ground tile laid under the entity (e.g. a farm plot).
+	ground: Object3D | null;
 	lat: number;
 	lng: number;
-	// A swirling portal VFX, present only for gates.
+	// A swirling portal VFX, present only for entities with portalColors.
 	portal?: Portal;
 	// Null until the model finishes loading; the slot is reserved synchronously
 	// so concurrent syncs don't double-add the same entity.
@@ -54,108 +62,61 @@ interface EntityRecord {
 // into the ground/road.
 const PORTAL_HEIGHT_M = 7;
 
-// What a hex+entity should resolve to: a model URL, a stable key, the click
-// event to dispatch, and its world position.
-interface EntitySpec {
-	event: GameEvent;
-	key: string;
-	kind: EntityKind;
-	lat: number;
-	lng: number;
-	// Gates carry portal colours; undefined for other kinds.
-	portalColors?: { primary: number; secondary: number };
-	url: string;
-}
-
-const PORTAL_ANCHORED = { primary: 0x35_e0_ff, secondary: 0x12_4a_6b };
-const PORTAL_UNANCHORED = { primary: 0xff_b0_3c, secondary: 0x6b_3a_12 };
-
-function beaconEvent(tier: string, id: string): GameEvent {
-	return tier === "shrine"
-		? { type: "BEACON_SPIN", id }
-		: { type: "BEACON_CLAIM", id };
-}
-
-// Collect every entity within the view ring that should have a model. Culling to
-// HEX_VIEW_RING (matching the old 2D markers) is essential: the content system
-// spawns fresh gates/beacons around the player on every move, so without this
-// the scene fills with hundreds of accumulated models that read as "following".
-function collectSpecs(state: GameState): EntitySpec[] {
-	const specs: EntitySpec[] = [];
-	const playerHex = state.position.hex;
-	const inRange = (hex: string): boolean => {
-		try {
-			return hexDistance(playerHex, hex) <= HEX_VIEW_RING;
-		} catch {
-			return false;
-		}
-	};
-
-	for (const gate of Object.values(state.gates)) {
-		if (!inRange(gate.hex)) {
-			continue;
-		}
-		specs.push({
-			key: `gate:${gate.hex}`,
-			kind: "gate",
-			url: GATE_MODEL,
-			lat: gate.lat,
-			lng: gate.lng,
-			event: { type: "GATE_ENTER", hex: gate.hex },
-			portalColors: gate.anchored ? PORTAL_ANCHORED : PORTAL_UNANCHORED,
-		});
-	}
-	for (const beacon of Object.values(state.beacons)) {
-		if (!inRange(beacon.hex)) {
-			continue;
-		}
-		specs.push({
-			key: `beacon:${beacon.id}`,
-			kind: "beacon",
-			url: BEACON_MODEL_BY_TIER[beacon.tier] ?? BEACON_MODEL_BY_TIER.cache,
-			lat: beacon.lat,
-			lng: beacon.lng,
-			event: beaconEvent(beacon.tier, beacon.id),
-		});
-	}
-	const now = state.lastTick;
-	for (const drop of state.meta.supplyDrops) {
-		if (drop.claimed || drop.landsAt > now || !inRange(drop.hex)) {
-			continue;
-		}
-		specs.push({
-			key: `drop:${drop.id}`,
-			kind: "drop",
-			url: DROP_MODEL,
-			lat: drop.lat,
-			lng: drop.lng,
-			event: { type: "SUPPLY_CLAIM", id: drop.id },
-		});
-	}
-	const boss = state.activeBoss;
-	if (boss && boss.status !== "defeated" && inRange(boss.hex)) {
-		specs.push({
-			key: `boss:${boss.id}`,
-			kind: "boss",
-			url: BOSS_MODEL,
-			lat: boss.lat,
-			lng: boss.lng,
-			event: { type: "BOSS_ATTACK" },
-		});
-	}
-	return specs;
+function targetSizeFor(spec: WorldEntitySpec): number {
+	return spec.scaleM ?? DEFAULT_SIZE_M[spec.kind] ?? GENERIC_SIZE_M;
 }
 
 // Scale a freshly loaded model so its largest horizontal dimension matches the
 // target footprint, and drop it so its base sits on the ground plane.
-function normaliseModel(root: Object3D, kind: EntityKind): void {
+function normaliseModel(root: Object3D, sizeM: number): void {
 	const box = new Box3().setFromObject(root);
 	const size = new Vector3();
 	box.getSize(size);
 	const footprint = Math.max(size.x, size.z) || 1;
-	const scale = TARGET_SIZE_M[kind] / footprint;
+	const scale = sizeM / footprint;
 	root.scale.setScalar(scale);
 	root.position.y = -box.min.y * scale;
+}
+
+// Normalise a flat ground tile to GROUND_TILE_SIZE_M and rest its top on y=0.
+function normaliseGround(root: Object3D): void {
+	const box = new Box3().setFromObject(root);
+	const size = new Vector3();
+	box.getSize(size);
+	const footprint = Math.max(size.x, size.z) || 1;
+	const scale = GROUND_TILE_SIZE_M / footprint;
+	root.scale.setScalar(scale);
+	root.position.y = -box.max.y * scale;
+}
+
+// Apply a colour tint to every mesh material in the model. Materials are CLONED
+// first because loadModelInstance shares materials from the cached source scene
+// (only nodes are cloned), so mutating in place would tint every instance.
+function tintModel(root: Object3D, tintHex: number): void {
+	root.traverse((node) => {
+		const mesh = node as Mesh;
+		if (!mesh.isMesh) {
+			return;
+		}
+		const material = mesh.material;
+		if (Array.isArray(material)) {
+			mesh.material = material.map((m) => applyTint(m, tintHex));
+		} else if (material) {
+			mesh.material = applyTint(material, tintHex);
+		}
+	});
+}
+
+function applyTint(material: Material, tintHex: number): Material {
+	const cloned = material.clone();
+	const colored = cloned as unknown as { color?: Color };
+	colored.color?.set(tintHex);
+	const standard = cloned as Partial<MeshStandardMaterial>;
+	standard.emissive?.set(tintHex);
+	if (standard.emissive && typeof standard.emissiveIntensity === "number") {
+		standard.emissiveIntensity = 0.15;
+	}
+	return cloned;
 }
 
 export class EntityRenderer {
@@ -182,17 +143,12 @@ export class EntityRenderer {
 
 	// Reconcile the live model set with game state: add new, remove gone.
 	sync(state: GameState): void {
-		const specs = collectSpecs(state);
+		const specs = collectAll(state);
 		const wanted = new Set(specs.map((spec) => spec.key));
 
 		for (const [key, record] of this.records) {
 			if (!wanted.has(key)) {
-				if (record.root) {
-					this.group.remove(record.root);
-				}
-				if (record.portal) {
-					this.group.remove(record.portal.mesh);
-				}
+				this.removeRecord(record);
 				this.records.delete(key);
 			}
 		}
@@ -204,42 +160,97 @@ export class EntityRenderer {
 				existing.lng = spec.lng;
 				continue;
 			}
-			// Reserve the slot synchronously so concurrent syncs don't double-add.
-			const record: EntityRecord = {
-				event: spec.event,
-				lat: spec.lat,
-				lng: spec.lng,
-				root: null,
-			};
-			// Gates get a swirling portal VFX mounted upright at their location.
-			if (spec.portalColors) {
-				const portal = createPortal(
-					spec.portalColors.primary,
-					spec.portalColors.secondary
-				);
-				portal.mesh.position.y = PORTAL_HEIGHT_M;
-				record.portal = portal;
-				this.group.add(portal.mesh);
-				this.placeOne(portal.mesh, spec.lat, spec.lng);
-			}
-			this.records.set(spec.key, record);
-			loadModelInstance(spec.url)
-				.then((root) => {
-					if (this.records.get(spec.key) !== record) {
-						return;
-					}
-					normaliseModel(root, spec.kind);
-					this.placeOne(root, record.lat, record.lng);
-					this.group.add(root);
-					record.root = root;
-				})
-				.catch(() => {
-					// A missing entity model is non-fatal; it just won't appear.
-					if (this.records.get(spec.key) === record) {
-						this.records.delete(spec.key);
-					}
-				});
+			this.addSpec(spec);
 		}
+	}
+
+	private removeRecord(record: EntityRecord): void {
+		if (record.root) {
+			this.group.remove(record.root);
+		}
+		if (record.portal) {
+			this.group.remove(record.portal.mesh);
+		}
+		if (record.ground) {
+			this.group.remove(record.ground);
+		}
+	}
+
+	private addSpec(spec: WorldEntitySpec): void {
+		// Reserve the slot synchronously so concurrent syncs don't double-add.
+		const record: EntityRecord = {
+			event: spec.event,
+			lat: spec.lat,
+			lng: spec.lng,
+			ground: null,
+			root: null,
+		};
+		// Entities with portal colours get a swirling portal VFX mounted upright.
+		if (spec.portalColors) {
+			const portal = createPortal(
+				spec.portalColors.primary,
+				spec.portalColors.secondary
+			);
+			portal.mesh.position.y = PORTAL_HEIGHT_M;
+			record.portal = portal;
+			this.group.add(portal.mesh);
+			this.placeOne(portal.mesh, spec.lat, spec.lng);
+		}
+		this.records.set(spec.key, record);
+		if (spec.groundTileUrl) {
+			this.loadGround(spec, record);
+		}
+		this.loadRoot(spec, record);
+	}
+
+	private loadRoot(spec: WorldEntitySpec, record: EntityRecord): void {
+		const sizeM = targetSizeFor(spec);
+		loadModelInstance(spec.modelUrl)
+			.then((root) => {
+				if (this.records.get(spec.key) !== record) {
+					return;
+				}
+				normaliseModel(root, sizeM);
+				if (typeof spec.yawRad === "number") {
+					root.rotation.y = spec.yawRad;
+				}
+				if (typeof spec.tintHex === "number") {
+					tintModel(root, spec.tintHex);
+				}
+				this.placeOne(root, record.lat, record.lng);
+				this.group.add(root);
+				record.root = root;
+			})
+			.catch(() => {
+				// A missing entity model is non-fatal; it just won't appear. Drop the
+				// whole record (and tear down any portal/ground already mounted) so a
+				// later sync can cleanly re-create it - matching the original behaviour
+				// where a failed load deleted the record outright (no orphaned VFX).
+				if (this.records.get(spec.key) === record) {
+					this.removeRecord(record);
+					this.records.delete(spec.key);
+				}
+			});
+	}
+
+	private loadGround(spec: WorldEntitySpec, record: EntityRecord): void {
+		const url = spec.groundTileUrl;
+		if (!url) {
+			return;
+		}
+		loadModelInstance(url)
+			.then((ground) => {
+				if (this.records.get(spec.key) !== record) {
+					return;
+				}
+				normaliseGround(ground);
+				this.placeOne(ground, record.lat, record.lng);
+				this.group.add(ground);
+				record.ground = ground;
+			})
+			.catch(() => {
+				// Missing ground tile is non-fatal; the entity still renders.
+			});
 	}
 
 	// Reposition all entity models relative to the current scene origin. Called
@@ -259,6 +270,9 @@ export class EntityRenderer {
 			if (record.portal) {
 				this.placeOne(record.portal.mesh, lat, lng);
 			}
+			if (record.ground) {
+				this.placeOne(record.ground, lat, lng);
+			}
 		}
 	}
 
@@ -269,7 +283,8 @@ export class EntityRenderer {
 		}
 	}
 
-	// Dispatch the entity nearest a click, if within the pick radius.
+	// Dispatch the entity nearest a click, if within the pick radius. Entities
+	// without an event (decorative props, ground tiles) are not pickable.
 	pick(
 		map: maplibregl.Map,
 		x: number,
@@ -280,6 +295,9 @@ export class EntityRenderer {
 		let bestDist = PICK_RADIUS_PX;
 		let bestEvent: GameEvent | null = null;
 		for (const [key, record] of this.records) {
+			if (!record.event) {
+				continue;
+			}
 			const point = map.project([record.lng, record.lat]);
 			const dist = Math.hypot(point.x - x, point.y - y);
 			if (dist < bestDist) {

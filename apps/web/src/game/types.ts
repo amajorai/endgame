@@ -209,6 +209,10 @@ export interface GateEnemy {
 	hp: number;
 	id: string;
 	kind: EnemyKind;
+	// On-map combat position (lng/lat). Populated by the gate-combat system when
+	// enemies fight in-world; the renderer places their models from these.
+	lat?: number;
+	lng?: number;
 	maxHp: number;
 	name: string;
 	x: number; // 0-1 normalized arena position
@@ -222,6 +226,10 @@ export interface GateRun {
 	enemies: GateEnemy[];
 	gateHex: H3Index;
 	mana: number;
+	// Anchor (lng/lat) of the gate run's on-map combat arena. Populated by the
+	// gate-combat system so enemy positions can be derived around it in-world.
+	originLat?: number;
+	originLng?: number;
 	playerHp: number;
 	playerMaxHp: number;
 	potionsUsed: number;

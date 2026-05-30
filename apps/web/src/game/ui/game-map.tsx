@@ -2,7 +2,7 @@
 
 import "maplibre-gl/dist/maplibre-gl.css";
 import maplibregl from "maplibre-gl";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
 	BUILDING_COLOR_DARK,
 	BUILDING_COLOR_LIGHT,
@@ -14,13 +14,14 @@ import {
 	THIRD_PERSON_PITCH,
 	THIRD_PERSON_ZOOM,
 } from "@/game/constants";
-import { hexBoundary, hexDisk } from "@/game/lib/hex";
+import { hexBoundary, hexDisk, posToHex } from "@/game/lib/hex";
 import { useGameState, useGameStore } from "@/game/store/store";
 import { loadPlayerCharacter } from "@/game/three/asset-loader";
 import { BossController } from "@/game/three/boss-controller";
 import { PlayerController } from "@/game/three/player-controller";
 import { SceneLayer } from "@/game/three/scene-layer";
 import type { GameState, MapTheme } from "@/game/types";
+import WorldActionPrompt from "@/game/ui/world-action-prompt";
 
 const FILL_OPACITY = 0.35;
 const BUILDING_MIN_ZOOM = 14;
@@ -33,6 +34,26 @@ const DARK_THEMES: ReadonlySet<MapTheme> = new Set<MapTheme>([
 
 function isDarkTheme(theme: MapTheme): boolean {
 	return DARK_THEMES.has(theme);
+}
+
+// A hex is "buildable" when the player owns it (deed owner=player, fully
+// captured) and nothing is built there yet (no plot, no deed building). Tapping
+// such a hex opens the contextual build prompt instead of walking. Per-system
+// agents fill the prompt; foundation only routes the WORLD_TAP_HEX signal.
+function isOwnedBuildableHex(state: GameState, hex: string): boolean {
+	const deed = state.deeds[hex];
+	if (!deed || deed.owner !== "player") {
+		return false;
+	}
+	const meter = state.captureMeters[hex];
+	const capturePct = meter?.progress ?? deed.capturePct ?? 0;
+	if (capturePct < 100) {
+		return false;
+	}
+	if (deed.building || state.plots[hex]) {
+		return false;
+	}
+	return true;
 }
 
 function styleUrlFor(theme: MapTheme): string {
@@ -175,6 +196,12 @@ export default function GameMap(): React.JSX.Element {
 	const layerRef = useRef<SceneLayer | null>(null);
 	const weatherKeyRef = useRef<string>("");
 	const loadedRef = useRef(false);
+	// Contextual build prompt: which owned hex was tapped (null = hidden). The map
+	// click handler is registered once inside the init effect, so it updates this
+	// through a ref to the latest setter to avoid a stale closure.
+	const [buildPromptHex, setBuildPromptHex] = useState<string | null>(null);
+	const setBuildPromptHexRef = useRef(setBuildPromptHex);
+	setBuildPromptHexRef.current = setBuildPromptHex;
 
 	// Init effect: create the map once and tear it down on unmount. Uses local
 	// captures + a `cancelled` flag so the async style-load path is safe under
@@ -234,9 +261,21 @@ export default function GameMap(): React.JSX.Element {
 					event.point.y,
 					useGameStore.getState().dispatch
 				);
-				if (!hitEntity) {
-					controllerRef.current?.walkTo(event.lngLat.lat, event.lngLat.lng);
+				if (hitEntity) {
+					return;
 				}
+				// On an owned, empty hex the tap opens the contextual build prompt
+				// (and signals WORLD_TAP_HEX for reducers) instead of walking. On any
+				// other hex it stays a move order.
+				const live = useGameStore.getState();
+				const hex = posToHex(event.lngLat.lat, event.lngLat.lng);
+				if (isOwnedBuildableHex(live.state, hex)) {
+					live.dispatch({ type: "WORLD_TAP_HEX", hex });
+					setBuildPromptHexRef.current(hex);
+					return;
+				}
+				setBuildPromptHexRef.current(null);
+				controllerRef.current?.walkTo(event.lngLat.lat, event.lngLat.lng);
 			});
 
 			controller = new PlayerController({
@@ -269,6 +308,29 @@ export default function GameMap(): React.JSX.Element {
 			}
 			liveController = controller;
 			liveMap = map;
+
+			// TEMP (ship verification, removed before completion): expose jump +
+			// position state so Playwright/devtools can assert the gravity arc and
+			// mid-air movement without rendering the MapLibre canvas (headless
+			// cannot rasterise it).
+			(
+				window as unknown as {
+					__jump?: () => {
+						airborne: boolean;
+						altitude: number;
+						lat: number;
+						lng: number;
+					};
+				}
+			).__jump = () => {
+				const pos = controller?.getPosition() ?? { lat: 0, lng: 0 };
+				return {
+					airborne: controller?.airborne ?? false,
+					altitude: controller?.altitude ?? 0,
+					lat: pos.lat,
+					lng: pos.lng,
+				};
+			};
 
 			loadPlayerCharacter()
 				.then((character) => {
@@ -365,6 +427,12 @@ export default function GameMap(): React.JSX.Element {
 	return (
 		<div className="absolute inset-0">
 			<div className="h-full w-full" ref={containerRef} />
+			{buildPromptHex && (
+				<WorldActionPrompt
+					hex={buildPromptHex}
+					onClose={() => setBuildPromptHex(null)}
+				/>
+			)}
 			<button
 				className="absolute right-3 bottom-3 z-10 rounded-full border border-cyan-400/40 bg-slate-950/70 px-3 py-2 font-medium text-cyan-200 text-xs backdrop-blur transition-colors hover:bg-slate-900/80"
 				onClick={handleRecenter}

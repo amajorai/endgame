@@ -43,20 +43,23 @@ const WALK_ARRIVE_M = 3;
 const RECENTER_LERP = 6;
 const RECENTER_EPSILON_M = 0.5;
 
-// True when a key event is aimed at a text field, so Space scrolls/types there
-// instead of triggering a jump (slide-up panels contain inputs).
-function isTextInputTarget(target: EventTarget | null): boolean {
+// True when a key event is aimed at an interactive control or text field. Space
+// must keep its native behaviour there (type into the field, activate the
+// focused button/link) instead of triggering a jump - the game's slide-up
+// panels and overlays are full of both. Checks ancestors too, so Space on a
+// element nested inside a control still defers to that control.
+const INTERACTIVE_SELECTOR =
+	'input, textarea, select, button, a[href], [role="button"], [contenteditable="true"]';
+
+function isInteractiveTarget(target: EventTarget | null): boolean {
 	const el = target as HTMLElement | null;
 	if (!el) {
 		return false;
 	}
-	const tag = el.tagName;
-	return (
-		tag === "INPUT" ||
-		tag === "TEXTAREA" ||
-		tag === "SELECT" ||
-		el.isContentEditable
-	);
+	if (el.isContentEditable) {
+		return true;
+	}
+	return el.closest?.(INTERACTIVE_SELECTOR) != null;
 }
 
 export interface ControllerDeps {
@@ -88,6 +91,9 @@ export class PlayerController {
 
 	private character: PlayerCharacter | null = null;
 	private boss: BossController | null = null;
+	// Optional gate-combat controller, updated each frame like the boss. Owned by
+	// the gate-combat system; foundation only provides the update hook.
+	private gateCombat: { update(dt: number, time: number): void } | null = null;
 	private faceYaw = 0;
 	private speedRatio = 0;
 
@@ -159,6 +165,9 @@ export class PlayerController {
 		window.removeEventListener("pointermove", this.onPointerMove);
 		window.removeEventListener("pointerup", this.onPointerUp);
 		this.keys.clear();
+		// Land the avatar so a teardown mid-jump (StrictMode remount, route change)
+		// never leaves the model floating at a stale altitude.
+		this.resetJump();
 		if (activeController === this) {
 			activeController = null;
 		}
@@ -216,6 +225,15 @@ export class PlayerController {
 	// Attach the boss chaser, updated each frame alongside the player.
 	setBoss(boss: BossController): void {
 		this.boss = boss;
+	}
+
+	// Attach (or clear) the gate-combat controller, updated each frame alongside
+	// the player and boss. Mirrors setBoss so the gate-combat system can drive its
+	// enemies from the same rAF loop.
+	setGateCombat(
+		controller: { update(dt: number, time: number): void } | null
+	): void {
+		this.gateCombat = controller;
 	}
 
 	// Disable WASD (e.g. when real-GPS mode takes over movement).
@@ -302,20 +320,39 @@ export class PlayerController {
 			this.tryJump(event);
 			return;
 		}
+		// J triggers a melee attack on the nearest enemy. Like jump, it is a
+		// one-shot (ignores key-repeat) and stands down inside text fields.
+		if (key === "j") {
+			if (!(event.repeat || isInteractiveTarget(event.target))) {
+				this.attackNearest();
+			}
+			return;
+		}
 		this.keys.add(key);
 	};
 
-	// Start a jump if grounded. Ignores key-repeat (held Space) and Space typed
-	// into a text field; not Space-blocking so inputs still receive the key.
+	// Request an attack on the nearest enemy. The foundation does not own the
+	// enemy set, so this dispatches a generic open-union event the gate-combat
+	// system resolves against its live enemies (reducers ignore it until then).
+	// Tap-to-attack is handled separately via entities.pick, which dispatches the
+	// per-enemy event registered through the spec registry.
+	attackNearest(): void {
+		this.deps.dispatch({ type: "ATTACK_NEAREST" });
+	}
+
+	// Start a jump if grounded. Ignores key-repeat (held Space) and Space aimed at
+	// an interactive control, so the focused button/input keeps the key. Only the
+	// jump path calls preventDefault, to stop Space scrolling the page.
 	private tryJump(event: KeyboardEvent): void {
 		if (
 			!this.enabled ||
 			this.isJumping ||
 			event.repeat ||
-			isTextInputTarget(event.target)
+			isInteractiveTarget(event.target)
 		) {
 			return;
 		}
+		event.preventDefault();
 		this.isJumping = true;
 		this.jumpVelocity = JUMP_SPEED_MPS;
 		const jump = this.character?.jump;
@@ -448,7 +485,11 @@ export class PlayerController {
 		if (this.isJumping) {
 			this.jumpVelocity -= GRAVITY_MPS2 * dt;
 			this.altitudeM += this.jumpVelocity * dt;
-			if (this.altitudeM <= 0) {
+			// Land when the arc reaches the ground. The !isFinite guard also lands a
+			// jump poisoned by a NaN/negative dt (clock anomaly) - without it the
+			// `<= 0` test stays false for NaN and the avatar would be stuck airborne
+			// forever, permanently blocking future jumps.
+			if (!(this.altitudeM > 0)) {
 				// Land exactly on the ground so an interrupted arc never sticks.
 				this.altitudeM = 0;
 				this.jumpVelocity = 0;
@@ -511,6 +552,7 @@ export class PlayerController {
 		// the camera is in free-look, so entities/buildings stay registered.
 		this.deps.layer.setOrigin(this.liveLng, this.liveLat);
 		this.boss?.update(dt, time);
+		this.gateCombat?.update(dt, time);
 		this.updateCamera(dt, time);
 		this.updateCharacter(dt);
 		this.updateJump(dt);

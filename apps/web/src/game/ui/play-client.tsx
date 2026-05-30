@@ -76,19 +76,10 @@ interface CategoryMeta {
 	label: string;
 }
 
+// Gates, shadows, beacons, farm, and estates are now in-world interactions
+// (tap the entity / owned hex on the map), so they no longer appear in the
+// radial menu. The wheel keeps the hero, world, and ghost entries plus debug.
 const CATEGORY_META: CategoryMeta[] = [
-	{
-		key: "combat",
-		icon: "🌀",
-		label: "Combat",
-		itemKeys: ["gates", "shadows", "ghost"],
-	},
-	{
-		key: "build",
-		icon: "🏰",
-		label: "Build",
-		itemKeys: ["beacons", "farm", "estates"],
-	},
 	{
 		key: "hero",
 		icon: "🎖️",
@@ -99,7 +90,7 @@ const CATEGORY_META: CategoryMeta[] = [
 		key: "world",
 		icon: "🌍",
 		label: "World",
-		itemKeys: ["explore", "weather"],
+		itemKeys: ["explore", "weather", "ghost"],
 	},
 ];
 
@@ -150,17 +141,6 @@ export function PlayClient(): React.JSX.Element {
 		dispatch({ type: "DEBUG_TOGGLE" });
 	};
 
-	// Active gate run takes over the whole screen.
-	if (state.activeGate) {
-		return (
-			<div className="relative h-full w-full overflow-hidden bg-slate-950">
-				<div className="absolute inset-0 z-30 overflow-y-auto bg-slate-950">
-					<GateCombatPanel />
-				</div>
-			</div>
-		);
-	}
-
 	// Field bosses now fight on the map in 3D: the boss model chases the player
 	// (BossController), and the combat HUD overlays the map rather than taking it
 	// over. The FieldBossPanel renders as an overlay when a boss is active.
@@ -168,9 +148,11 @@ export function PlayClient(): React.JSX.Element {
 		? navItems.find((item) => item.key === activePanel)
 		: null;
 	const ActivePanel = activeItem?.Panel ?? null;
-	// During an engaged boss fight the combat overlay owns the bottom-center of
-	// the screen, so the radial FAB stands down to avoid covering its controls.
+	// During an engaged boss fight or an active gate run the combat overlay owns
+	// the bottom-center of the screen, so the radial FAB stands down to avoid
+	// covering its controls.
 	const bossEngaged = state.activeBoss?.status === "engaged";
+	const gateActive = Boolean(state.activeGate);
 
 	return (
 		<div className="relative h-full w-full overflow-hidden bg-slate-950">
@@ -183,6 +165,18 @@ export function PlayClient(): React.JSX.Element {
 				<div className="pointer-events-none absolute inset-x-0 bottom-16 z-30 flex justify-center px-3">
 					<div className="pointer-events-auto w-full max-w-md overflow-hidden rounded-2xl border border-rose-500/30 bg-slate-950/85 shadow-2xl backdrop-blur-md">
 						<FieldBossPanel />
+					</div>
+				</div>
+			)}
+
+			{/* Active gate run: the fight happens in-world on the live map (enemies
+			    are 3D entities), so the combat panel overlays the bottom-center
+			    rather than taking over the screen. The gate-combat agent will swap
+			    GateCombatPanel's internals; this only controls WHERE it renders. */}
+			{gateActive && (
+				<div className="pointer-events-none absolute inset-x-0 bottom-16 z-30 flex justify-center px-3">
+					<div className="pointer-events-auto max-h-[60vh] w-full max-w-md overflow-y-auto rounded-2xl border border-cyan-400/30 bg-slate-950/85 shadow-2xl backdrop-blur-md">
+						<GateCombatPanel />
 					</div>
 				</div>
 			)}
@@ -224,8 +218,8 @@ export function PlayClient(): React.JSX.Element {
 			)}
 
 			{/* Game-style radial menu (hidden while a panel sheet is open or a
-			    boss fight owns the bottom of the screen). */}
-			{!(ActivePanel || bossEngaged) && (
+			    boss fight / gate run owns the bottom of the screen). */}
+			{!(ActivePanel || bossEngaged || gateActive) && (
 				<RadialMenu
 					categories={categories}
 					onSelect={(key) => setActivePanel(key as PanelKey)}
