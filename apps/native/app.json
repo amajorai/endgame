@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "scheme": "endgame",
+    "userInterfaceStyle": "automatic",
+    "orientation": "default",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "endgame",
+    "slug": "endgame",
+    "plugins": ["expo-font"],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}

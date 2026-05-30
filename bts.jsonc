@@ -1,0 +1,31 @@
+// Better-T-Stack
+//
+// Website: https://www.better-t-stack.dev/
+// Stack Builder: https://www.better-t-stack.dev/new
+// Analytics: https://www.better-t-stack.dev/analytics
+// Showcase: https://www.better-t-stack.dev/showcase
+// Sponsor: https://github.com/sponsors/AmanVarshney01
+//
+// Add new addons with: bun create better-t-stack add
+// This file is safe to delete
+
+{
+  "$schema": "https://r2.better-t-stack.dev/schema.json",
+  "version": "3.29.0",
+  "createdAt": "2026-05-30T07:57:38.861Z",
+  "reproducibleCommand": "bun create better-t-stack@latest endgame --frontend next native-uniwind --backend hono --runtime bun --database mongodb --orm mongoose --api none --auth better-auth --payments polar --addons biome evlog fumadocs mcp skills turborepo ultracite wxt --examples ai --db-setup none --web-deploy none --server-deploy none --git --package-manager bun --install",
+  "database": "mongodb",
+  "orm": "mongoose",
+  "backend": "hono",
+  "runtime": "bun",
+  "frontend": ["next", "native-uniwind"],
+  "addons": ["biome", "evlog", "fumadocs", "mcp", "skills", "turborepo", "ultracite", "wxt"],
+  "examples": ["ai"],
+  "auth": "better-auth",
+  "payments": "polar",
+  "packageManager": "bun",
+  "dbSetup": "none",
+  "api": "none",
+  "webDeploy": "none",
+  "serverDeploy": "none",
+}

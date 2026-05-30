@@ -1,0 +1,23 @@
+{
+  "name": "@endgame/db",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@endgame/env": "workspace:*",
+    "dotenv": "catalog:",
+    "mongoose": "^9.6.2",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@endgame/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
