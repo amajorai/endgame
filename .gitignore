@@ -53,3 +53,8 @@ temp
 # Local scratch / debug artifacts
 _fix_repro.mjs
 _render_out.*
+
+# Playwright
+test-results
+playwright-report
+.playwright

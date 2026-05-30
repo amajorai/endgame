@@ -6,7 +6,8 @@
     "dev": "next dev --port 3001",
     "build": "next build",
     "start": "next start",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@ai-sdk/react": "catalog:",
@@ -34,6 +35,7 @@
   },
   "devDependencies": {
     "@endgame/config": "workspace:*",
+    "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^20",
     "@types/react": "^19.2.15",
