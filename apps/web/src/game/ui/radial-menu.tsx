@@ -59,6 +59,7 @@ function Satellite({
 }: SatelliteProps): React.JSX.Element {
 	return (
 		<button
+			aria-hidden={!shown}
 			aria-label={label}
 			className="absolute flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-full border border-cyan-400/40 bg-slate-950/85 text-cyan-100 shadow-lg backdrop-blur-md transition-all duration-200 ease-out hover:border-cyan-300 hover:bg-slate-900/90"
 			onClick={onClick}
@@ -72,6 +73,7 @@ function Satellite({
 					: "translate(-50%, -50%) scale(0.3)",
 				transitionDelay: shown ? `${delayMs}ms` : "0ms",
 			}}
+			tabIndex={shown ? 0 : -1}
 			type="button"
 		>
 			<span aria-hidden="true" className="text-xl leading-none">
