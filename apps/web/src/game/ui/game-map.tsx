@@ -2,7 +2,7 @@
 
 import "maplibre-gl/dist/maplibre-gl.css";
 import maplibregl from "maplibre-gl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import {
 	BUILDING_COLOR_DARK,
 	BUILDING_COLOR_LIGHT,
@@ -18,10 +18,15 @@ import { hexBoundary, hexDisk, posToHex } from "@/game/lib/hex";
 import { useGameState, useGameStore } from "@/game/store/store";
 import { loadPlayerCharacter } from "@/game/three/asset-loader";
 import { BossController } from "@/game/three/boss-controller";
+import { GateCombatController } from "@/game/three/gate-combat-controller";
 import { PlayerController } from "@/game/three/player-controller";
 import { SceneLayer } from "@/game/three/scene-layer";
-import type { GameState, MapTheme } from "@/game/types";
-import WorldActionPrompt from "@/game/ui/world-action-prompt";
+import {
+	handlePlotTapEvent,
+	plotSelection,
+} from "@/game/three/specs/farming-specs";
+import type { GameEvent, GameState, MapTheme } from "@/game/types";
+import { buildSelection } from "@/game/ui/build-menu";
 
 const FILL_OPACITY = 0.35;
 const BUILDING_MIN_ZOOM = 14;
@@ -196,12 +201,6 @@ export default function GameMap(): React.JSX.Element {
 	const layerRef = useRef<SceneLayer | null>(null);
 	const weatherKeyRef = useRef<string>("");
 	const loadedRef = useRef(false);
-	// Contextual build prompt: which owned hex was tapped (null = hidden). The map
-	// click handler is registered once inside the init effect, so it updates this
-	// through a ref to the latest setter to avoid a stale closure.
-	const [buildPromptHex, setBuildPromptHex] = useState<string | null>(null);
-	const setBuildPromptHexRef = useRef(setBuildPromptHex);
-	setBuildPromptHexRef.current = setBuildPromptHex;
 
 	// Init effect: create the map once and tear it down on unmount. Uses local
 	// captures + a `cancelled` flag so the async style-load path is safe under
@@ -255,26 +254,43 @@ export default function GameMap(): React.JSX.Element {
 			// point. Picking is screen-space via MapLibre's projection, independent
 			// of the three.js camera.
 			map.on("click", (event) => {
+				// Entity taps dispatch the spec's own event. A PLOT_TAP additionally
+				// drives the plant-prompt selection (the reducer ignores it), so the
+				// pick dispatch is wrapped to route it; all other events (harvest,
+				// recall, gate-attack, building-tap) just flow through to the store.
+				const pickDispatch = (picked: GameEvent): void => {
+					// A plot tap opens the plant prompt, so any open build menu must
+					// close first - the two contextual overlays are mutually exclusive.
+					if (picked.type === "PLOT_TAP") {
+						buildSelection.clear();
+					}
+					handlePlotTapEvent(picked);
+					useGameStore.getState().dispatch(picked);
+				};
 				const hitEntity = layerRef.current?.entities.pick(
 					map,
 					event.point.x,
 					event.point.y,
-					useGameStore.getState().dispatch
+					pickDispatch
 				);
 				if (hitEntity) {
 					return;
 				}
-				// On an owned, empty hex the tap opens the contextual build prompt
-				// (and signals WORLD_TAP_HEX for reducers) instead of walking. On any
-				// other hex it stays a move order.
+				// On an owned, empty hex the tap opens the contextual build menu (and
+				// signals WORLD_TAP_HEX for reducers) instead of walking. On any other
+				// hex it stays a move order and dismisses any open contextual overlay.
 				const live = useGameStore.getState();
 				const hex = posToHex(event.lngLat.lat, event.lngLat.lng);
 				if (isOwnedBuildableHex(live.state, hex)) {
 					live.dispatch({ type: "WORLD_TAP_HEX", hex });
-					setBuildPromptHexRef.current(hex);
+					// Mutually exclusive with the plant prompt: clear any plot selection
+					// before opening the build menu.
+					plotSelection.clear();
+					buildSelection.select(hex);
 					return;
 				}
-				setBuildPromptHexRef.current(null);
+				buildSelection.clear();
+				plotSelection.clear();
 				controllerRef.current?.walkTo(event.lngLat.lat, event.lngLat.lng);
 			});
 
@@ -298,6 +314,19 @@ export default function GameMap(): React.JSX.Element {
 			});
 			controller.setBoss(boss);
 			layer.entities.setBossPositionProvider(() => boss.position);
+
+			// On-map gate-combat chaser: an active gate run's enemies chase the
+			// player in real time (steered by the same nav helpers as the boss). The
+			// entity renderer draws each enemy at its live position via the
+			// enemyPositions singleton; the controller is ticked from the player
+			// controller's render loop (setGateCombat -> update(dt, time)).
+			const gateCombat = new GateCombatController({
+				map,
+				dispatch: useGameStore.getState().dispatch,
+				getState: () => useGameStore.getState().state,
+				getPlayer: () => controller?.getPosition() ?? current.position,
+			});
+			controller.setGateCombat(gateCombat);
 
 			controller.setEnabled(!current.useRealGps);
 			controller.start();
@@ -433,12 +462,6 @@ export default function GameMap(): React.JSX.Element {
 	return (
 		<div className="absolute inset-0">
 			<div className="h-full w-full" ref={containerRef} />
-			{buildPromptHex && (
-				<WorldActionPrompt
-					hex={buildPromptHex}
-					onClose={() => setBuildPromptHex(null)}
-				/>
-			)}
 			<button
 				className="absolute right-3 bottom-3 z-10 rounded-full border border-cyan-400/40 bg-slate-950/70 px-3 py-2 font-medium text-cyan-200 text-xs backdrop-blur transition-colors hover:bg-slate-900/80"
 				onClick={handleRecenter}

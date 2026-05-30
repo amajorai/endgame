@@ -10,13 +10,18 @@ import {
 } from "three";
 import { METERS_PER_DEGREE_LAT } from "@/game/constants";
 import { loadModelInstance } from "@/game/three/asset-loader";
+import { enemyPositions } from "@/game/three/gate-combat-controller";
 import { createPortal, type Portal } from "@/game/three/vfx/portal";
 // Side-effect import: registering the core gate/beacon/drop/boss provider on the
 // registry the moment the renderer module loads. The renderer is constructed by
 // SceneLayer, so this guarantees the core content is registered before the first
 // sync(). Per-system providers register themselves the same way from their own
-// modules (added by later agents).
+// modules (one side-effect import each, below).
 import "@/game/three/specs/core-specs";
+import "@/game/three/specs/farming-specs";
+import "@/game/three/specs/estate-specs";
+import "@/game/three/specs/shadow-specs";
+import "@/game/three/specs/gate-combat-specs";
 import { collectAll, type WorldEntitySpec } from "@/game/three/world-entities";
 import type { GameEvent, GameState } from "@/game/types";
 
@@ -29,6 +34,10 @@ import type { GameEvent, GameState } from "@/game/types";
 
 const DEG = Math.PI / 180;
 const PICK_RADIUS_PX = 32;
+// Record-key prefix for an active gate run's enemies. The live-position singleton
+// in gate-combat-controller is keyed by the raw enemy id, so this prefix is
+// stripped before looking a live position up.
+const GATE_ENEMY_PREFIX = "gate-enemy:";
 
 // Fallback target footprint (metres) when a spec omits scaleM, keyed by kind.
 // Core specs always set scaleM explicitly; this is belt-and-suspenders for
@@ -253,17 +262,40 @@ export class EntityRenderer {
 			});
 	}
 
+	// Resolve the position to draw an entity at this frame. The boss and active
+	// gate enemies use their controller's live (per-frame) position so their
+	// models track smoothly between the coarser store writebacks; everything else
+	// uses the spec's stored lat/lng. The gate-enemy singleton is keyed by the raw
+	// enemy id, while the record key carries a `gate-enemy:` prefix, so the prefix
+	// is stripped before lookup.
+	private livePosFor(
+		key: string,
+		record: EntityRecord,
+		bossPos: { lat: number; lng: number } | null
+	): { lat: number; lng: number } {
+		if (bossPos && key.startsWith("boss:")) {
+			return bossPos;
+		}
+		if (key.startsWith(GATE_ENEMY_PREFIX)) {
+			const id = key.slice(GATE_ENEMY_PREFIX.length);
+			const live = enemyPositions.get(id);
+			if (live) {
+				return live;
+			}
+		}
+		return { lat: record.lat, lng: record.lng };
+	}
+
 	// Reposition all entity models relative to the current scene origin. Called
-	// every frame as the origin tracks the player. The boss uses its live chase
-	// position (if provided) so its model moves smoothly, not in hex jumps.
+	// every frame as the origin tracks the player. The boss and gate enemies use
+	// their live chase position (if available) so their models move smoothly, not
+	// in hex jumps.
 	syncPositions(originLng: number, originLat: number): void {
 		this.originLng = originLng;
 		this.originLat = originLat;
 		const bossPos = this.bossLivePos?.() ?? null;
 		for (const [key, record] of this.records) {
-			const isBoss = key.startsWith("boss:");
-			const lat = isBoss && bossPos ? bossPos.lat : record.lat;
-			const lng = isBoss && bossPos ? bossPos.lng : record.lng;
+			const { lat, lng } = this.livePosFor(key, record, bossPos);
 			if (record.root) {
 				this.placeOne(record.root, lat, lng);
 			}

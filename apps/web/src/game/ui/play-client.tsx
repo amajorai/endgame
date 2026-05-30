@@ -5,17 +5,20 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useGameReady, useGameState } from "@/game/store/store";
 import { useGameClock } from "@/game/store/use-game-clock";
 import BeaconsLootPanel from "@/game/ui/beacons-loot-panel";
+import BuildMenu from "@/game/ui/build-menu";
 import CharacterPanel from "@/game/ui/character-panel";
 import ContentPanel from "@/game/ui/content-panel";
 import DebugAdminPanel from "@/game/ui/debug-admin-panel";
 import EstatesPanel from "@/game/ui/estates-panel";
 import FarmingPanel from "@/game/ui/farming-panel";
 import FieldBossPanel from "@/game/ui/field-boss-panel";
+import GateCombatHud from "@/game/ui/gate-combat-hud";
 import GateCombatPanel from "@/game/ui/gate-combat-panel";
 import GhostModePanel from "@/game/ui/ghost-mode-panel";
 import { Hud } from "@/game/ui/hud";
 import InventoryPanel from "@/game/ui/inventory-panel";
 import Onboarding from "@/game/ui/onboarding";
+import { PlantPrompt } from "@/game/ui/plant-prompt";
 import QuestsPanel from "@/game/ui/quests-panel";
 import { type RadialCategory, RadialMenu } from "@/game/ui/radial-menu";
 import ShadowsPanel from "@/game/ui/shadows-panel";
@@ -170,16 +173,21 @@ export function PlayClient(): React.JSX.Element {
 			)}
 
 			{/* Active gate run: the fight happens in-world on the live map (enemies
-			    are 3D entities), so the combat panel overlays the bottom-center
-			    rather than taking over the screen. The gate-combat agent will swap
-			    GateCombatPanel's internals; this only controls WHERE it renders. */}
+			    are 3D entities chasing the player), so the compact combat HUD overlays
+			    the bottom-center rather than taking over the screen. */}
 			{gateActive && (
 				<div className="pointer-events-none absolute inset-x-0 bottom-16 z-30 flex justify-center px-3">
 					<div className="pointer-events-auto max-h-[60vh] w-full max-w-md overflow-y-auto rounded-2xl border border-cyan-400/30 bg-slate-950/85 shadow-2xl backdrop-blur-md">
-						<GateCombatPanel />
+						<GateCombatHud />
 					</div>
 				</div>
 			)}
+
+			{/* Contextual in-world overlays. Each self-hides when nothing is selected:
+			    PlantPrompt opens on tapping a farm plot, BuildMenu on tapping an owned
+			    empty hex. They position themselves absolutely, so they mount bare. */}
+			<PlantPrompt />
+			<BuildMenu />
 
 			{!state.meta.onboarded && <Onboarding />}
 

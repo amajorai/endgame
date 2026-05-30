@@ -1,6 +1,7 @@
 // Static balance tables and power/theme metadata for the gate-combat system.
 // Pure data + pure helpers only. No state, no side effects.
 
+import { METERS_PER_DEGREE_LAT } from "@/game/constants";
 import type { GateTheme, PowerId, Rank } from "@/game/types";
 
 // Rank ordinal for scaling enemy stats and rewards.
@@ -286,6 +287,64 @@ export const ENEMY_NAMES: Record<GateTheme, string[]> = {
 	sacred: ["Choir Wraith", "Censer Spirit", "Lapsed Acolyte", "Veil Warden"],
 	abyss: ["Void Spawn", "Null Crawler", "Deep Whisper", "Abyssal Maw"],
 	liminal: ["Threshold Echo", "Hall Phantom", "Doorway Shade", "Drift Wisp"],
+};
+
+// --- On-map enemy placement (deterministic). ------------------------------
+// When a gate run fights in-world, each enemy is scattered on a ring around the
+// run's origin (the player's position at spawn / wave-up). Placement is a pure
+// function of the enemy's index, kind, and the origin, so it is stable across
+// re-renders and re-entry (no RNG at call time). The boss takes the inner ring
+// so it reads as the centrepiece; fodder/elite fan out further.
+
+const DEG = Math.PI / 180;
+// Ring radii (metres) the enemy stands at, by kind. Tight enough to stay on the
+// player's screen, loose enough that they must close distance to attack.
+const SPAWN_RADIUS_M: Record<"fodder" | "elite" | "boss", number> = {
+	fodder: 16,
+	elite: 14,
+	boss: 11,
+};
+// A fixed fraction of a full turn so successive enemies fan evenly. The golden
+// angle keeps even small counts visually well-spread without overlap.
+const GOLDEN_ANGLE_RAD = 2.399_963_229_728_653;
+// Bias so the formation appears ahead of the player rather than ringing them.
+const FORMATION_BIAS_RAD = -Math.PI / 2;
+
+// Offset a lat/lng by an east/north metre vector. Mirrors nav.ts's geometry so
+// enemies placed here line up with where the chase controller will move them.
+function offsetLatLng(
+	lat: number,
+	lng: number,
+	east: number,
+	north: number
+): { lat: number; lng: number } {
+	const nextLat = lat + north / METERS_PER_DEGREE_LAT;
+	const lngScale = METERS_PER_DEGREE_LAT * Math.cos(lat * DEG);
+	const nextLng = lng + east / (lngScale || METERS_PER_DEGREE_LAT);
+	return { lat: nextLat, lng: nextLng };
+}
+
+// Deterministic world position for an enemy at `index` of `kind`, scattered on a
+// per-kind ring around (originLat, originLng). Stable for a given input.
+export function enemyWorldPos(
+	originLat: number,
+	originLng: number,
+	kind: "fodder" | "elite" | "boss",
+	index: number
+): { lat: number; lng: number } {
+	const radius = SPAWN_RADIUS_M[kind];
+	const angle = FORMATION_BIAS_RAD + index * GOLDEN_ANGLE_RAD;
+	const east = Math.cos(angle) * radius;
+	const north = Math.sin(angle) * radius;
+	return offsetLatLng(originLat, originLng, east, north);
+}
+
+// Per-kind on-map model footprint (metres) so the renderer sizes the skeletons
+// consistently. Boss reads largest; fodder smallest.
+export const ENEMY_SIZE_M: Record<"fodder" | "elite" | "boss", number> = {
+	fodder: 4.5,
+	elite: 6,
+	boss: 9,
 };
 
 // Boss name pools by theme.

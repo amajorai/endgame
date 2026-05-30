@@ -8,6 +8,7 @@ import {
 	ENEMY_DPS,
 	ENEMY_HP_PER_RANK,
 	ENEMY_NAMES,
+	enemyWorldPos,
 	FODDER_PER_WAVE,
 	POWER_THEME,
 	parMsForRank,
@@ -16,6 +17,7 @@ import {
 	WAVES_BY_RANK,
 } from "@/game/data/gate-combat";
 import { mulberry32, seededFromHex } from "@/game/lib/rng";
+import { metresBetween } from "@/game/three/nav";
 import type {
 	EnemyKind,
 	GameEvent,
@@ -36,19 +38,26 @@ import type {
 type GateCombatEvent =
 	| { type: "GATE_ENTER"; hex: string }
 	| { type: "GATE_ATTACK"; enemyId?: string }
+	| { type: "ATTACK_NEAREST" }
 	| { type: "GATE_SKILL"; slot: number }
 	| { type: "GATE_DODGE" }
 	| { type: "GATE_USE_POTION"; purchased?: boolean }
 	| { type: "GATE_TICK"; now: number }
+	| {
+			type: "GATE_ENEMY_MOVE";
+			positions: { id: string; lat: number; lng: number }[];
+	  }
 	| { type: "GATE_EXIT" };
 
 const GATE_COMBAT_TYPES: Set<string> = new Set([
 	"GATE_ENTER",
 	"GATE_ATTACK",
+	"ATTACK_NEAREST",
 	"GATE_SKILL",
 	"GATE_DODGE",
 	"GATE_USE_POTION",
 	"GATE_TICK",
+	"GATE_ENEMY_MOVE",
 	"GATE_EXIT",
 ]);
 
@@ -162,6 +171,21 @@ export function buildWave(
 	return enemies;
 }
 
+// Scatter a freshly built wave's enemies on world rings around (lat, lng).
+// Deterministic per enemy index/kind, so positions are stable across re-renders
+// and a re-entered run. Leaves the normalized x/y (used by star/score math)
+// untouched - this only ADDS lat/lng.
+function placeEnemies(
+	enemies: GateEnemy[],
+	originLat: number,
+	originLng: number
+): GateEnemy[] {
+	return enemies.map((enemy, index) => {
+		const pos = enemyWorldPos(originLat, originLng, enemy.kind, index);
+		return { ...enemy, lat: pos.lat, lng: pos.lng };
+	});
+}
+
 // --- Player damage output. -------------------------------------------------
 
 function statValue(
@@ -189,7 +213,13 @@ function startRun(state: GameState, gate: Gate): GameState {
 	const power = state.player.equippedPower;
 	const totalWaves = WAVES_BY_RANK[gate.rank];
 	const wave = 1;
-	const enemies = buildWave(gate.hex, gate.theme, gate.rank, wave, totalWaves);
+	const originLat = state.position.lat;
+	const originLng = state.position.lng;
+	const enemies = placeEnemies(
+		buildWave(gate.hex, gate.theme, gate.rank, wave, totalWaves),
+		originLat,
+		originLng
+	);
 	const run: GateRunInternal = {
 		gateHex: gate.hex,
 		theme: gate.theme,
@@ -198,6 +228,8 @@ function startRun(state: GameState, gate: Gate): GameState {
 		wave,
 		totalWaves,
 		enemies,
+		originLat,
+		originLng,
 		startedAt: state.lastTick,
 		playerHp: state.player.maxHp,
 		playerMaxHp: state.player.maxHp,
@@ -214,14 +246,28 @@ function startRun(state: GameState, gate: Gate): GameState {
 	return { ...state, activeGate: run };
 }
 
-function nearestAliveEnemy(run: GateRun): GateEnemy | undefined {
-	// Auto-target: the topmost (smallest y) living enemy reads as "nearest".
+// Pick the living enemy physically nearest the player's world position. Used
+// for the on-map Attack button and key `j`, which carry no explicit target.
+// Falls back to the arena-y heuristic when an enemy has no world position yet
+// (e.g. the very first frame before the controller writes one back).
+function nearestAliveEnemy(
+	run: GateRun,
+	origin?: Origin
+): GateEnemy | undefined {
 	let best: GateEnemy | undefined;
+	let bestMetric = Number.POSITIVE_INFINITY;
 	for (const enemy of run.enemies) {
 		if (enemy.hp <= 0) {
 			continue;
 		}
-		if (!best || enemy.y < best.y) {
+		// World distance when both the origin and the enemy have lat/lng; else the
+		// topmost (smallest y) enemy reads as "nearest", matching prior behaviour.
+		const metric =
+			origin && enemy.lat !== undefined && enemy.lng !== undefined
+				? metresBetween(origin.lat, origin.lng, enemy.lat, enemy.lng).distance
+				: enemy.y;
+		if (metric < bestMetric) {
+			bestMetric = metric;
 			best = enemy;
 		}
 	}
@@ -231,12 +277,13 @@ function nearestAliveEnemy(run: GateRun): GateEnemy | undefined {
 function damageEnemy(
 	run: GateRunInternal,
 	targetId: string | undefined,
-	amount: number
+	amount: number,
+	origin?: Origin
 ): GateRunInternal {
 	const focus = targetId
 		? run.enemies.find((e) => e.id === targetId && e.hp > 0)
 		: undefined;
-	const target = focus ?? nearestAliveEnemy(run);
+	const target = focus ?? nearestAliveEnemy(run, origin);
 	if (!target) {
 		return run;
 	}
@@ -257,9 +304,20 @@ function finalizeWin(run: GateRunInternal): GateRunInternal {
 	return { ...won, starsEarned: computeStars(won) };
 }
 
+// Player position passed into a tick so a newly spawned wave can scatter around
+// the player's CURRENT location, not the stale entry point.
+interface Origin {
+	lat: number;
+	lng: number;
+}
+
 // Advance the run by an elapsed delta: enemy chip damage, regen, wave spawn,
 // win/lose resolution. dodgeUntil tracks the active dodge mitigation window.
-function tickRun(run: GateRunInternal, deltaMs: number): GateRunInternal {
+function tickRun(
+	run: GateRunInternal,
+	deltaMs: number,
+	origin: Origin
+): GateRunInternal {
 	if (run.status !== "active") {
 		return run;
 	}
@@ -272,14 +330,21 @@ function tickRun(run: GateRunInternal, deltaMs: number): GateRunInternal {
 			return finalizeWin({ ...run, elapsedMs: nextElapsed });
 		}
 		const nextWave = run.wave + 1;
-		const enemies = buildWave(
-			run.gateHex,
-			run.theme,
-			run.rank,
-			nextWave,
-			run.totalWaves
+		// Re-anchor the formation to where the player now stands so the next wave
+		// surrounds them in-world rather than spawning back at the entry hex.
+		const enemies = placeEnemies(
+			buildWave(run.gateHex, run.theme, run.rank, nextWave, run.totalWaves),
+			origin.lat,
+			origin.lng
 		);
-		return { ...run, elapsedMs: nextElapsed, wave: nextWave, enemies };
+		return {
+			...run,
+			elapsedMs: nextElapsed,
+			wave: nextWave,
+			enemies,
+			originLat: origin.lat,
+			originLng: origin.lng,
+		};
 	}
 
 	// Enemy formation chips the player. Dodge window halves incoming damage.
@@ -412,7 +477,10 @@ function handleGateTick(state: GameState, now: number): GameState {
 	if (deltaMs <= 0) {
 		return state;
 	}
-	const ticked = tickRun(run, deltaMs);
+	const ticked = tickRun(run, deltaMs, {
+		lat: state.position.lat,
+		lng: state.position.lng,
+	});
 	if (ticked === run) {
 		return state;
 	}
@@ -428,6 +496,12 @@ function activeRun(state: GameState): GateRunInternal | null {
 	return run;
 }
 
+// The player's current world position, used to resolve untargeted attacks to
+// the physically nearest enemy on the map.
+function playerOrigin(state: GameState): Origin {
+	return { lat: state.position.lat, lng: state.position.lng };
+}
+
 // Apply a damage result and resolve an immediate boss-wave win.
 function withDamage(
 	state: GameState,
@@ -435,7 +509,7 @@ function withDamage(
 	dmg: number,
 	enemyId: string | undefined
 ): GameState {
-	let next = damageEnemy(run, enemyId, dmg);
+	let next = damageEnemy(run, enemyId, dmg, playerOrigin(state));
 	if (allCleared(next) && next.wave >= next.totalWaves) {
 		next = finalizeWin(next);
 	}
@@ -524,6 +598,38 @@ function handleExit(state: GameState): GameState {
 	return { ...state, activeGate: null };
 }
 
+// Fold the controller's live enemy positions back into state on a throttle. This
+// is presentation-only: it moves where the skeleton models render (and refreshes
+// the lat/lng the nearest-target math reads) without touching HP, waves, mana,
+// stamina, or timers. It NEVER applies damage - the spine TICK remains the sole
+// authority for player HP loss, so star/par/reward balance is unchanged.
+function handleEnemyMove(
+	state: GameState,
+	positions: { id: string; lat: number; lng: number }[]
+): GameState {
+	const run = state.activeGate;
+	if (!run || run.status !== "active") {
+		return state;
+	}
+	const byId = new Map(positions.map((p) => [p.id, p]));
+	let changed = false;
+	const enemies = run.enemies.map((enemy) => {
+		const pos = byId.get(enemy.id);
+		if (!pos || enemy.hp <= 0) {
+			return enemy;
+		}
+		if (enemy.lat === pos.lat && enemy.lng === pos.lng) {
+			return enemy;
+		}
+		changed = true;
+		return { ...enemy, lat: pos.lat, lng: pos.lng };
+	});
+	if (!changed) {
+		return state;
+	}
+	return { ...state, activeGate: { ...run, enemies } };
+}
+
 export const gateCombatReducer: SystemReducer = (state, event) => {
 	// Also advance the run on the spine TICK so combat progresses with the clock.
 	if (event.type === "TICK") {
@@ -539,6 +645,10 @@ export const gateCombatReducer: SystemReducer = (state, event) => {
 			return handleEnter(state, event.hex);
 		case "GATE_ATTACK":
 			return handleAttack(state, event.enemyId);
+		case "ATTACK_NEAREST":
+			// Key `j` (player-controller) routes here: attack the physically nearest
+			// living enemy, identical to GATE_ATTACK with no explicit target.
+			return handleAttack(state, undefined);
 		case "GATE_SKILL":
 			return handleSkill(state);
 		case "GATE_DODGE":
@@ -547,6 +657,8 @@ export const gateCombatReducer: SystemReducer = (state, event) => {
 			return handlePotion(state, event.purchased === true);
 		case "GATE_TICK":
 			return handleGateTick(state, event.now);
+		case "GATE_ENEMY_MOVE":
+			return handleEnemyMove(state, event.positions);
 		case "GATE_EXIT":
 			return handleExit(state);
 		default:
