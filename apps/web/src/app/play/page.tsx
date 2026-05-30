@@ -1,5 +1,5 @@
-import { PlayClient } from "@/game/ui/play-client";
+import { redirect } from "next/navigation";
 
-export default function PlayPage(): React.JSX.Element {
-	return <PlayClient />;
+export default function PlayPage(): never {
+	redirect("/");
 }

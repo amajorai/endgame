@@ -17,6 +17,7 @@ import { Hud } from "@/game/ui/hud";
 import InventoryPanel from "@/game/ui/inventory-panel";
 import Onboarding from "@/game/ui/onboarding";
 import QuestsPanel from "@/game/ui/quests-panel";
+import { type RadialCategory, RadialMenu } from "@/game/ui/radial-menu";
 import ShadowsPanel from "@/game/ui/shadows-panel";
 import WeatherPanel from "@/game/ui/weather-panel";
 
@@ -65,6 +66,65 @@ const DEBUG_ITEM: NavItem = {
 	Panel: DebugAdminPanel,
 };
 
+// The flat feature list is grouped into four thematic categories for the radial
+// menu so the wheel never gets cramped. Debug is appended to World at runtime
+// when debug mode is enabled.
+interface CategoryMeta {
+	icon: string;
+	itemKeys: PanelKey[];
+	key: string;
+	label: string;
+}
+
+const CATEGORY_META: CategoryMeta[] = [
+	{
+		key: "combat",
+		icon: "🌀",
+		label: "Combat",
+		itemKeys: ["gates", "shadows", "ghost"],
+	},
+	{
+		key: "build",
+		icon: "🏰",
+		label: "Build",
+		itemKeys: ["beacons", "farm", "estates"],
+	},
+	{
+		key: "hero",
+		icon: "🎖️",
+		label: "Hero",
+		itemKeys: ["character", "quests", "inventory"],
+	},
+	{
+		key: "world",
+		icon: "🌍",
+		label: "World",
+		itemKeys: ["explore", "weather"],
+	},
+];
+
+function buildCategories(navItems: NavItem[]): RadialCategory[] {
+	const itemByKey = new Map(navItems.map((item) => [item.key, item]));
+	return CATEGORY_META.map((meta) => {
+		const items: RadialCategory["items"] = [];
+		for (const key of meta.itemKeys) {
+			const item = itemByKey.get(key);
+			if (item) {
+				items.push({ key: item.key, icon: item.icon, label: item.label });
+			}
+		}
+		const debugItem = itemByKey.get("debug");
+		if (meta.key === "world" && debugItem) {
+			items.push({
+				key: debugItem.key,
+				icon: debugItem.icon,
+				label: debugItem.label,
+			});
+		}
+		return { key: meta.key, icon: meta.icon, label: meta.label, items };
+	});
+}
+
 export function PlayClient(): React.JSX.Element {
 	useGameClock();
 	const state = useGameState();
@@ -84,6 +144,7 @@ export function PlayClient(): React.JSX.Element {
 	}, [ready, dispatch]);
 
 	const navItems = state.debug.enabled ? [...NAV_ITEMS, DEBUG_ITEM] : NAV_ITEMS;
+	const categories = buildCategories(navItems);
 
 	const handleEnableDebug = (): void => {
 		dispatch({ type: "DEBUG_TOGGLE" });
@@ -103,9 +164,10 @@ export function PlayClient(): React.JSX.Element {
 	// Field bosses now fight on the map in 3D: the boss model chases the player
 	// (BossController), and the combat HUD overlays the map rather than taking it
 	// over. The FieldBossPanel renders as an overlay when a boss is active.
-	const ActivePanel = activePanel
-		? (navItems.find((item) => item.key === activePanel)?.Panel ?? null)
+	const activeItem = activePanel
+		? navItems.find((item) => item.key === activePanel)
 		: null;
+	const ActivePanel = activeItem?.Panel ?? null;
 
 	return (
 		<div className="relative h-full w-full overflow-hidden bg-slate-950">
@@ -136,13 +198,12 @@ export function PlayClient(): React.JSX.Element {
 				</button>
 			)}
 
-			{/* Slide-up panel sheet. */}
-			{ActivePanel && (
-				<div className="absolute inset-x-0 bottom-14 z-30 mx-auto flex max-h-[70vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-2xl border border-cyan-400/30 border-b-0 bg-slate-950/90 shadow-2xl backdrop-blur-md">
+			{/* Bottom-sheet panel for the selected feature. */}
+			{ActivePanel && activeItem && (
+				<div className="absolute inset-x-0 bottom-0 z-40 mx-auto flex max-h-[70vh] w-full max-w-2xl flex-col overflow-hidden rounded-t-2xl border border-cyan-400/30 border-b-0 bg-slate-950/90 shadow-2xl backdrop-blur-md">
 					<div className="flex shrink-0 items-center justify-between border-cyan-400/20 border-b px-4 py-2">
 						<span className="font-medium text-cyan-200 text-sm">
-							{navItems.find((item) => item.key === activePanel)?.icon}{" "}
-							{navItems.find((item) => item.key === activePanel)?.label}
+							{activeItem.icon} {activeItem.label}
 						</span>
 						<button
 							aria-label="Close panel"
@@ -159,31 +220,13 @@ export function PlayClient(): React.JSX.Element {
 				</div>
 			)}
 
-			{/* Bottom navigation bar. */}
-			<nav className="absolute inset-x-0 bottom-0 z-40 flex items-stretch overflow-x-auto border-cyan-400/30 border-t bg-slate-950/85 backdrop-blur-md">
-				{navItems.map((item) => {
-					const selected = activePanel === item.key;
-					return (
-						<button
-							className={`flex min-w-14 flex-1 flex-col items-center gap-0.5 py-1.5 transition-colors ${
-								selected
-									? "bg-cyan-500/15 text-cyan-200"
-									: "text-slate-400 hover:text-cyan-300"
-							}`}
-							key={item.key}
-							onClick={() =>
-								setActivePanel((prev) => (prev === item.key ? null : item.key))
-							}
-							type="button"
-						>
-							<span aria-hidden="true" className="text-lg leading-none">
-								{item.icon}
-							</span>
-							<span className="text-[10px] leading-none">{item.label}</span>
-						</button>
-					);
-				})}
-			</nav>
+			{/* Game-style radial menu (hidden while a panel sheet is open). */}
+			{!ActivePanel && (
+				<RadialMenu
+					categories={categories}
+					onSelect={(key) => setActivePanel(key as PanelKey)}
+				/>
+			)}
 		</div>
 	);
 }
