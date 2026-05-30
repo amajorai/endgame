@@ -133,6 +133,14 @@ export const PLAYER_MODEL_SCALE = 4;
 // Metres per degree of latitude (WGS84 mean); longitude scales by cos(lat).
 export const METERS_PER_DEGREE_LAT = 111_320;
 
+// Jump (Space): a single gravity arc applied to the avatar's vertical offset.
+// Gamey rather than realistic, to match the brisk WALK_SPEED_MPS. Peak height is
+// JUMP_SPEED_MPS^2 / (2 * GRAVITY_MPS2) (~3 m) and airtime is 2 * JUMP_SPEED_MPS
+// / GRAVITY_MPS2 (~0.93 s), tuned so the Jump_Full_Short clip reads at its
+// natural playback rate.
+export const JUMP_SPEED_MPS = 13;
+export const GRAVITY_MPS2 = 28;
+
 // Asset URLs served from apps/web/public.
 export const PLAYER_CHARACTER_URL =
 	"/assets/kaykit/adventurers/characters/gltf/Knight.glb";

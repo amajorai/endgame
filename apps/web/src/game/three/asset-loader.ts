@@ -3,6 +3,7 @@ import {
 	type AnimationClip,
 	AnimationMixer,
 	type Group,
+	LoopOnce,
 	type Object3D,
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
@@ -41,6 +42,7 @@ export async function loadModelInstance(url: string): Promise<Object3D> {
 
 export interface PlayerCharacter {
 	idle: AnimationAction;
+	jump: AnimationAction;
 	mixer: AnimationMixer;
 	root: Group;
 	walk: AnimationAction;
@@ -49,6 +51,9 @@ export interface PlayerCharacter {
 const IDLE_PATTERN = /idle/i;
 const WALK_PATTERN = /walk/i;
 const RUN_PATTERN = /run/i;
+// Prefer the compact one-shot jump; fall back to any full jump clip.
+const JUMP_SHORT_PATTERN = /jump_full_short/i;
+const JUMP_PATTERN = /jump_full/i;
 
 function pickClip(
 	clips: AnimationClip[],
@@ -73,6 +78,10 @@ export async function loadPlayerCharacter(): Promise<PlayerCharacter> {
 	const idleClip = pickClip(clips, IDLE_PATTERN) ?? clips[0];
 	const walkClip =
 		pickClip(clips, WALK_PATTERN) ?? pickClip(clips, RUN_PATTERN) ?? idleClip;
+	const jumpClip =
+		pickClip(clips, JUMP_SHORT_PATTERN) ??
+		pickClip(clips, JUMP_PATTERN) ??
+		idleClip;
 
 	const mixer = new AnimationMixer(root);
 	const idle = mixer.clipAction(idleClip);
@@ -81,5 +90,12 @@ export async function loadPlayerCharacter(): Promise<PlayerCharacter> {
 	walk.play();
 	walk.setEffectiveWeight(0);
 
-	return { root, mixer, idle, walk };
+	// The jump plays once per press and holds its final pose; the controller
+	// resets and ramps its weight while airborne, so it stays silent at rest.
+	const jump = mixer.clipAction(jumpClip);
+	jump.loop = LoopOnce;
+	jump.clampWhenFinished = true;
+	jump.setEffectiveWeight(0);
+
+	return { root, mixer, idle, jump, walk };
 }

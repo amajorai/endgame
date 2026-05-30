@@ -1,6 +1,8 @@
 import type maplibregl from "maplibre-gl";
 import {
 	CAMERA_RECENTER_IDLE_MS,
+	GRAVITY_MPS2,
+	JUMP_SPEED_MPS,
 	MAX_MAP_PITCH,
 	METERS_PER_DEGREE_LAT,
 	MIN_MAP_PITCH,
@@ -41,6 +43,22 @@ const WALK_ARRIVE_M = 3;
 const RECENTER_LERP = 6;
 const RECENTER_EPSILON_M = 0.5;
 
+// True when a key event is aimed at a text field, so Space scrolls/types there
+// instead of triggering a jump (slide-up panels contain inputs).
+function isTextInputTarget(target: EventTarget | null): boolean {
+	const el = target as HTMLElement | null;
+	if (!el) {
+		return false;
+	}
+	const tag = el.tagName;
+	return (
+		tag === "INPUT" ||
+		tag === "TEXTAREA" ||
+		tag === "SELECT" ||
+		el.isContentEditable
+	);
+}
+
 export interface ControllerDeps {
 	dispatch: (event: GameEvent) => void;
 	initialHex: string;
@@ -72,6 +90,12 @@ export class PlayerController {
 	private boss: BossController | null = null;
 	private faceYaw = 0;
 	private speedRatio = 0;
+
+	// Jump: a transient vertical gravity arc applied to the avatar's local Y
+	// offset (metres). It never touches lng/lat/hex, so nothing is persisted.
+	private isJumping = false;
+	private jumpVelocity = 0;
+	private altitudeM = 0;
 
 	// Click-to-walk target. When set, the character auto-walks here until it
 	// arrives or the player takes manual WASD control.
@@ -199,12 +223,37 @@ export class PlayerController {
 		this.enabled = enabled;
 		if (!enabled) {
 			this.keys.clear();
+			// Land the avatar so a mode switch mid-jump never leaves it airborne.
+			this.resetJump();
+		}
+	}
+
+	// Snap the avatar back to the ground and silence the jump clip. Used when
+	// movement is handed off (GPS) or teleported (recenter/hydrate) mid-jump.
+	private resetJump(): void {
+		this.isJumping = false;
+		this.jumpVelocity = 0;
+		this.altitudeM = 0;
+		const character = this.character;
+		if (character) {
+			character.jump.stop();
+			character.jump.setEffectiveWeight(0);
+			character.root.position.y = 0;
 		}
 	}
 
 	// The player's current live position (read by the boss chaser).
 	getPosition(): { lat: number; lng: number } {
 		return { lat: this.liveLat, lng: this.liveLng };
+	}
+
+	// Whether the avatar is mid-jump, and its current vertical offset in metres.
+	get airborne(): boolean {
+		return this.isJumping;
+	}
+
+	get altitude(): number {
+		return this.altitudeM;
 	}
 
 	// Click-to-walk: set a destination the character auto-walks toward.
@@ -218,6 +267,7 @@ export class PlayerController {
 		this.liveLat = lat;
 		this.liveLng = lng;
 		this.lastHex = posToHex(lat, lng);
+		this.resetJump();
 	}
 
 	// Reset the camera framing and snap back to the player (Recenter button).
@@ -247,8 +297,36 @@ export class PlayerController {
 			this.applyCameraMode();
 			return;
 		}
+		// Space launches a jump; it is not a held movement key.
+		if (key === " ") {
+			this.tryJump(event);
+			return;
+		}
 		this.keys.add(key);
 	};
+
+	// Start a jump if grounded. Ignores key-repeat (held Space) and Space typed
+	// into a text field; not Space-blocking so inputs still receive the key.
+	private tryJump(event: KeyboardEvent): void {
+		if (
+			!this.enabled ||
+			this.isJumping ||
+			event.repeat ||
+			isTextInputTarget(event.target)
+		) {
+			return;
+		}
+		this.isJumping = true;
+		this.jumpVelocity = JUMP_SPEED_MPS;
+		const jump = this.character?.jump;
+		if (jump) {
+			// Restart the one-shot clip from frame 0; updateCharacter ramps its
+			// weight in so idle/walk fade out smoothly.
+			jump.reset();
+			jump.setEffectiveWeight(0);
+			jump.play();
+		}
+	}
 
 	private readonly onKeyUp = (event: KeyboardEvent): void => {
 		this.keys.delete(event.key.toLowerCase());
@@ -340,11 +418,20 @@ export class PlayerController {
 		character.mixer.update(dt);
 
 		const blend = Math.min(1, dt * ANIM_BLEND);
+		// The jump clip takes over while airborne; ground (idle/walk) is scaled
+		// down by the same amount so the three blend to a sum of 1.
+		const jumpTarget = this.isJumping ? 1 : 0;
+		const jumpWeight =
+			character.jump.getEffectiveWeight() +
+			(jumpTarget - character.jump.getEffectiveWeight()) * blend;
+		character.jump.setEffectiveWeight(jumpWeight);
+		const ground = 1 - jumpWeight;
+
 		const walkWeight =
 			character.walk.getEffectiveWeight() +
 			(this.speedRatio - character.walk.getEffectiveWeight()) * blend;
-		character.walk.setEffectiveWeight(walkWeight);
-		character.idle.setEffectiveWeight(1 - walkWeight);
+		character.walk.setEffectiveWeight(walkWeight * ground);
+		character.idle.setEffectiveWeight((1 - walkWeight) * ground);
 
 		if (this.speedRatio > 0) {
 			const turn = Math.min(1, dt * FACE_TURN);
@@ -352,6 +439,25 @@ export class PlayerController {
 			let delta = this.faceYaw - current;
 			delta = Math.atan2(Math.sin(delta), Math.cos(delta));
 			character.root.rotation.y = current + delta * turn;
+		}
+	}
+
+	// Integrate the vertical gravity arc and apply it to the avatar's Y offset.
+	// Horizontal movement (integrate) is untouched, so WASD still works mid-air.
+	private updateJump(dt: number): void {
+		if (this.isJumping) {
+			this.jumpVelocity -= GRAVITY_MPS2 * dt;
+			this.altitudeM += this.jumpVelocity * dt;
+			if (this.altitudeM <= 0) {
+				// Land exactly on the ground so an interrupted arc never sticks.
+				this.altitudeM = 0;
+				this.jumpVelocity = 0;
+				this.isJumping = false;
+			}
+		}
+		const character = this.character;
+		if (character) {
+			character.root.position.y = this.altitudeM;
 		}
 	}
 
@@ -407,6 +513,7 @@ export class PlayerController {
 		this.boss?.update(dt, time);
 		this.updateCamera(dt, time);
 		this.updateCharacter(dt);
+		this.updateJump(dt);
 
 		if (this.speedRatio > MIN_MOVE_SPEED) {
 			const hex = posToHex(this.liveLat, this.liveLng);
