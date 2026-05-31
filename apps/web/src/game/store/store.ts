@@ -147,9 +147,8 @@ export async function hydrate(): Promise<void> {
 		: fresh;
 	const hydrated = applyOfflineAccrual(base, Date.now());
 	console.log(
-		`[FIX] hydrate: snapshot=${snapshot ? "present" : "null"} mana=${hydrated.resources.mana} xp=${hydrated.player.xp} hex=${hydrated.position.hex}`
+		`[FIX] hydrate: snapshot=${snapshot ? "present" : "null"} xp=${hydrated.player.xp} level=${hydrated.player.level} useRealGps=${hydrated.useRealGps}`
 	);
-	(window as unknown as { __store?: unknown }).__store = useGameStore;
 	useGameStore.setState({ state: hydrated, ready: true });
 	localAdapter.saveSnapshot(hydrated).catch(() => {
 		// Best-effort persist of the hydrated state.

@@ -5,7 +5,14 @@ import type { GameEvent, GameState } from "@/game/types";
 
 const DB_NAME = "endgame";
 const EVENT_STORE = "events";
-const DB_VERSION = 1;
+const SNAPSHOT_STORE = "snapshot";
+const OVERPASS_STORE = "overpass";
+// Single record key for the snapshot store.
+const SNAPSHOT_KEY = "current";
+// Shared version across this module (events + snapshot) and content.ts
+// (overpass). Every opener MUST use this version and create the full set of
+// stores so whichever connection triggers the upgrade migrates completely.
+const DB_VERSION = 3;
 
 function hasWindow(): boolean {
 	return typeof window !== "undefined";
@@ -21,14 +28,24 @@ function openDb(): Promise<IDBDatabase | null> {
 	}
 	return new Promise((resolve) => {
 		const request = indexedDB.open(DB_NAME, DB_VERSION);
+		request.onerror = () => {
+			console.log(`[FIX] openDb.error: ${String(request.error)}`);
+			resolve(null);
+		};
+		request.onblocked = () => console.log("[FIX] openDb.blocked");
 		request.onupgradeneeded = () => {
 			const db = request.result;
 			if (!db.objectStoreNames.contains(EVENT_STORE)) {
 				db.createObjectStore(EVENT_STORE, { autoIncrement: true });
 			}
+			if (!db.objectStoreNames.contains(SNAPSHOT_STORE)) {
+				db.createObjectStore(SNAPSHOT_STORE);
+			}
+			if (!db.objectStoreNames.contains(OVERPASS_STORE)) {
+				db.createObjectStore(OVERPASS_STORE);
+			}
 		};
 		request.onsuccess = () => resolve(request.result);
-		request.onerror = () => resolve(null);
 	});
 }
 
@@ -83,35 +100,94 @@ async function clearEvents(): Promise<void> {
 	db.close();
 }
 
+// Reads the snapshot from IndexedDB. Returns null if absent or on any failure.
+async function readSnapshotFromDb(): Promise<GameState | null> {
+	const db = await openDb();
+	if (!db) {
+		return null;
+	}
+	try {
+		const tx = db.transaction(SNAPSHOT_STORE, "readonly");
+		const result = await promisifyRequest<GameState | undefined>(
+			tx.objectStore(SNAPSHOT_STORE).get(SNAPSHOT_KEY)
+		);
+		return result ?? null;
+	} catch {
+		return null;
+	} finally {
+		db.close();
+	}
+}
+
+// Reads a pre-IndexedDB snapshot left in localStorage by an earlier build, so
+// existing players keep their progress on the first load after this migration.
+function readLegacySnapshot(): GameState | null {
+	if (!hasWindow()) {
+		return null;
+	}
+	try {
+		const raw = window.localStorage.getItem(STORAGE_KEY);
+		if (!raw) {
+			return null;
+		}
+		return JSON.parse(raw) as GameState;
+	} catch {
+		return null;
+	}
+}
+
 const listeners = new Set<(state: GameState) => void>();
 
 export const localAdapter: StorageAdapter = {
-	loadSnapshot(): Promise<GameState | null> {
+	async loadSnapshot(): Promise<GameState | null> {
 		if (!hasWindow()) {
-			return Promise.resolve(null);
+			return null;
 		}
-		try {
-			const raw = window.localStorage.getItem(STORAGE_KEY);
-			console.log(`[FIX] load: raw=${raw === null ? "null" : raw.length}`);
-			if (!raw) {
-				return Promise.resolve(null);
-			}
-			return Promise.resolve(JSON.parse(raw) as GameState);
-		} catch (err) {
-			console.log(`[FIX] load.threw: ${String(err)}`);
-			return Promise.resolve(null);
+		const fromDb = await readSnapshotFromDb();
+		if (fromDb) {
+			console.log(
+				`[FIX] load: source=idb xp=${fromDb.player?.xp} hexes=${Object.keys(fromDb.meta?.contentCacheMeta ?? {}).length}`
+			);
+			return fromDb;
 		}
+		const legacy = readLegacySnapshot();
+		console.log(
+			`[FIX] load: source=${legacy ? "localStorage" : "none"} xp=${legacy?.player?.xp ?? "n/a"}`
+		);
+		return legacy;
 	},
 
 	async saveSnapshot(state: GameState): Promise<void> {
 		if (hasWindow()) {
-			try {
-				const serialized = JSON.stringify(state);
-				window.localStorage.setItem(STORAGE_KEY, serialized);
-				console.log(`[FIX] save: len=${serialized.length}`);
-			} catch (err) {
-				console.log(`[FIX] save.threw: ${String(err)}`);
-				// Quota or serialization failure: ignore, the in-memory state is source of truth.
+			const db = await openDb();
+			if (!db) {
+				console.log("[FIX] save: NO DB (indexedDB unavailable/blocked)");
+			}
+			if (db) {
+				const tx = db.transaction(SNAPSHOT_STORE, "readwrite");
+				tx.objectStore(SNAPSHOT_STORE).put(state, SNAPSHOT_KEY);
+				await new Promise<void>((resolve) => {
+					tx.oncomplete = () => {
+						console.log(`[FIX] save: idb ok xp=${state.player?.xp}`);
+						resolve();
+					};
+					tx.onerror = () => {
+						console.log(`[FIX] save.idberr: ${String(tx.error)}`);
+						resolve();
+					};
+					tx.onabort = () => {
+						console.log(`[FIX] save.idbabort: ${String(tx.error)}`);
+						resolve();
+					};
+				});
+				db.close();
+				// The snapshot now lives in IndexedDB; drop any legacy localStorage
+				// copy to reclaim that ~5MB-capped space.
+				try {
+					window.localStorage.removeItem(STORAGE_KEY);
+				} catch {
+					// Best-effort cleanup.
+				}
 			}
 		}
 		for (const listener of listeners) {

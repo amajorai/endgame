@@ -311,9 +311,10 @@ export const contentReducer: SystemReducer = (state, event) => {
 const OVERPASS_URL = "https://overpass-api.de/api/interpreter";
 const DB_NAME = "endgame";
 const OVERPASS_STORE = "overpass";
-// Bump when the overpass store is added to the existing 'endgame' db. The spine
-// created the db at version 1 with only the 'events' store.
-const DB_VERSION = 2;
+// Shared 'endgame' db version. Must match local-adapter.ts, which also opens
+// this db (for the events + snapshot stores). Every opener creates the full set
+// of stores so whichever connection triggers the upgrade migrates completely.
+const DB_VERSION = 3;
 // Radius (meters) of the Overpass query around the player.
 const QUERY_RADIUS_M = 1200;
 // Coarse rounding for the cache key so nearby positions share a cached response.
@@ -363,6 +364,9 @@ function openOverpassDb(): Promise<IDBDatabase | null> {
 			}
 			if (!db.objectStoreNames.contains(OVERPASS_STORE)) {
 				db.createObjectStore(OVERPASS_STORE);
+			}
+			if (!db.objectStoreNames.contains("snapshot")) {
+				db.createObjectStore("snapshot");
 			}
 		};
 		request.onsuccess = () => resolve(request.result);
