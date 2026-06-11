@@ -2,11 +2,14 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import { playSound } from "@/game/audio/play";
+import { useGameMusic } from "@/game/audio/use-game-music";
 import { useDispatch, useGameReady, useGameState } from "@/game/store/store";
 import { useGameClock } from "@/game/store/use-game-clock";
 import BeaconsLootPanel from "@/game/ui/beacons-loot-panel";
 import BuildMenu from "@/game/ui/build-menu";
 import CharacterPanel from "@/game/ui/character-panel";
+import { CombatStatusBar } from "@/game/ui/combat-status-bar";
 import ContentPanel from "@/game/ui/content-panel";
 import DebugAdminPanel from "@/game/ui/debug-admin-panel";
 import EstatesPanel from "@/game/ui/estates-panel";
@@ -14,6 +17,7 @@ import FarmingPanel from "@/game/ui/farming-panel";
 import FieldBossPanel from "@/game/ui/field-boss-panel";
 import GateCombatHud from "@/game/ui/gate-combat-hud";
 import GateCombatPanel from "@/game/ui/gate-combat-panel";
+import { GateEntryPrompt } from "@/game/ui/gate-entry-prompt";
 import GhostModePanel from "@/game/ui/ghost-mode-panel";
 import { Hud } from "@/game/ui/hud";
 import InventoryPanel from "@/game/ui/inventory-panel";
@@ -22,6 +26,7 @@ import { PlantPrompt } from "@/game/ui/plant-prompt";
 import QuestsPanel from "@/game/ui/quests-panel";
 import { type RadialCategory, RadialMenu } from "@/game/ui/radial-menu";
 import ShadowsPanel from "@/game/ui/shadows-panel";
+import { SprintBar } from "@/game/ui/sprint-bar";
 import WeatherPanel from "@/game/ui/weather-panel";
 
 // GameMap touches maplibre (window/document) and must never render on the server.
@@ -121,11 +126,20 @@ function buildCategories(navItems: NavItem[]): RadialCategory[] {
 
 export function PlayClient(): React.JSX.Element {
 	useGameClock();
+	useGameMusic();
 	const state = useGameState();
 	const dispatch = useDispatch();
 	const ready = useGameReady();
 	const [activePanel, setActivePanel] = useState<PanelKey | null>(null);
 	const bootstrappedRef = useRef(false);
+
+	// The radial menu already plays a select chirp when an item is chosen, so
+	// opening a panel stays silent to avoid double sounds; closing gets its own
+	// cue since the ✕ button has no other sound.
+	const closePanel = (): void => {
+		playSound("ui_close");
+		setActivePanel(null);
+	};
 
 	// One-shot content bootstrap. Gated on `ready` so it fires AFTER async
 	// hydrate() replaces the store state, otherwise the generated content is
@@ -161,6 +175,11 @@ export function PlayClient(): React.JSX.Element {
 		<div className="relative h-full w-full overflow-hidden bg-slate-950">
 			<GameMap />
 			<Hud />
+			<CombatStatusBar />
+
+			{/* Live sprint-stamina bar. Stands down while a combat overlay owns the
+			    bottom-center of the screen so the two never stack. */}
+			{!(bossEngaged || gateActive) && <SprintBar />}
 
 			{/* Engaged field boss: combat controls overlay the map (the boss model
 			    fights in 3D on the map itself, no full-screen takeover). */}
@@ -188,6 +207,7 @@ export function PlayClient(): React.JSX.Element {
 			    empty hex. They position themselves absolutely, so they mount bare. */}
 			<PlantPrompt />
 			<BuildMenu />
+			<GateEntryPrompt />
 
 			{!state.meta.onboarded && <Onboarding />}
 
@@ -213,7 +233,7 @@ export function PlayClient(): React.JSX.Element {
 						<button
 							aria-label="Close panel"
 							className="rounded-full px-2 text-slate-400 transition-colors hover:text-cyan-300"
-							onClick={() => setActivePanel(null)}
+							onClick={closePanel}
 							type="button"
 						>
 							✕

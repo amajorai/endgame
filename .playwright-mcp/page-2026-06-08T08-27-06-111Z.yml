@@ -1,0 +1,48 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic:
+      - generic:
+        - generic [ref=e4]:
+          - generic [ref=e5]:
+            - generic [ref=e6]: ⚡
+            - generic [ref=e7]: "0"
+            - generic [ref=e8]: mana
+          - generic [ref=e9]: 0 hexes held
+        - generic:
+          - button "Audio settings" [ref=e11]:
+            - generic [ref=e12]: 🔊
+          - generic [ref=e13]:
+            - generic [ref=e14]: Rank E
+            - generic [ref=e15]: Level 1
+            - generic [ref=e16]: loading...
+      - generic:
+        - generic [ref=e17]:
+          - generic [ref=e18]:
+            - generic [ref=e19]: Wildland
+            - generic [ref=e20]: neutral
+          - generic [ref=e22]: 0% captured
+        - button "GPS Off" [ref=e23]
+    - generic [ref=e25]:
+      - heading "🜂 Welcome, Hunter" [level=2] [ref=e26]
+      - paragraph [ref=e27]: The End Game overlays a world of gates and shadows onto your real surroundings. Play with awareness.
+      - list [ref=e28]:
+        - listitem [ref=e29]: • Stay alert to traffic, people, and your surroundings.
+        - listitem [ref=e30]: • Never trespass or enter unsafe places to capture a hex.
+        - listitem [ref=e31]: • Obey all local laws. The game is a guide, not a command.
+        - listitem [ref=e32]: • You are responsible for your own safety at all times.
+      - generic [ref=e33]:
+        - button "Skip" [ref=e34]
+        - button "I understand" [ref=e35]
+    - button "Enable debug mode" [ref=e36]: ⚙️
+    - generic [ref=e37]:
+      - button:
+        - generic: 🎖️
+        - generic: Hero
+      - button:
+        - generic: 🌍
+        - generic: World
+      - button "Open menu" [ref=e38]:
+        - generic [ref=e39]: ✦
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e45] [cursor=pointer]:
+    - img [ref=e46]

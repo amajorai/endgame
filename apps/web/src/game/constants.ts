@@ -121,14 +121,36 @@ export const CAMERA_MAX_ZOOM = 20.5;
 // Brisk and gamey rather than realistic, so ~80m hexes feel a few seconds apart.
 export const WALK_SPEED_MPS = 14;
 export const SPRINT_MULTIPLIER = 2.4;
+
+// Sprint stamina (Shift). A transient locomotion charge in the range 0..1,
+// owned by the player controller (never persisted - it is a per-frame value,
+// like the jump arc) and separate from the player's combat `stamina` stat.
+// Drains while sprinting, regenerates otherwise. At empty it latches "exhausted"
+// so sprint cannot re-engage until the charge recovers past the threshold,
+// preventing a flicker on/off at zero. Rates are fraction-of-bar per second:
+// from full, ~3s of sprint, ~4.5s to fully refill.
+export const SPRINT_STAMINA_DRAIN_PER_S = 0.34;
+export const SPRINT_STAMINA_REGEN_PER_S = 0.22;
+export const SPRINT_STAMINA_RECOVERY_THRESHOLD = 0.25;
+
 // Heading turn rate for Q/E in degrees per second (Phase 2).
 export const TURN_SPEED_DPS = 90;
 // Right-click-drag tilt sensitivity, in degrees of pitch per pixel dragged.
 export const TILT_DRAG_DEG_PER_PX = 0.4;
+// Right-click-drag rotate sensitivity, in degrees of heading per pixel dragged
+// horizontally. Dragging right swings the camera clockwise.
+export const ROTATE_DRAG_DEG_PER_PX = 0.4;
 export const MIN_MAP_PITCH = 0;
 
 // Player character model scale (tuned so the avatar reads at follow zoom).
 export const PLAYER_MODEL_SCALE = 4;
+
+// Pokémon-Go-style interaction radius, in metres. A world entity (gate, beacon,
+// supply drop, boss, enemy, plot) is only tappable when it sits inside this ring
+// around the player; the ring is drawn on the ground so the reach is visible.
+// ~80m hexes mean 60m comfortably reaches into the current and bordering hexes
+// without making distant landmarks tappable from across the map.
+export const INTERACT_RADIUS_M = 60;
 
 // Metres per degree of latitude (WGS84 mean); longitude scales by cos(lat).
 export const METERS_PER_DEGREE_LAT = 111_320;
@@ -160,3 +182,5 @@ export const ENEMY_MODEL_URL = {
 // Shared skeleton animation clip pack (same Rig_Medium skeleton).
 export const ENEMY_ANIM_URL =
 	"/assets/kaykit/skeletons/animations/gltf/Rig_Medium/Rig_Medium_MovementBasic.glb";
+export const ENEMY_GENERAL_ANIM_URL =
+	"/assets/kaykit/skeletons/animations/gltf/Rig_Medium/Rig_Medium_General.glb";

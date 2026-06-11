@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { emitEventSfx } from "@/game/audio/event-sfx";
 import {
 	DEFAULT_SPAWN,
 	MANA_PER_SECOND,
@@ -120,9 +121,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
 	state: initialGameState(),
 	ready: false,
 	dispatch: (event: GameEvent) => {
-		const next = rootReduce(get().state, event);
+		const prev = get().state;
+		const next = rootReduce(prev, event);
 		persist(next, event);
 		set({ state: next });
+		// Side-effect only: turn events into sound. No-ops until audio is unlocked
+		// by a user gesture, and never throws into the dispatch path.
+		try {
+			emitEventSfx(event, prev, next);
+		} catch {
+			// Audio is never allowed to break the game loop.
+		}
 	},
 }));
 

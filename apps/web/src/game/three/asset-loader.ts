@@ -17,23 +17,31 @@ import {
 // One shared loader, and a per-URL cache of loaded scenes so the same model is
 // fetched/parsed once and then cloned cheaply for every instance.
 const loader = new GLTFLoader();
-const sceneCache = new Map<string, Promise<Object3D>>();
+interface LoadedGltf {
+	animations: AnimationClip[];
+	scene: Object3D;
+}
 
-function loadScene(url: string): Promise<Object3D> {
-	const cached = sceneCache.get(url);
+const assetCache = new Map<string, Promise<LoadedGltf>>();
+
+function loadAsset(url: string): Promise<LoadedGltf> {
+	const cached = assetCache.get(url);
 	if (cached) {
 		return cached;
 	}
-	const promise = loader.loadAsync(url).then((gltf) => gltf.scene);
-	sceneCache.set(url, promise);
+	const promise = loader.loadAsync(url).then((gltf) => ({
+		animations: gltf.animations,
+		scene: gltf.scene,
+	}));
+	assetCache.set(url, promise);
 	return promise;
 }
 
 // Return a fresh clone of a cached model, ready to position in the scene.
 // SkeletonUtils.clone preserves skinned meshes; plain props clone fine too.
 export async function loadModelInstance(url: string): Promise<Object3D> {
-	const scene = await loadScene(url);
-	return cloneSkeleton(scene);
+	const asset = await loadAsset(url);
+	return cloneSkeleton(asset.scene);
 }
 
 // Loads the player character GLB and applies the shared-skeleton movement clips
@@ -60,6 +68,47 @@ function pickClip(
 	pattern: RegExp
 ): AnimationClip | undefined {
 	return clips.find((clip) => pattern.test(clip.name));
+}
+
+export interface AnimatedModelInstance {
+	action: AnimationAction;
+	mixer: AnimationMixer;
+	root: Object3D;
+}
+
+const ANIM_CLIP_PATTERN = {
+	idle: IDLE_PATTERN,
+	walk: WALK_PATTERN,
+} as const satisfies Record<"idle" | "walk", RegExp>;
+
+export async function loadAnimatedModelInstance(
+	modelUrl: string,
+	animationUrl: string,
+	clipName: "idle" | "walk"
+): Promise<AnimatedModelInstance> {
+	const [model, animation] = await Promise.all([
+		loadAsset(modelUrl),
+		loadAsset(animationUrl),
+	]);
+
+	const root = cloneSkeleton(model.scene);
+	const clips = animation.animations.length
+		? animation.animations
+		: model.animations;
+	const clip =
+		pickClip(clips, ANIM_CLIP_PATTERN[clipName]) ??
+		pickClip(clips, IDLE_PATTERN) ??
+		clips[0];
+
+	if (!clip) {
+		throw new Error(`No animation clips found for ${modelUrl}`);
+	}
+
+	const mixer = new AnimationMixer(root);
+	const action = mixer.clipAction(clip);
+	action.play();
+
+	return { action, mixer, root };
 }
 
 export async function loadPlayerCharacter(): Promise<PlayerCharacter> {

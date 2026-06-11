@@ -1,15 +1,22 @@
 import type maplibregl from "maplibre-gl";
 import {
+	type AnimationMixer,
 	Box3,
+	type Camera,
 	type Color,
 	type Material,
 	type Mesh,
 	type MeshStandardMaterial,
 	type Object3D,
+	Raycaster,
+	Vector2,
 	Vector3,
 } from "three";
-import { METERS_PER_DEGREE_LAT } from "@/game/constants";
-import { loadModelInstance } from "@/game/three/asset-loader";
+import { INTERACT_RADIUS_M, METERS_PER_DEGREE_LAT } from "@/game/constants";
+import {
+	loadAnimatedModelInstance,
+	loadModelInstance,
+} from "@/game/three/asset-loader";
 import { enemyPositions } from "@/game/three/gate-combat-controller";
 import { createPortal, type Portal } from "@/game/three/vfx/portal";
 // Side-effect import: registering the core gate/beacon/drop/boss provider on the
@@ -54,11 +61,17 @@ const GENERIC_SIZE_M = 6;
 const GROUND_TILE_SIZE_M = 8;
 
 interface EntityRecord {
+	animationYawOffsetRad: number | null;
 	event?: GameEvent;
 	// Optional flat ground tile laid under the entity (e.g. a farm plot).
 	ground: Object3D | null;
 	lat: number;
 	lng: number;
+	// Animated skeleton-backed entities own a mixer advanced by update().
+	mixer: AnimationMixer | null;
+	pickRadiusPx: number;
+	placedLat: number;
+	placedLng: number;
 	// A swirling portal VFX, present only for entities with portalColors.
 	portal?: Portal;
 	// Null until the model finishes loading; the slot is reserved synchronously
@@ -66,13 +79,33 @@ interface EntityRecord {
 	root: Object3D | null;
 }
 
+interface EntityRendererOptions {
+	loadModels?: boolean;
+}
+
 // Portal disc centre height. The disc has radius PORTAL_RADIUS (4m) and stands
 // upright, so its centre must clear that radius plus headroom to avoid clipping
 // into the ground/road.
 const PORTAL_HEIGHT_M = 7;
+const MIN_FACE_MOVE_M = 0.05;
 
 function targetSizeFor(spec: WorldEntitySpec): number {
 	return spec.scaleM ?? DEFAULT_SIZE_M[spec.kind] ?? GENERIC_SIZE_M;
+}
+
+export function yawForLatLngDelta(
+	fromLat: number,
+	fromLng: number,
+	toLat: number,
+	toLng: number
+): number | null {
+	const dNorth = (toLat - fromLat) * METERS_PER_DEGREE_LAT;
+	const lngScale = METERS_PER_DEGREE_LAT * Math.cos(toLat * DEG);
+	const dEast = (toLng - fromLng) * (lngScale || METERS_PER_DEGREE_LAT);
+	if (Math.hypot(dEast, dNorth) < MIN_FACE_MOVE_M) {
+		return null;
+	}
+	return Math.atan2(dEast, dNorth);
 }
 
 // Scale a freshly loaded model so its largest horizontal dimension matches the
@@ -130,6 +163,8 @@ function applyTint(material: Material, tintHex: number): Material {
 
 export class EntityRenderer {
 	private readonly group: Object3D;
+	private readonly loadModels: boolean;
+	private readonly raycaster = new Raycaster();
 	private readonly records = new Map<string, EntityRecord>();
 	private originLng: number;
 	private originLat: number;
@@ -138,8 +173,14 @@ export class EntityRenderer {
 	private bossLivePos: (() => { lat: number; lng: number } | null) | null =
 		null;
 
-	constructor(group: Object3D, originLng: number, originLat: number) {
+	constructor(
+		group: Object3D,
+		originLng: number,
+		originLat: number,
+		options: EntityRendererOptions = {}
+	) {
 		this.group = group;
+		this.loadModels = options.loadModels ?? true;
 		this.originLng = originLng;
 		this.originLat = originLat;
 	}
@@ -188,10 +229,15 @@ export class EntityRenderer {
 	private addSpec(spec: WorldEntitySpec): void {
 		// Reserve the slot synchronously so concurrent syncs don't double-add.
 		const record: EntityRecord = {
+			animationYawOffsetRad: spec.animation?.yawOffsetRad ?? null,
 			event: spec.event,
 			lat: spec.lat,
 			lng: spec.lng,
 			ground: null,
+			mixer: null,
+			pickRadiusPx: spec.pickRadiusPx ?? PICK_RADIUS_PX,
+			placedLat: spec.lat,
+			placedLng: spec.lng,
 			root: null,
 		};
 		// Entities with portal colours get a swirling portal VFX mounted upright.
@@ -206,6 +252,9 @@ export class EntityRenderer {
 			this.placeOne(portal.mesh, spec.lat, spec.lng);
 		}
 		this.records.set(spec.key, record);
+		if (!this.loadModels) {
+			return;
+		}
 		if (spec.groundTileUrl) {
 			this.loadGround(spec, record);
 		}
@@ -214,21 +263,32 @@ export class EntityRenderer {
 
 	private loadRoot(spec: WorldEntitySpec, record: EntityRecord): void {
 		const sizeM = targetSizeFor(spec);
-		loadModelInstance(spec.modelUrl)
+		const rootPromise = spec.animation
+			? loadAnimatedModelInstance(
+					spec.modelUrl,
+					spec.animation.url,
+					spec.animation.clip
+				)
+			: loadModelInstance(spec.modelUrl).then((root) => ({
+					root,
+					mixer: null,
+				}));
+		rootPromise
 			.then((root) => {
 				if (this.records.get(spec.key) !== record) {
 					return;
 				}
-				normaliseModel(root, sizeM);
+				normaliseModel(root.root, sizeM);
 				if (typeof spec.yawRad === "number") {
-					root.rotation.y = spec.yawRad;
+					root.root.rotation.y = spec.yawRad;
 				}
 				if (typeof spec.tintHex === "number") {
-					tintModel(root, spec.tintHex);
+					tintModel(root.root, spec.tintHex);
 				}
-				this.placeOne(root, record.lat, record.lng);
-				this.group.add(root);
-				record.root = root;
+				this.placeOne(root.root, record.lat, record.lng);
+				this.group.add(root.root);
+				record.root = root.root;
+				record.mixer = root.mixer;
 			})
 			.catch(() => {
 				// A missing entity model is non-fatal; it just won't appear. Drop the
@@ -297,6 +357,7 @@ export class EntityRenderer {
 		for (const [key, record] of this.records) {
 			const { lat, lng } = this.livePosFor(key, record, bossPos);
 			if (record.root) {
+				this.faceMovement(record, lat, lng);
 				this.placeOne(record.root, lat, lng);
 			}
 			if (record.portal) {
@@ -305,6 +366,8 @@ export class EntityRenderer {
 			if (record.ground) {
 				this.placeOne(record.ground, lat, lng);
 			}
+			record.placedLat = lat;
+			record.placedLng = lng;
 		}
 	}
 
@@ -312,33 +375,117 @@ export class EntityRenderer {
 	update(dt: number): void {
 		for (const record of this.records.values()) {
 			record.portal?.update(dt);
+			record.mixer?.update(dt);
 		}
 	}
 
-	// Dispatch the entity nearest a click, if within the pick radius. Entities
-	// without an event (decorative props, ground tiles) are not pickable.
+	// True when a point (lat/lng) sits inside the interaction ring around the
+	// player. The player is always at the scene origin, so origin{Lat,Lng} is the
+	// live player position; this is the same predicate the on-map ring visualises.
+	private isInRange(lat: number, lng: number): boolean {
+		const dNorth = (lat - this.originLat) * METERS_PER_DEGREE_LAT;
+		const lngScale = METERS_PER_DEGREE_LAT * Math.cos(this.originLat * DEG);
+		const dEast = (lng - this.originLng) * (lngScale || METERS_PER_DEGREE_LAT);
+		return Math.hypot(dEast, dNorth) <= INTERACT_RADIUS_M;
+	}
+
+	// Keys of every entity the player can currently interact with: it has an event
+	// and sits inside the interaction ring. Moving entities (boss, gate enemies)
+	// are tested at their live chase position, not their coarser stored hex, so a
+	// foe in your face is reachable even before its next position writeback.
+	// Exposed for the e2e seam (and any future HUD affordance); pick() gates on the
+	// same predicate.
+	interactableKeys(): string[] {
+		const bossPos = this.bossLivePos?.() ?? null;
+		const keys: string[] = [];
+		for (const [key, record] of this.records) {
+			if (!record.event) {
+				continue;
+			}
+			const { lat, lng } = this.livePosFor(key, record, bossPos);
+			if (this.isInRange(lat, lng)) {
+				keys.push(key);
+			}
+		}
+		return keys;
+	}
+
+	// Dispatch the entity nearest a click, if within the pick radius AND inside the
+	// interaction ring. Entities without an event (decorative props, ground tiles)
+	// are not pickable; entities outside the ring are too far to interact with, so
+	// the click falls through to a move order. Picking projects each entity at its
+	// live position so a chasing boss/enemy is hit where it's actually drawn.
 	pick(
 		map: maplibregl.Map,
 		x: number,
 		y: number,
 		dispatch: (event: GameEvent) => void
 	): boolean {
+		const bossPos = this.bossLivePos?.() ?? null;
 		let bestKey: string | null = null;
-		let bestDist = PICK_RADIUS_PX;
+		let bestDist = Number.POSITIVE_INFINITY;
 		let bestEvent: GameEvent | null = null;
 		for (const [key, record] of this.records) {
 			if (!record.event) {
 				continue;
 			}
-			const point = map.project([record.lng, record.lat]);
+			const { lat, lng } = this.livePosFor(key, record, bossPos);
+			if (!this.isInRange(lat, lng)) {
+				continue;
+			}
+			const point = map.project([lng, lat]);
 			const dist = Math.hypot(point.x - x, point.y - y);
-			if (dist < bestDist) {
+			if (dist < record.pickRadiusPx && dist < bestDist) {
 				bestDist = dist;
 				bestKey = key;
 				bestEvent = record.event;
 			}
 		}
 		if (bestKey && bestEvent) {
+			dispatch(bestEvent);
+			return true;
+		}
+		return false;
+	}
+
+	pickRendered(
+		camera: Camera,
+		canvas: HTMLCanvasElement,
+		x: number,
+		y: number,
+		dispatch: (event: GameEvent) => void
+	): boolean {
+		const width = canvas.clientWidth || canvas.width;
+		const height = canvas.clientHeight || canvas.height;
+		if (!(width > 0 && height > 0)) {
+			return false;
+		}
+		const pointer = new Vector2((x / width) * 2 - 1, -(y / height) * 2 + 1);
+		this.raycaster.setFromCamera(pointer, camera);
+
+		const bossPos = this.bossLivePos?.() ?? null;
+		let bestDistance = Number.POSITIVE_INFINITY;
+		let bestEvent: GameEvent | null = null;
+		for (const [key, record] of this.records) {
+			if (!record.event) {
+				continue;
+			}
+			const { lat, lng } = this.livePosFor(key, record, bossPos);
+			if (!this.isInRange(lat, lng)) {
+				continue;
+			}
+			const targets = [record.root, record.portal?.mesh].filter(
+				(target): target is Object3D => target !== null && target !== undefined
+			);
+			for (const target of targets) {
+				const hit = this.raycaster.intersectObject(target, true)[0];
+				if (hit && hit.distance < bestDistance) {
+					bestDistance = hit.distance;
+					bestEvent = record.event;
+				}
+			}
+		}
+		if (bestEvent) {
 			dispatch(bestEvent);
 			return true;
 		}
@@ -353,5 +500,16 @@ export class EntityRenderer {
 		// z=north. The model's own y offset (base on ground) is preserved.
 		root.position.x = dEast;
 		root.position.z = dNorth;
+	}
+
+	private faceMovement(record: EntityRecord, lat: number, lng: number): void {
+		if (record.animationYawOffsetRad === null || !record.root) {
+			return;
+		}
+		const yaw = yawForLatLngDelta(record.placedLat, record.placedLng, lat, lng);
+		if (yaw === null) {
+			return;
+		}
+		record.root.rotation.y = yaw + record.animationYawOffsetRad;
 	}
 }

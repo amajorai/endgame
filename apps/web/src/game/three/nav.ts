@@ -104,6 +104,49 @@ export class BuildingObstacles {
 	}
 }
 
+// Is the point inside any building footprint?
+function isInsideAny(lng: number, lat: number, obstacles: Obstacle[]): boolean {
+	for (const obstacle of obstacles) {
+		if (pointInRing(lng, lat, obstacle.ring)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+// Resolve a desired one-step move against building footprints and return the
+// position the mover should actually end at. Used by the player so WASD and
+// click-to-walk can't walk through buildings. Center-point collision, matching
+// how the boss/enemy chasers already treat the world:
+//   - destination clear  -> take the whole step
+//   - blocked head-on    -> slide along whichever single axis stays outside, so
+//                           the mover skims the wall instead of sticking to it
+//   - boxed in both axes -> hold position
+// Escape hatch: a mover already inside a footprint (spawned on one, or nudged in
+// by a tile refresh) is never blocked, so it can always walk back out instead of
+// freezing forever.
+export function resolveMove(
+	curLat: number,
+	curLng: number,
+	nextLat: number,
+	nextLng: number,
+	obstacles: Obstacle[]
+): { lat: number; lng: number } {
+	if (isInsideAny(curLng, curLat, obstacles)) {
+		return { lat: nextLat, lng: nextLng };
+	}
+	if (!isInsideAny(nextLng, nextLat, obstacles)) {
+		return { lat: nextLat, lng: nextLng };
+	}
+	if (!isInsideAny(nextLng, curLat, obstacles)) {
+		return { lat: curLat, lng: nextLng };
+	}
+	if (!isInsideAny(curLng, nextLat, obstacles)) {
+		return { lat: nextLat, lng: curLng };
+	}
+	return { lat: curLat, lng: curLng };
+}
+
 // Tunables for a single chase step. Passed in by each controller so the field
 // boss keeps its exact constants while gate enemies can pick their own.
 export interface ChaseParams {

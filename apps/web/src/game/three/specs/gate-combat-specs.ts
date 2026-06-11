@@ -1,4 +1,4 @@
-import { ENEMY_MODEL_URL } from "@/game/constants";
+import { ENEMY_ANIM_URL, ENEMY_MODEL_URL } from "@/game/constants";
 import { ENEMY_SIZE_M } from "@/game/data/gate-combat";
 import { enemyPositions } from "@/game/three/gate-combat-controller";
 import {
@@ -10,12 +10,13 @@ import type { GameState } from "@/game/types";
 // Spec provider for an active gate run's enemies. Emits one skeleton model per
 // LIVING enemy while the run is active, positioned from the controller's live
 // singleton when available (smooth per-frame motion) else the enemy's stored
-// lat/lng (the deterministic spawn ring). Tapping an enemy focus-fires it via
-// GATE_ATTACK with the enemy id, so on-map tap-to-attack flows through the
-// foundation's entity pick.
+// lat/lng (the deterministic spawn ring). Enemies are visual threats, not attack
+// buttons; the combat HUD owns player actions.
 //
 // Registered at module top-level below. The integration agent must ensure this
 // module is imported for its side effect (like core-specs) or no enemies render.
+
+const SKELETON_FORWARD_OFFSET_RAD = Math.PI;
 
 function collectGateCombatSpecs(state: GameState): WorldEntitySpec[] {
 	const run = state.activeGate;
@@ -36,13 +37,17 @@ function collectGateCombatSpecs(state: GameState): WorldEntitySpec[] {
 			continue;
 		}
 		specs.push({
+			animation: {
+				clip: "walk",
+				url: ENEMY_ANIM_URL,
+				yawOffsetRad: SKELETON_FORWARD_OFFSET_RAD,
+			},
 			key: `gate-enemy:${enemy.id}`,
 			kind: "gate-enemy",
 			modelUrl: ENEMY_MODEL_URL[enemy.kind],
 			scaleM: ENEMY_SIZE_M[enemy.kind],
 			lat,
 			lng,
-			event: { type: "GATE_ATTACK", enemyId: enemy.id },
 		});
 	}
 	return specs;

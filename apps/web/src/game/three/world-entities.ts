@@ -11,6 +11,13 @@ import type { GameEvent, GameState } from "@/game/types";
 // EntitySpec so any system can describe a model to draw, where, at what size,
 // and what to dispatch when tapped.
 export interface WorldEntitySpec {
+	// Optional animation pack for skinned models that ship animation clips in a
+	// separate GLB. Static props omit this and render as before.
+	animation?: {
+		clip: "idle" | "walk";
+		url: string;
+		yawOffsetRad?: number;
+	};
 	// Dispatched when the entity is tapped (screen-space pick). Optional so a
 	// provider can place purely-decorative props with no interaction.
 	event?: GameEvent;
@@ -28,6 +35,10 @@ export interface WorldEntitySpec {
 	// GLTF/GLB URL for the model. A missing model is non-fatal (it just won't
 	// appear), so providers may emit speculative specs safely.
 	modelUrl: string;
+	// Optional screen-space pick radius. Large landmarks such as gates render much
+	// wider than the generic tap target and need their visual footprint to win
+	// before lower-priority map layers like land/build taps.
+	pickRadiusPx?: number;
 	// Gates carry portal colours; undefined for other kinds. When present the
 	// renderer mounts the swirling portal VFX at the entity.
 	portalColors?: { primary: number; secondary: number };

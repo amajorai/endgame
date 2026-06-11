@@ -9,9 +9,11 @@ import {
 	Vector3,
 	WebGLRenderer,
 } from "three";
+import { INTERACT_RADIUS_M } from "@/game/constants";
 import { EntityRenderer } from "@/game/three/entity-renderer";
+import { InteractionRing } from "@/game/three/interaction-ring";
 import { WeatherField } from "@/game/three/weather-system";
-import type { TimeOfDay, WeatherType } from "@/game/types";
+import type { GameEvent, TimeOfDay, WeatherType } from "@/game/types";
 
 // Sun + sky tuned per time-of-day so day/night reads in the 3D scene.
 interface LightingPreset {
@@ -80,6 +82,20 @@ interface CustomRenderArgs {
 	defaultProjectionData: { mainMatrix: ArrayLike<number> };
 }
 
+export function createSceneLocalMatrix(
+	mercX: number,
+	mercY: number,
+	mercZ: number,
+	meterScale: number
+): Matrix4 {
+	return new Matrix4()
+		.makeTranslation(mercX, mercY, mercZ)
+		.scale(new Vector3(meterScale, meterScale, meterScale))
+		.multiply(
+			new Matrix4().makeRotationAxis(new Vector3(1, 0, 0), HALF_TURN / 2)
+		);
+}
+
 export class SceneLayer implements maplibregl.CustomLayerInterface {
 	readonly id = "game-3d";
 	readonly type = "custom" as const;
@@ -96,6 +112,8 @@ export class SceneLayer implements maplibregl.CustomLayerInterface {
 	private readonly sun = new DirectionalLight(0xff_ff_ff, 2.4);
 	private readonly hemi = new HemisphereLight(0xbc_d4_ff, 0x20_2a_38, 1.1);
 	private readonly weather = new WeatherField();
+	// Ground ring at the player's feet showing the interaction reach.
+	private readonly interactionRing = new InteractionRing(INTERACT_RADIUS_M);
 	readonly entities: EntityRenderer;
 	private renderer: WebGLRenderer | null = null;
 	private map: maplibregl.Map | null = null;
@@ -110,6 +128,8 @@ export class SceneLayer implements maplibregl.CustomLayerInterface {
 		this.sun.position.set(60, 120, 40);
 		// Weather rides with the player so it always falls around the camera.
 		this.playerGroup.add(this.weather.group);
+		// The interaction ring sits at the player's feet (centred on the origin).
+		this.playerGroup.add(this.interactionRing.group);
 		this.scene.add(this.hemi, this.sun, this.playerGroup, this.worldGroup);
 		// Entities live in world space (metres from the moving origin).
 		this.entities = new EntityRenderer(this.worldGroup, originLng, originLat);
@@ -135,6 +155,24 @@ export class SceneLayer implements maplibregl.CustomLayerInterface {
 
 	get hemiLight(): HemisphereLight {
 		return this.hemi;
+	}
+
+	pickRenderedEntity(
+		x: number,
+		y: number,
+		dispatch: (event: GameEvent) => void
+	): boolean {
+		const map = this.map;
+		if (!map) {
+			return false;
+		}
+		return this.entities.pickRendered(
+			this.camera,
+			map.getCanvas(),
+			x,
+			y,
+			dispatch
+		);
 	}
 
 	// Drive sun colour/direction and sky fill from the in-game time of day.
@@ -175,25 +213,24 @@ export class SceneLayer implements maplibregl.CustomLayerInterface {
 		this.lastRender = now;
 		this.weather.update(dt);
 		this.entities.update(dt);
+		this.interactionRing.update(dt);
 
 		const merc = maplibregl.MercatorCoordinate.fromLngLat(
 			[this.originLng, this.originLat],
 			0
 		);
 		const scale = merc.meterInMercatorCoordinateUnits();
-		// Place the metre-based three.js scene at the origin: translate to the
-		// origin's mercator position, scale metres into mercator units, and rotate
-		// so three.js Y-up models stand upright on the map.
-		const local = new Matrix4()
-			.makeTranslation(merc.x, merc.y, merc.z)
-			.scale(new Vector3(scale, -scale, scale))
-			.multiply(
-				new Matrix4().makeRotationAxis(new Vector3(1, 0, 0), HALF_TURN / 2)
-			);
+		// Place the metre-based three.js scene at the origin: x=east, y=up,
+		// z=north. Mercator y points south, so the +90deg X rotation maps local
+		// +z to Mercator -y while keeping local +y vertical.
+		const local = createSceneLocalMatrix(merc.x, merc.y, merc.z, scale);
 		const projection = new Matrix4().fromArray(
 			args.defaultProjectionData.mainMatrix
 		);
 		this.camera.projectionMatrix = projection.multiply(local);
+		this.camera.projectionMatrixInverse
+			.copy(this.camera.projectionMatrix)
+			.invert();
 
 		renderer.resetState();
 		renderer.render(this.scene, this.camera);
@@ -201,6 +238,7 @@ export class SceneLayer implements maplibregl.CustomLayerInterface {
 	}
 
 	onRemove(): void {
+		this.interactionRing.dispose();
 		this.renderer?.dispose();
 		this.renderer = null;
 		this.map = null;

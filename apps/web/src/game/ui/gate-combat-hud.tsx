@@ -22,14 +22,6 @@ const STAMINA_PER_DODGE = 18;
 const MAX_STARS = 5;
 const FULL_STAR = "★";
 const EMPTY_STAR = "☆";
-const HP_GOOD_FRACTION = 0.75;
-
-function pct(value: number, max: number): number {
-	if (max <= 0) {
-		return 0;
-	}
-	return Math.max(0, Math.min(PCT, (value / max) * PCT));
-}
 
 function formatSeconds(ms: number): string {
 	return (ms / MS_PER_SECOND).toFixed(1);
@@ -43,39 +35,6 @@ function aliveCount(run: GateRun): number {
 		}
 	}
 	return count;
-}
-
-function Bar({
-	label,
-	glyph,
-	value,
-	max,
-	color,
-}: {
-	color: string;
-	glyph: string;
-	label: string;
-	max: number;
-	value: number;
-}): React.JSX.Element {
-	return (
-		<div>
-			<div className="flex items-center justify-between text-[10px]">
-				<span className="text-slate-300">
-					<span aria-hidden="true">{glyph}</span> {label}
-				</span>
-				<span className="text-slate-400 tabular-nums">
-					{Math.round(value)}/{Math.round(max)}
-				</span>
-			</div>
-			<div className="mt-0.5 h-2 w-full overflow-hidden rounded-full bg-slate-800/80">
-				<div
-					className={`h-full rounded-full bg-gradient-to-r ${color} transition-[width] duration-200`}
-					style={{ width: `${pct(value, max)}%` }}
-				/>
-			</div>
-		</div>
-	);
 }
 
 function StarRow({ stars }: { stars: number }): React.JSX.Element {
@@ -149,7 +108,6 @@ function ActiveFight({
 	onAction: (event: GameEvent) => void;
 	run: GateRun;
 }): React.JSX.Element {
-	const state = useGameState();
 	const profile = profileFor(run.power);
 	const par = parMsForRank(run.rank);
 	const theme = THEME_META[run.theme];
@@ -159,7 +117,6 @@ function ActiveFight({
 	const lowStamina = run.stamina < STAMINA_PER_DODGE;
 	const lowMana = run.mana < profile.skillCost;
 	const fullHp = run.playerHp >= run.playerMaxHp;
-	const hpGood = run.playerHp >= run.playerMaxHp * HP_GOOD_FRACTION;
 
 	return (
 		<div className="flex flex-col gap-3 p-3">
@@ -187,35 +144,6 @@ function ActiveFight({
 			<div className="text-center text-[10px] text-slate-400">
 				{remaining} enem{remaining === 1 ? "y" : "ies"} on the map
 				{isClassChallenge ? " · ⭐ class challenge" : ""}
-			</div>
-
-			{/* Player vitals. */}
-			<div className="flex flex-col gap-1.5 rounded-xl border border-cyan-400/20 bg-slate-950/70 p-2">
-				<Bar
-					color={
-						hpGood
-							? "from-emerald-500 to-emerald-300"
-							: "from-rose-500 to-amber-400"
-					}
-					glyph="❤️"
-					label="HP"
-					max={run.playerMaxHp}
-					value={run.playerHp}
-				/>
-				<Bar
-					color="from-amber-500 to-amber-300"
-					glyph="⚡"
-					label="Stamina"
-					max={state.player.maxStamina}
-					value={run.stamina}
-				/>
-				<Bar
-					color="from-sky-500 to-sky-300"
-					glyph="🔮"
-					label="Mana"
-					max={state.player.maxCombatMana}
-					value={run.mana}
-				/>
 			</div>
 
 			{/* Action bar. */}
@@ -262,7 +190,7 @@ function ActiveFight({
 			</div>
 
 			<div className="flex items-center justify-between text-[10px] text-slate-500">
-				<span>Tap an enemy or press J to strike the nearest</span>
+				<span>Attack targets the nearest enemy</span>
 				<Button
 					className="rounded-full border-slate-500/40 bg-slate-950/70 px-3 text-slate-300"
 					onClick={() => onAction({ type: "GATE_EXIT" })}

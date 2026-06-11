@@ -1,0 +1,58 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic:
+      - generic:
+        - generic [ref=e4]:
+          - generic [ref=e5]:
+            - generic [ref=e6]: ⚡
+            - generic [ref=e7]: "0"
+            - generic [ref=e8]: mana
+          - generic [ref=e9]: 0 hexes held
+          - generic [ref=e10]:
+            - generic [ref=e12]:
+              - generic [ref=e13]: HP
+              - generic [ref=e14]: 100/100
+            - generic [ref=e18]:
+              - generic [ref=e19]: STA
+              - generic [ref=e20]: 100/100
+            - generic [ref=e24]:
+              - generic [ref=e25]: MANA
+              - generic [ref=e26]: 50/50
+        - generic:
+          - button "Audio settings" [ref=e30]:
+            - generic [ref=e31]: 🔊
+          - generic [ref=e32]:
+            - generic [ref=e33]: Rank E
+            - generic [ref=e34]: Level 1
+            - generic [ref=e35]: loading...
+      - generic:
+        - generic [ref=e36]:
+          - generic [ref=e37]:
+            - generic [ref=e38]: Wildland
+            - generic [ref=e39]: neutral
+          - generic [ref=e41]: 0% captured
+        - button "GPS Off" [ref=e42]
+    - generic [ref=e44]:
+      - heading "🜂 Welcome, Hunter" [level=2] [ref=e45]
+      - paragraph [ref=e46]: The End Game overlays a world of gates and shadows onto your real surroundings. Play with awareness.
+      - list [ref=e47]:
+        - listitem [ref=e48]: • Stay alert to traffic, people, and your surroundings.
+        - listitem [ref=e49]: • Never trespass or enter unsafe places to capture a hex.
+        - listitem [ref=e50]: • Obey all local laws. The game is a guide, not a command.
+        - listitem [ref=e51]: • You are responsible for your own safety at all times.
+      - generic [ref=e52]:
+        - button "Skip" [ref=e53]
+        - button "I understand" [ref=e54]
+    - button "Enable debug mode" [ref=e55]: ⚙️
+    - generic [ref=e56]:
+      - button:
+        - generic: 🎖️
+        - generic: Hero
+      - button:
+        - generic: 🌍
+        - generic: World
+      - button "Open menu" [ref=e57]:
+        - generic [ref=e58]: ✦
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e64] [cursor=pointer]:
+    - img [ref=e65]

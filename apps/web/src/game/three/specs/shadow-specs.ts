@@ -1,4 +1,7 @@
-import { METERS_PER_DEGREE_LAT } from "@/game/constants";
+import {
+	ENEMY_GENERAL_ANIM_URL,
+	METERS_PER_DEGREE_LAT,
+} from "@/game/constants";
 import { hexCenter } from "@/game/lib/hex";
 import {
 	registerSpecProvider,
@@ -77,6 +80,7 @@ function sentinelSpec(
 	}
 
 	return {
+		animation: { clip: "idle", url: ENEMY_GENERAL_ANIM_URL },
 		key: `shadow:${id}`,
 		kind: "sentinel",
 		modelUrl: SENTINEL_MODEL,

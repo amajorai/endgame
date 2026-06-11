@@ -1,4 +1,5 @@
 import type maplibregl from "maplibre-gl";
+import { playSound } from "@/game/audio/play";
 import {
 	CAMERA_RECENTER_IDLE_MS,
 	GRAVITY_MPS2,
@@ -6,7 +7,11 @@ import {
 	MAX_MAP_PITCH,
 	METERS_PER_DEGREE_LAT,
 	MIN_MAP_PITCH,
+	ROTATE_DRAG_DEG_PER_PX,
 	SPRINT_MULTIPLIER,
+	SPRINT_STAMINA_DRAIN_PER_S,
+	SPRINT_STAMINA_RECOVERY_THRESHOLD,
+	SPRINT_STAMINA_REGEN_PER_S,
 	THIRD_PERSON_PITCH,
 	THIRD_PERSON_ZOOM,
 	TILT_DRAG_DEG_PER_PX,
@@ -18,7 +23,12 @@ import {
 import { posToHex } from "@/game/lib/hex";
 import type { PlayerCharacter } from "@/game/three/asset-loader";
 import type { BossController } from "@/game/three/boss-controller";
+import { BuildingObstacles, resolveMove } from "@/game/three/nav";
 import type { SceneLayer } from "@/game/three/scene-layer";
+import {
+	resetSprintStamina,
+	setSprintStamina,
+} from "@/game/three/sprint-stamina";
 import type { GameEvent } from "@/game/types";
 
 // Drives the 3D player: integrates WASD into a live lng/lat each frame, keeps the
@@ -39,6 +49,12 @@ const FACE_TURN = 10;
 const WALK_SPEED_RATIO = 0.6;
 // Click-to-walk arrival threshold, in metres.
 const WALK_ARRIVE_M = 3;
+// Metres of travel between footstep sounds. Distance-based, so sprinting (which
+// covers more ground per frame) naturally quickens the step cadence.
+const FOOTSTEP_STRIDE_M = 2.2;
+// How often to re-pull building footprints from the basemap (matches the boss /
+// gate-combat chasers, so all three share one obstacle cadence).
+const BUILDING_REFRESH_MS = 1500;
 // How quickly the camera eases back to the player after free-look idle.
 const RECENTER_LERP = 6;
 const RECENTER_EPSILON_M = 0.5;
@@ -69,6 +85,13 @@ export interface ControllerDeps {
 	initialLng: number;
 	layer: SceneLayer;
 	map: maplibregl.Map;
+	// Fired every frame with the avatar's live position. The map throttles this to
+	// drive the proximity building fade; keep the handler cheap.
+	onPlayerMove?: (lng: number, lat: number) => void;
+	// Fired whenever the click-to-walk destination changes: a fresh target when a
+	// move order is placed, null when the player arrives or takes manual control.
+	// The map uses this to show/hide a destination pin.
+	onWalkTargetChange?: (target: { lat: number; lng: number } | null) => void;
 }
 
 export class PlayerController {
@@ -89,6 +112,11 @@ export class PlayerController {
 	private raf = 0;
 	private last = 0;
 
+	// Building footprints pulled from the basemap, refreshed on a throttle. The
+	// player's move resolution consults these so the avatar can't walk through
+	// buildings; it's the same obstacle set the boss/enemy chasers navigate.
+	private readonly buildings: BuildingObstacles;
+
 	private character: PlayerCharacter | null = null;
 	private boss: BossController | null = null;
 	// Optional gate-combat controller, updated each frame like the boss. Owned by
@@ -97,11 +125,24 @@ export class PlayerController {
 	private faceYaw = 0;
 	private speedRatio = 0;
 
+	// Footstep cadence: metres travelled since the last footstep sound. Distance-
+	// based so the step rate naturally speeds up when sprinting. Reset on each
+	// step; never persisted (lives entirely on the per-frame path).
+	private stepDistanceM = 0;
+
 	// Jump: a transient vertical gravity arc applied to the avatar's local Y
 	// offset (metres). It never touches lng/lat/hex, so nothing is persisted.
 	private isJumping = false;
 	private jumpVelocity = 0;
 	private altitudeM = 0;
+
+	// Sprint stamina: a transient charge in 0..1, drained while sprinting (Shift +
+	// movement) and regenerated otherwise. Like the jump arc it is never persisted.
+	// `staminaExhausted` latches at empty so sprint cannot re-engage until the
+	// charge recovers past SPRINT_STAMINA_RECOVERY_THRESHOLD (no on/off flicker at
+	// zero). Mirrored to the HUD via the sprint-stamina external store.
+	private sprintStamina = 1;
+	private staminaExhausted = false;
 
 	// Click-to-walk target. When set, the character auto-walks here until it
 	// arrives or the player takes manual WASD control.
@@ -113,10 +154,13 @@ export class PlayerController {
 	private freeLookUntil = 0;
 	private now = 0;
 
-	// Right-click-drag tilt: tracks the drag origin while the right button is held.
+	// Right-click-drag tilt + rotate: tracks the drag origin while the right
+	// button is held. Vertical drag adjusts pitch, horizontal drag adjusts heading.
 	private tilting = false;
 	private tiltStartY = 0;
 	private tiltStartPitch = 0;
+	private tiltStartX = 0;
+	private tiltStartHeading = 0;
 
 	constructor(deps: ControllerDeps) {
 		this.deps = deps;
@@ -124,6 +168,7 @@ export class PlayerController {
 		this.liveLng = deps.initialLng;
 		this.lastHex = deps.initialHex;
 		this.pitch = deps.map.getPitch();
+		this.buildings = new BuildingObstacles(deps.map, BUILDING_REFRESH_MS);
 	}
 
 	start(): void {
@@ -168,13 +213,16 @@ export class PlayerController {
 		// Land the avatar so a teardown mid-jump (StrictMode remount, route change)
 		// never leaves the model floating at a stale altitude.
 		this.resetJump();
+		// Refill sprint so a remount doesn't inherit a half-drained / exhausted bar.
+		this.resetStamina();
 		if (activeController === this) {
 			activeController = null;
 		}
 	}
 
-	// Right-click-drag tilt: hold the right mouse button and drag up/down. Dragging
-	// up tilts toward the horizon (higher pitch), down tilts toward top-down.
+	// Right-click-drag tilt + rotate: hold the right mouse button and drag.
+	// Vertical drag up tilts toward the horizon (higher pitch), down toward
+	// top-down; horizontal drag swings the camera heading left/right.
 	private readonly onContextMenu = (event: MouseEvent): void => {
 		event.preventDefault();
 	};
@@ -186,6 +234,8 @@ export class PlayerController {
 		this.tilting = true;
 		this.tiltStartY = event.clientY;
 		this.tiltStartPitch = this.pitch;
+		this.tiltStartX = event.clientX;
+		this.tiltStartHeading = this.heading;
 	};
 
 	private readonly onPointerMove = (event: PointerEvent): void => {
@@ -198,6 +248,14 @@ export class PlayerController {
 		// Apply immediately so the tilt tracks the drag; the follow loop keeps
 		// using this.pitch afterward, so the new tilt persists.
 		this.deps.map.setPitch(this.pitch);
+
+		// Horizontal drag rotates the camera heading. Dragging right swings the
+		// view clockwise. The follow loop reads this.heading for its bearing, so
+		// the new rotation persists after the drag ends.
+		const deltaX = event.clientX - this.tiltStartX;
+		const rawHeading = this.tiltStartHeading + deltaX * ROTATE_DRAG_DEG_PER_PX;
+		this.heading = ((rawHeading % 360) + 360) % 360;
+		this.deps.map.setBearing(this.heading);
 	};
 
 	private readonly onPointerUp = (event: PointerEvent): void => {
@@ -241,8 +299,12 @@ export class PlayerController {
 		this.enabled = enabled;
 		if (!enabled) {
 			this.keys.clear();
+			// Drop any pending move order (and its pin) - GPS mode owns movement now.
+			this.setWalkTarget(null);
 			// Land the avatar so a mode switch mid-jump never leaves it airborne.
 			this.resetJump();
+			// GPS mode owns movement; refill the sprint charge so it's full on return.
+			this.resetStamina();
 		}
 	}
 
@@ -260,6 +322,14 @@ export class PlayerController {
 		}
 	}
 
+	// Refill the sprint charge and clear the exhausted latch. Used when movement is
+	// handed off (GPS) or torn down, so the bar never resumes mid-drain on remount.
+	private resetStamina(): void {
+		this.sprintStamina = 1;
+		this.staminaExhausted = false;
+		resetSprintStamina();
+	}
+
 	// The player's current live position (read by the boss chaser).
 	getPosition(): { lat: number; lng: number } {
 		return { lat: this.liveLat, lng: this.liveLng };
@@ -274,10 +344,36 @@ export class PlayerController {
 		return this.altitudeM;
 	}
 
-	// Click-to-walk: set a destination the character auto-walks toward.
+	// Live sprint charge (0..1) and whether it is currently depleted. Read by the
+	// e2e seam (window.__sprint) to assert drain/exhaust/regen without rendering.
+	get sprintCharge(): number {
+		return this.sprintStamina;
+	}
+
+	get exhausted(): boolean {
+		return this.staminaExhausted;
+	}
+
+	// Click-to-walk: set a destination the character auto-walks toward. Ignored
+	// while disabled (real-GPS mode owns movement), so no pin is dropped on a
+	// destination the avatar can never auto-walk to.
 	walkTo(lat: number, lng: number): void {
-		this.walkTarget = { lat, lng };
+		if (!this.enabled) {
+			return;
+		}
+		this.setWalkTarget({ lat, lng });
 		this.freeLookUntil = 0;
+	}
+
+	// Single point of truth for the click-to-walk target so the destination pin
+	// callback fires consistently from every set/clear site. Skips the no-op of
+	// clearing an already-null target (WASD held clears it every frame).
+	private setWalkTarget(target: { lat: number; lng: number } | null): void {
+		if (this.walkTarget === null && target === null) {
+			return;
+		}
+		this.walkTarget = target;
+		this.deps.onWalkTargetChange?.(target);
 	}
 
 	// Snap the live position to an external source (GPS fix, recenter, hydrate).
@@ -285,6 +381,9 @@ export class PlayerController {
 		this.liveLat = lat;
 		this.liveLng = lng;
 		this.lastHex = posToHex(lat, lng);
+		// A teleport invalidates any in-flight move order; clear it (and its pin) so
+		// a stale destination from before the jump doesn't linger.
+		this.setWalkTarget(null);
 		this.resetJump();
 	}
 
@@ -358,6 +457,7 @@ export class PlayerController {
 		event.preventDefault();
 		this.isJumping = true;
 		this.jumpVelocity = JUMP_SPEED_MPS;
+		playSound("jump", { volume: 0.6 });
 		const jump = this.character?.jump;
 		if (jump) {
 			// Restart the one-shot clip from frame 0; updateCharacter ramps its
@@ -375,17 +475,27 @@ export class PlayerController {
 	private integrate(dt: number): void {
 		const forward = (this.keys.has("w") ? 1 : 0) - (this.keys.has("s") ? 1 : 0);
 		const right = (this.keys.has("d") ? 1 : 0) - (this.keys.has("a") ? 1 : 0);
+		const movingByKeys = forward !== 0 || right !== 0;
+
+		// Stamina drains only while actually sprinting (Shift held WHILE moving with
+		// charge left) and regenerates every other frame. The returned flag is the
+		// gated sprint state, so the speed boost and full-walk animation track the
+		// real charge rather than the raw key - sprint cuts out at empty.
+		const sprinting = this.updateStamina(
+			dt,
+			movingByKeys && this.keys.has("shift")
+		);
 
 		// WASD takes priority and cancels any click-to-walk order.
-		if (forward !== 0 || right !== 0) {
-			this.walkTarget = null;
+		if (movingByKeys) {
+			this.setWalkTarget(null);
 			const headingRad = this.heading * DEG;
 			// Heading-relative basis: forward points along the camera bearing.
 			const east =
 				forward * Math.sin(headingRad) + right * Math.cos(headingRad);
 			const north =
 				forward * Math.cos(headingRad) - right * Math.sin(headingRad);
-			this.applyMove(east, north, dt, this.keys.has("shift"));
+			this.applyMove(east, north, dt, sprinting);
 			// WASD always reclaims the camera from free-look.
 			this.freeLookUntil = 0;
 			return;
@@ -399,6 +509,39 @@ export class PlayerController {
 		this.speedRatio = 0;
 	}
 
+	// Advance the sprint-stamina charge for this frame and return whether sprint is
+	// actually engaged. Sprint requires the caller's intent (Shift + movement),
+	// remaining charge, and a non-exhausted state. The guard `dt > 0` rejects a
+	// NaN/negative frame delta (clock anomaly) so a poisoned dt can't drive the
+	// charge to NaN and freeze it - mirrors the jump arc's NaN hardening.
+	private updateStamina(dt: number, wantsSprint: boolean): boolean {
+		const safeDt = dt > 0 ? dt : 0;
+		const sprinting =
+			wantsSprint && !this.staminaExhausted && this.sprintStamina > 0;
+		if (sprinting) {
+			this.sprintStamina = Math.max(
+				0,
+				this.sprintStamina - SPRINT_STAMINA_DRAIN_PER_S * safeDt
+			);
+			if (this.sprintStamina === 0) {
+				this.staminaExhausted = true;
+			}
+		} else {
+			this.sprintStamina = Math.min(
+				1,
+				this.sprintStamina + SPRINT_STAMINA_REGEN_PER_S * safeDt
+			);
+			if (
+				this.staminaExhausted &&
+				this.sprintStamina >= SPRINT_STAMINA_RECOVERY_THRESHOLD
+			) {
+				this.staminaExhausted = false;
+			}
+		}
+		setSprintStamina(this.sprintStamina, sprinting, this.staminaExhausted);
+		return sprinting;
+	}
+
 	// Step toward the click-to-walk target; arrive (and clear it) when close.
 	private walkTowardTarget(dt: number): void {
 		const target = this.walkTarget;
@@ -410,7 +553,7 @@ export class PlayerController {
 		const dEast = (target.lng - this.liveLng) * (lngScale || 1);
 		const distance = Math.hypot(dEast, dNorth);
 		if (distance < WALK_ARRIVE_M) {
-			this.walkTarget = null;
+			this.setWalkTarget(null);
 			this.speedRatio = 0;
 			return;
 		}
@@ -431,15 +574,40 @@ export class PlayerController {
 		const north = northRaw / mag;
 
 		const speed = WALK_SPEED_MPS * (sprinting ? SPRINT_MULTIPLIER : 1);
-		this.liveLat += (north * speed * dt) / METERS_PER_DEGREE_LAT;
-		const lngScale = METERS_PER_DEGREE_LAT * Math.cos(this.liveLat * DEG);
-		this.liveLng += (east * speed * dt) / (lngScale || METERS_PER_DEGREE_LAT);
+		const nextLat = this.liveLat + (north * speed * dt) / METERS_PER_DEGREE_LAT;
+		const lngScale = METERS_PER_DEGREE_LAT * Math.cos(nextLat * DEG);
+		const nextLng =
+			this.liveLng + (east * speed * dt) / (lngScale || METERS_PER_DEGREE_LAT);
+
+		// Stop the avatar clipping through buildings: resolve the candidate step
+		// against the basemap's footprints (slide along walls, hold if boxed in).
+		// This is the same obstacle set the boss/enemy chasers navigate around.
+		const resolved = resolveMove(
+			this.liveLat,
+			this.liveLng,
+			nextLat,
+			nextLng,
+			this.buildings.rings
+		);
+		// Footstep cadence: accumulate the actual ground covered (post obstacle
+		// resolution) and chirp a step every stride. Silenced mid-jump so the
+		// avatar isn't "walking" through the air.
+		const movedNorth = (resolved.lat - this.liveLat) * METERS_PER_DEGREE_LAT;
+		const movedEast = (resolved.lng - this.liveLng) * (lngScale || 1);
+		this.liveLat = resolved.lat;
+		this.liveLng = resolved.lng;
+		if (!this.isJumping) {
+			this.stepDistanceM += Math.hypot(movedEast, movedNorth);
+			if (this.stepDistanceM >= FOOTSTEP_STRIDE_M) {
+				this.stepDistanceM = 0;
+				playSound("footstep", { volume: 0.5 });
+			}
+		}
 
 		this.speedRatio = sprinting ? 1 : WALK_SPEED_RATIO;
-		// Face the direction of travel. The scene is rotated +90° about X and
-		// mirrored on Z (see SceneLayer), so model +Z points map-south; yaw is
-		// measured so the model faces its travel heading, hence the negated north.
-		this.faceYaw = Math.atan2(east, -north);
+		// Face the direction of travel. SceneLayer maps +x=east and +z=north, so
+		// yaw is measured from the model's +Z forward axis toward east.
+		this.faceYaw = Math.atan2(east, north);
 	}
 
 	// Q/E rotate the camera heading (works while standing still too).
@@ -546,6 +714,10 @@ export class PlayerController {
 		this.last = time;
 		this.now = time;
 
+		// Refresh building footprints before integrating the move, so this frame's
+		// collision check sees the current obstacle set (throttled internally).
+		this.buildings.refresh(time);
+
 		if (this.enabled) {
 			this.updateHeading(dt);
 			this.integrate(dt);
@@ -554,6 +726,7 @@ export class PlayerController {
 		// The three.js scene always tracks the player's true position, even while
 		// the camera is in free-look, so entities/buildings stay registered.
 		this.deps.layer.setOrigin(this.liveLng, this.liveLat);
+		this.deps.onPlayerMove?.(this.liveLng, this.liveLat);
 		this.boss?.update(dt, time);
 		this.gateCombat?.update(dt, time);
 		this.updateCamera(dt, time);

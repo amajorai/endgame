@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { playSound, unlockAudio } from "@/game/audio/play";
 
 export interface RadialItem {
 	icon: string;
@@ -121,22 +122,31 @@ export function RadialMenu({
 		categories.find((category) => category.key === activeCategoryKey) ?? null;
 
 	const handleFab = (): void => {
+		// The FAB is the most reliable first user gesture in the play view, so it
+		// doubles as the audio-unlock trigger (browsers refuse to start audio
+		// before one).
+		unlockAudio();
 		if (!open) {
+			playSound("ui_radial_open");
 			setOpen(true);
 			return;
 		}
 		if (activeCategoryKey) {
+			playSound("ui_close");
 			setActiveCategoryKey(null);
 			return;
 		}
+		playSound("ui_close");
 		setOpen(false);
 	};
 
 	const handleCategory = (key: string): void => {
+		playSound("ui_select");
 		setActiveCategoryKey(key);
 	};
 
 	const handleItem = (key: string): void => {
+		playSound("ui_click");
 		onSelect(key);
 		closeAll();
 	};

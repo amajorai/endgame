@@ -342,9 +342,9 @@ export function enemyWorldPos(
 // Per-kind on-map model footprint (metres) so the renderer sizes the skeletons
 // consistently. Boss reads largest; fodder smallest.
 export const ENEMY_SIZE_M: Record<"fodder" | "elite" | "boss", number> = {
-	fodder: 4.5,
-	elite: 6,
-	boss: 9,
+	fodder: 11,
+	elite: 15,
+	boss: 22,
 };
 
 // Boss name pools by theme.

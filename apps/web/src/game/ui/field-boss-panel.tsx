@@ -6,15 +6,7 @@ import { useDispatch, useGameState } from "@/game/store/store";
 import { SOUL_CACHE_ITEM_KIND } from "@/game/systems/field-boss";
 import type { FieldBoss, InventoryItem, Player } from "@/game/types";
 
-const PCT = 100;
-const HP_LOW = 0.25;
-
-function pct(value: number, max: number): number {
-	if (max <= 0) {
-		return 0;
-	}
-	return Math.max(0, Math.min(PCT, Math.round((value / max) * PCT)));
-}
+const DODGE_STAMINA_COST = 12;
 
 function soulCaches(items: Record<string, InventoryItem>): InventoryItem[] {
 	const out: InventoryItem[] = [];
@@ -26,62 +18,6 @@ function soulCaches(items: Record<string, InventoryItem>): InventoryItem[] {
 	return out;
 }
 
-function VitalBar({
-	label,
-	glyph,
-	value,
-	max,
-	color,
-}: {
-	label: string;
-	glyph: string;
-	value: number;
-	max: number;
-	color: string;
-}): React.JSX.Element {
-	return (
-		<div>
-			<div className="flex items-center justify-between text-[11px]">
-				<span className="text-slate-300">
-					<span aria-hidden="true">{glyph}</span> {label}
-				</span>
-				<span className="text-slate-400 tabular-nums">
-					{Math.round(value)}/{Math.round(max)}
-				</span>
-			</div>
-			<div className="mt-1 h-2 w-full overflow-hidden rounded-full bg-slate-800/80">
-				<div
-					className={`h-full rounded-full ${color} transition-[width] duration-300`}
-					style={{ width: `${pct(value, max)}%` }}
-				/>
-			</div>
-		</div>
-	);
-}
-
-function pipTone(index: number, phase: number): string {
-	if (index < phase) {
-		return "bg-rose-500/40";
-	}
-	if (index === phase) {
-		return "bg-cyan-300";
-	}
-	return "bg-slate-700";
-}
-
-function PhasePips({ boss }: { boss: FieldBoss }): React.JSX.Element {
-	const pips: React.JSX.Element[] = [];
-	for (let i = 1; i <= boss.totalPhases; i++) {
-		pips.push(
-			<span
-				className={`h-1.5 w-6 rounded-full ${pipTone(i, boss.phase)}`}
-				key={`phase-${boss.id}-${i}`}
-			/>
-		);
-	}
-	return <div className="flex gap-1">{pips}</div>;
-}
-
 function BossFight({
 	boss,
 	player,
@@ -91,75 +27,24 @@ function BossFight({
 	player: Player;
 	onAction: (type: string, payload?: Record<string, unknown>) => void;
 }): React.JSX.Element {
-	const hpRatio = boss.maxHp > 0 ? boss.hp / boss.maxHp : 0;
-	const bossLow = hpRatio <= HP_LOW;
 	const glyph = BOSS_GLYPH_BY_THEME[boss.theme];
 
 	return (
-		<div className="flex flex-col gap-4">
-			<div className="rounded-2xl border border-rose-400/40 bg-slate-950/80 p-4 backdrop-blur-md">
-				<div className="flex items-center justify-between">
-					<div className="flex items-center gap-2">
-						<span aria-hidden="true" className="text-2xl">
-							{glyph}
-						</span>
-						<div>
-							<div className="font-semibold text-rose-100 text-sm">
-								{boss.name}
-							</div>
-							<div className="text-[10px] text-slate-400 uppercase tracking-wide">
-								Rank {boss.rank} · {boss.theme}
-								{boss.fromDungeonBreak ? " · dungeon break" : ""}
-							</div>
+		<div className="flex flex-col gap-3">
+			<div className="rounded-2xl border border-rose-400/30 bg-slate-950/75 p-3 backdrop-blur-md">
+				<div className="flex items-center gap-2">
+					<span aria-hidden="true" className="text-2xl">
+						{glyph}
+					</span>
+					<div className="min-w-0">
+						<div className="truncate font-semibold text-rose-100 text-sm">
+							{boss.name}
+						</div>
+						<div className="text-[10px] text-slate-400 uppercase tracking-wide">
+							Rank {boss.rank} · {boss.theme}
+							{boss.fromDungeonBreak ? " · dungeon break" : ""}
 						</div>
 					</div>
-					<span className="text-[10px] text-slate-400 capitalize">
-						{boss.status}
-					</span>
-				</div>
-
-				<div className="mt-3 h-3 w-full overflow-hidden rounded-full bg-slate-800/80">
-					<div
-						className={`h-full rounded-full transition-[width] duration-300 ${
-							bossLow
-								? "bg-gradient-to-r from-rose-600 to-amber-400"
-								: "bg-gradient-to-r from-rose-500 to-rose-300"
-						}`}
-						style={{ width: `${pct(boss.hp, boss.maxHp)}%` }}
-					/>
-				</div>
-				<div className="mt-1 flex items-center justify-between">
-					<PhasePips boss={boss} />
-					<span className="text-[10px] text-rose-300/80 tabular-nums">
-						{Math.round(boss.hp)}/{Math.round(boss.maxHp)} · phase {boss.phase}/
-						{boss.totalPhases}
-					</span>
-				</div>
-			</div>
-
-			<div className="rounded-2xl border border-cyan-400/30 bg-slate-950/80 p-4 backdrop-blur-md">
-				<div className="flex flex-col gap-2">
-					<VitalBar
-						color="bg-gradient-to-r from-emerald-500 to-emerald-300"
-						glyph="❤️"
-						label="HP"
-						max={player.maxHp}
-						value={player.hp}
-					/>
-					<VitalBar
-						color="bg-gradient-to-r from-amber-500 to-amber-300"
-						glyph="⚡"
-						label="Stamina"
-						max={player.maxStamina}
-						value={player.stamina}
-					/>
-					<VitalBar
-						color="bg-gradient-to-r from-cyan-500 to-cyan-300"
-						glyph="🔮"
-						label="Mana"
-						max={player.maxCombatMana}
-						value={player.combatMana}
-					/>
 				</div>
 			</div>
 
@@ -193,7 +78,7 @@ function BossFight({
 			<div className="grid grid-cols-2 gap-2">
 				<Button
 					className="rounded-xl border-amber-400/40 bg-slate-950/70 text-amber-100"
-					disabled={player.stamina < PCT * 0.12}
+					disabled={player.stamina < DODGE_STAMINA_COST}
 					onClick={() => onAction("BOSS_DODGE")}
 					type="button"
 					variant="outline"
